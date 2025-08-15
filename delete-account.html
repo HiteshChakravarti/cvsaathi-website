@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Account - CVSaathi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        button {
+            background-color: #dc3545;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Delete Your CVSaathi Account</h1>
+        <p>We're sorry to see you go. Please fill out this form to request account deletion.</p>
+    </div>
+
+    <div class="info-box warning">
+        <h3>⚠️ Important Information</h3>
+        <p><strong>What happens when you delete your account:</strong></p>
+        <ul>
+            <li>All your personal data will be permanently deleted</li>
+            <li>Your resumes, AI chat history, and video recordings will be removed</li>
+            <li>Your subscription will be cancelled</li>
+            <li>This action cannot be undone</li>
+        </ul>
+    </div>
+
+    <div class="info-box">
+        <h3>📋 Data Deletion Details</h3>
+        <p><strong>Data that will be deleted:</strong></p>
+        <ul>
+            <li>Account information (name, email, phone)</li>
+            <li>All resume content and templates</li>
+            <li>AI coaching chat history</li>
+            <li>Interview preparation data</li>
+            <li>Video resume recordings</li>
+            <li>App usage history and preferences</li>
+        </ul>
+        
+        <p><strong>Data retention period:</strong></p>
+        <ul>
+            <li>Account deletion: Immediate (within 24 hours)</li>
+            <li>Backup data: 30 days (for recovery purposes)</li>
+            <li>Payment records: 7 years (legal requirement)</li>
+        </ul>
+    </div>
+
+    <form action="mailto:privacy@cvsaathi.com" method="post" enctype="text/plain">
+        <div class="form-group">
+            <label for="email">Your CVSaathi Email Address *</label>
+            <input type="email" id="email" name="email" required 
+                   placeholder="Enter the email address associated with your CVSaathi account">
+        </div>
+
+        <div class="form-group">
+            <label for="name">Your Full Name *</label>
+            <input type="text" id="name" name="name" required 
+                   placeholder="Enter your full name as registered in CVSaathi">
+        </div>
+
+        <div class="form-group">
+            <label for="reason">Reason for Deletion (Optional)</label>
+            <textarea id="reason" name="reason" 
+                      placeholder="Please let us know why you're leaving. This helps us improve our service."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmation">Confirmation *</label>
+            <input type="text" id="confirmation" name="confirmation" required 
+                   placeholder="Type 'DELETE MY ACCOUNT' to confirm">
+        </div>
+
+        <button type="submit">Submit Deletion Request</button>
+    </form>
+
+    <div class="info-box">
+        <h3>📞 Alternative Contact Methods</h3>
+        <p>You can also request account deletion by:</p>
+        <ul>
+            <li><strong>Email:</strong> privacy@cvsaathi.com</li>
+            <li><strong>Support:</strong> support@cvsaathi.com</li>
+            <li><strong>Response time:</strong> Within 24 hours</li>
+        </ul>
+    </div>
+
+    <div class="info-box">
+        <h3>🔒 Data Protection</h3>
+        <p>Your deletion request will be processed securely and in accordance with:</p>
+        <ul>
+            <li>GDPR (General Data Protection Regulation)</li>
+            <li>CCPA (California Consumer Privacy Act)</li>
+            <li>Our Privacy Policy</li>
+        </ul>
+    </div>
+</body>
+</html>
