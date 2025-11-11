@@ -1,26 +1,32 @@
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
-import { Benefits } from "./components/Benefits";
-import { Features } from "./components/Features";
-import { Services } from "./components/Services";
-import { Process } from "./components/Process";
-import { Projects } from "./components/Projects";
-import { Customers } from "./components/Customers";
-import { CTA } from "./components/CTA";
+import { WhyChooseUs } from "./components/WhyChooseUs";
+import { InfiniteScrollBenefits } from "./components/InfiniteScrollBenefits";
+import { AIServices } from "./components/AIServices";
+import { FeaturesBentoModern } from "./components/FeaturesBentoModern";
+import { HowItWorksModern } from "./components/HowItWorksModern";
+import { Templates3D } from "./components/Templates3D";
+import { SuccessStories } from "./components/SuccessStories";
+import { PricingSnapshot } from "./components/PricingSnapshot";
+import { FinalCTA } from "./components/FinalCTA";
+import { FAQ } from "./components/FAQ";
 import { Footer } from "./components/Footer";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#0C0E18] text-white overflow-hidden">
+    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
       <Navigation />
       <Hero />
-      <Benefits />
-      <Features />
-      <Services />
-      <Process />
-      <Projects />
-      <Customers />
-      <CTA />
+      <WhyChooseUs />
+      <InfiniteScrollBenefits />
+      <FeaturesBentoModern />
+      <AIServices />
+      <HowItWorksModern />
+      <Templates3D />
+      <SuccessStories />
+      <PricingSnapshot />
+      <FinalCTA />
+      <FAQ />
       <Footer />
     </div>
   );

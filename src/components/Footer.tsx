@@ -1,129 +1,181 @@
 import { motion } from "motion/react";
-import { Linkedin, Twitter, Instagram, Mail, Sparkles } from "lucide-react";
+import { Github, Twitter, Linkedin, Mail, MapPin } from "lucide-react";
+
+const footerLinks = {
+  product: [
+    { label: "Features", href: "#features" },
+    { label: "Templates", href: "#templates" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "FAQ", href: "#faq" },
+  ],
+  company: [
+    { label: "About Us", href: "#" },
+    { label: "Blog", href: "#" },
+    { label: "Careers", href: "#" },
+    { label: "Contact", href: "#" },
+  ],
+  legal: [
+    { label: "Privacy Policy", href: "#" },
+    { label: "Terms of Service", href: "#" },
+    { label: "Cookie Policy", href: "#" },
+    { label: "GDPR", href: "#" },
+  ],
+  resources: [
+    { label: "Resume Guide", href: "#" },
+    { label: "Cover Letter Tips", href: "#" },
+    { label: "Interview Prep", href: "#" },
+    { label: "Career Advice", href: "#" },
+  ],
+};
+
+const socialLinks = [
+  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Linkedin, href: "#", label: "LinkedIn" },
+  { icon: Github, href: "#", label: "GitHub" },
+  { icon: Mail, href: "#", label: "Email" },
+];
 
 export function Footer() {
   return (
-    <motion.footer
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      className="border-t border-white/10 py-12 px-6"
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
-          {/* Brand */}
+    <footer className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+      {/* Decorative top border */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500 to-transparent" />
+
+      <div className="max-w-7xl mx-auto px-6 pt-20 pb-12">
+        {/* Main footer content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-12">
+          {/* Brand column */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#2DD4BF] to-[#3B82F6] flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              {/* Logo */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/30">
+                  <span className="text-white">CV</span>
+                </div>
+                <span className="text-white text-xl">CVSaathi</span>
               </div>
-              <span className="text-white">CityResume.AI</span>
-            </div>
-            <p className="text-white/60 max-w-sm mb-6">
-              India's first AI-powered resume builder optimized for city-specific
-              job markets. Build resumes that get you hired.
-            </p>
-            <div className="flex gap-3">
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/20 transition-all"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/20 transition-all"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/20 transition-all"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/20 transition-all"
-              >
-                <Mail className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
 
-          {/* Product */}
-          <div>
-            <h4 className="mb-4 text-white">Product</h4>
-            <ul className="space-y-2">
-              {["Features", "Templates", "Pricing", "Examples", "API"].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-white/60 hover:text-white transition-colors"
+              <p className="text-gray-400 mb-6 max-w-sm">
+                India's first AI-powered city-smart resume builder. Create professional, ATS-optimized resumes in minutes.
+              </p>
+
+              {/* Location */}
+              <div className="flex items-center gap-2 text-gray-400 mb-6">
+                <MapPin className="w-4 h-4 text-teal-500" />
+                <span>Made in India 🇮🇳</span>
+              </div>
+
+              {/* Social links */}
+              <div className="flex gap-3">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.href}
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 hover:border-teal-500 hover:bg-teal-500/10 flex items-center justify-center transition-all group"
+                    aria-label={social.label}
                   >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+                    <social.icon className="w-5 h-5 text-gray-400 group-hover:text-teal-500 transition-colors" />
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
           </div>
 
-          {/* Company */}
-          <div>
-            <h4 className="mb-4 text-white">Company</h4>
-            <ul className="space-y-2">
-              {["About Us", "Blog", "Careers", "Press", "Contact"].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-white/60 hover:text-white transition-colors"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h4 className="mb-4 text-white">Resources</h4>
-            <ul className="space-y-2">
-              {["Help Center", "Documentation", "Community", "Status", "Changelog"].map(
-                (item) => (
-                  <li key={item}>
+          {/* Links columns */}
+          {Object.entries(footerLinks).map(([category, links], categoryIndex) => (
+            <motion.div
+              key={category}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <h4 className="text-white mb-4 capitalize">
+                {category}
+              </h4>
+              <ul className="space-y-3">
+                {links.map((link, index) => (
+                  <li key={index}>
                     <a
-                      href="#"
-                      className="text-white/60 hover:text-white transition-colors"
+                      href={link.href}
+                      className="text-gray-400 hover:text-teal-500 transition-colors inline-block hover:translate-x-1 duration-200"
                     >
-                      {item}
+                      {link.label}
                     </a>
                   </li>
-                )
-              )}
-            </ul>
-          </div>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
         </div>
 
+        {/* Newsletter */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="border-t border-white/10 pt-12 mb-12"
+        >
+          <div className="max-w-2xl">
+            <h4 className="text-white mb-3">
+              Stay updated with career tips
+            </h4>
+            <p className="text-gray-400 mb-6">
+              Get weekly resume tips, job search strategies, and career advice delivered to your inbox.
+            </p>
+            <div className="flex gap-3">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              />
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl hover:shadow-lg hover:shadow-teal-500/30 transition-all"
+              >
+                Subscribe
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/50">
-            © 2025 CityResume.AI. All rights reserved.
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          viewport={{ once: true }}
+          className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+        >
+          <p className="text-gray-400 text-sm">
+            © 2024 CVSaathi. All rights reserved.
           </p>
-          <div className="flex gap-6">
-            <a href="#" className="text-white/50 hover:text-white transition-colors">
-              Privacy Policy
+          <div className="flex gap-6 text-sm">
+            <a href="#" className="text-gray-400 hover:text-teal-500 transition-colors">
+              Privacy
             </a>
-            <a href="#" className="text-white/50 hover:text-white transition-colors">
-              Terms of Service
+            <a href="#" className="text-gray-400 hover:text-teal-500 transition-colors">
+              Terms
             </a>
-            <a href="#" className="text-white/50 hover:text-white transition-colors">
-              Cookie Policy
+            <a href="#" className="text-gray-400 hover:text-teal-500 transition-colors">
+              Cookies
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </motion.footer>
+
+      {/* Decorative gradient orbs */}
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
+    </footer>
   );
 }
