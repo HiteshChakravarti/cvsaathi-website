@@ -5,59 +5,71 @@ import { Card } from "./ui/card";
 
 const plans = [
   {
-    name: "Free",
+    name: "Free Plan",
     icon: Sparkles,
     price: "₹0",
-    period: "forever",
+    period: "month",
     description: "Perfect for getting started",
     features: [
-      "1 Resume",
-      "Basic Templates",
-      "ATS Optimization",
-      "PDF Download",
-      "City-Smart Suggestions",
+      { title: "AI career coaching", detail: "3 sessions/month" },
+      { title: "Resume builder", detail: "3 resumes with critique & ATS" },
+      { title: "Resume templates", detail: "10 free templates" },
+      { title: "PDF export", detail: "3 PDFs with watermark" },
+      { title: "Interview prep", detail: "2 complete sessions/month" },
+      { title: "Languages", detail: "All languages (EN/HI/MR)" },
+      { title: "Basic profile setup", detail: "Available" },
+      { title: "ATS checker", detail: "1 analysis/month" },
+      { title: "Skill gap analysis", detail: "1 analysis/month" },
+      { title: "WhatsApp export", detail: "With watermark" },
     ],
-    cta: "Get Started",
+    cta: "Current Plan",
     popular: false,
     gradient: "from-white/5 to-white/5",
   },
   {
-    name: "Pro",
+    name: "Starter Plan",
     icon: Zap,
-    price: "₹299",
-    period: "per month",
-    description: "For serious job seekers",
+    price: "₹99",
+    period: "month",
+    description: "Great for job seekers",
     features: [
-      "Unlimited Resumes",
-      "Premium Templates",
-      "Advanced AI Optimization",
-      "Multiple Export Formats",
-      "Priority Support",
-      "Cover Letter Generator",
-      "LinkedIn Profile Optimizer",
+      { title: "AI career coaching", detail: "15 sessions/month" },
+      { title: "Resume builder", detail: "10 resumes with critique & ATS" },
+      { title: "Resume templates", detail: "15 templates" },
+      { title: "PDF export", detail: "10 PDFs without watermark" },
+      { title: "Interview prep", detail: "15 complete sessions/month" },
+      { title: "All languages", detail: "EN/HI/MR" },
+      { title: "ATS checker", detail: "5 analyses/month" },
+      { title: "Skill gap analysis", detail: "8 analyses/month" },
+      { title: "WhatsApp export", detail: "Clean export" },
+      { title: "Email support", detail: "Available" },
     ],
-    cta: "Start Free Trial",
-    popular: true,
-    gradient: "from-purple-500/20 to-blue-500/20",
+    cta: "Upgrade Now",
+    popular: false,
+    gradient: "from-teal-500/20 to-cyan-500/20",
   },
   {
-    name: "Lifetime",
+    name: "Professional Plan",
     icon: Crown,
-    price: "₹2,999",
-    period: "one-time",
-    description: "Best value for your career",
+    price: "₹199",
+    period: "month",
+    description: "For serious career growth",
     features: [
-      "Everything in Pro",
-      "Lifetime Access",
-      "All Future Features",
-      "1-on-1 Career Consultation",
-      "Interview Prep Resources",
-      "Salary Negotiation Guide",
-      "Job Market Insights",
+      { title: "Unlimited AI career coaching", detail: "Unlimited" },
+      { title: "Resume builder", detail: "Unlimited resumes with critique & ATS" },
+      { title: "All premium templates", detail: "Unlimited access" },
+      { title: "Unlimited interview prep", detail: "Unlimited sessions" },
+      { title: "Unlimited ATS checker", detail: "Unlimited + detailed reports" },
+      { title: "Unlimited skill gap analysis", detail: "Unlimited analyses" },
+      { title: "PDF export", detail: "Unlimited without watermark" },
+      { title: "Advanced formatting", detail: "Available" },
+      { title: "Priority support", detail: "Available" },
+      { title: "WhatsApp notifications", detail: "Available" },
+      { title: "Advanced analytics", detail: "Available" },
     ],
-    cta: "Get Lifetime Access",
-    popular: false,
-    gradient: "from-yellow-500/20 to-orange-500/20",
+    cta: "Select Plan",
+    popular: true,
+    gradient: "from-teal-500/20 to-cyan-500/20",
   },
 ];
 
@@ -128,7 +140,12 @@ export function Pricing() {
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-white/80">{feature}</span>
+                      <div className="flex-1">
+                        <div className="text-white/90">{feature.title}</div>
+                        <div className="text-white/50 text-sm italic">
+                          {feature.detail}
+                        </div>
+                      </div>
                     </li>
                   ))}
                 </ul>

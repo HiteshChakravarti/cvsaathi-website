@@ -116,7 +116,7 @@ function StepCard({ step, index }: { step: typeof steps[0]; index: number }) {
 
 export function HowItWorksModern() {
   return (
-    <section className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
+    <section id="how-it-works" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
       {/* Subtle background decoration */}
       <div className="absolute top-20 left-20 w-96 h-96 bg-gray-100/50 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-gray-100/50 rounded-full blur-3xl" />
@@ -136,9 +136,10 @@ export function HowItWorksModern() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white border border-gray-200 rounded-full shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
           >
-            <span className="text-gray-600 uppercase tracking-wider text-sm">Process</span>
+            <Sparkles className="w-4 h-4 text-teal-600" />
+            <span className="text-teal-700 uppercase tracking-wider">Process</span>
           </motion.div>
 
           <h2 

@@ -17,9 +17,11 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
+    { label: 'Why Choose Us', href: '#why-choose-us' },
     { label: 'Features', href: '#features' },
+    { label: 'Services', href: '#services' },
+    { label: 'Process', href: '#how-it-works' },
     { label: 'Templates', href: '#templates' },
-    { label: 'How It Works', href: '#how-it-works' },
     { label: 'Pricing', href: '#pricing' },
   ];
 
@@ -39,15 +41,16 @@ export function Navigation() {
           {/* Logo */}
           <motion.a
             href="/"
-            className="flex items-center"
+            className="flex items-center gap-3"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
             <img 
               src={logoImage} 
               alt="CVSaathi" 
-              className="h-14 w-auto"
+              className="h-16 w-auto"
             />
+            <span className="text-gray-900 text-2xl" style={{ fontWeight: 600 }}>CVSaathi</span>
           </motion.a>
 
           {/* Desktop Navigation */}

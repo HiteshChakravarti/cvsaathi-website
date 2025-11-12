@@ -1,20 +1,20 @@
 import { motion } from "motion/react";
-import { BarChart3, Pen, MessageCircle, BookOpen, Settings, Triangle } from "lucide-react";
+import { BookOpen, Pen, MessageCircle, Languages, Settings, Triangle } from "lucide-react";
 
 const services = [
   {
     id: 1,
-    icon: BarChart3,
-    title: "AI Strategy Consulting",
-    description: "Get expert guidance to implement AI solutions that drive business growth",
+    icon: BookOpen,
+    title: "AI Learning Recommendations",
+    description: "Grow faster with personalized learning paths. Our AI analyzes your career goals and skill-gap data, then connects you to the most relevant courses from Coursera, Udemy, and beyond — so you learn what truly matters.",
     hasUI: false,
-    floatingIcons: [BarChart3],
+    floatingIcons: [BookOpen],
   },
   {
     id: 2,
     icon: Pen,
-    title: "Content Generation",
-    description: "We provide seamless content creation solutions that generate captivating, high-quality content in line with your brand's voice.",
+    title: "AI Content Generation",
+    description: "Build a powerful personal brand with precision. Generate professional resumes, bios, and statements of purpose crafted in your voice — optimized for tone, clarity, and global hiring standards.",
     hasUI: true,
     large: true,
     floatingIcons: [Pen],
@@ -22,19 +22,19 @@ const services = [
   {
     id: 3,
     icon: MessageCircle,
-    title: "AI-Powered Chatbots",
-    description: "We develop AI-driven chatbots with advanced cognitive technologies to elevate customer support and automate business operations.",
+    title: "AI-Powered Chat Assistants",
+    description: "Meet your 24 × 7 career coach. From resume building to interview prep, our conversational AI delivers instant, human-like support in multiple languages — always available, always adapting to your needs.",
     hasUI: true,
     largeBottom: true,
     floatingIcons: [MessageCircle],
   },
   {
     id: 4,
-    icon: Settings,
-    title: "Automated Workflows",
-    description: "Automate workflows to streamline tasks, boost efficiency, and save time",
+    icon: Languages,
+    title: "Multilingual AI Translation & Localization",
+    description: "Break barriers and go global. Instantly translate resumes, cover letters, and feedback into 10 + languages — while keeping context, tone, and professional polish intact.",
     hasUI: false,
-    floatingIcons: [BookOpen, Pen, Settings, Triangle],
+    floatingIcons: [Languages, Pen, Settings, Triangle],
   },
 ];
 
@@ -56,7 +56,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl shadow-xl"
           >
-            <BarChart3 className="w-8 h-8 text-white" />
+            <BookOpen className="w-8 h-8 text-white" />
           </motion.div>
         )}
 
@@ -89,7 +89,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
               transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 0 }}
               className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl shadow-lg"
             >
-              <Settings className="w-6 h-6 text-white" />
+              <Languages className="w-6 h-6 text-white" />
             </motion.div>
             <motion.div
               animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
@@ -163,7 +163,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
 
 export function AIServices() {
   return (
-    <section className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-50">
+    <section id="services" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-50">
       {/* Subtle background decoration */}
       <div className="absolute top-20 right-20 w-96 h-96 bg-gray-100/40 rounded-full blur-3xl" />
       <div className="absolute bottom-20 left-20 w-96 h-96 bg-gray-100/40 rounded-full blur-3xl" />
@@ -183,13 +183,24 @@ export function AIServices() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white border border-teal-200 rounded-full shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
           >
             <Settings className="w-4 h-4 text-teal-600" />
-            <span className="text-teal-600 uppercase tracking-wider text-sm">Services</span>
+            <span className="text-teal-700 uppercase tracking-wider">Services</span>
           </motion.div>
 
-          <h2 className="bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4">
+          <h2 
+            className="mb-4"
+            style={{
+              fontSize: '3rem',
+              fontWeight: 600,
+              lineHeight: 1.2,
+              background: 'linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
             Our AI-Driven Services
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">

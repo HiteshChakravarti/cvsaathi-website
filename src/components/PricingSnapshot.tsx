@@ -1,68 +1,80 @@
 import { motion } from "motion/react";
-import { Check, Sparkles, Zap, Crown } from "lucide-react";
+import { Check, Sparkles, Zap, Crown, DollarSign } from "lucide-react";
 import { Button } from "./ui/button";
 
 const plans = [
   {
-    name: "Free",
+    name: "Free Plan",
     icon: Sparkles,
     price: "₹0",
-    period: "forever",
+    period: "month",
     description: "Perfect for getting started",
     features: [
-      "1 resume",
-      "Basic templates",
-      "ATS score check",
-      "PDF download",
-      "Basic AI suggestions",
+      { title: "AI career coaching", detail: "3 sessions/month" },
+      { title: "Resume builder", detail: "3 resumes with critique & ATS" },
+      { title: "Resume templates", detail: "10 free templates" },
+      { title: "PDF export", detail: "3 PDFs with watermark" },
+      { title: "Interview prep", detail: "2 complete sessions/month" },
+      { title: "Languages", detail: "All languages (EN/HI/MR)" },
+      { title: "Basic profile setup", detail: "Available" },
+      { title: "ATS checker", detail: "1 analysis/month" },
+      { title: "Skill gap analysis", detail: "1 analysis/month" },
+      { title: "WhatsApp export", detail: "With watermark" },
     ],
-    cta: "Start Free",
+    cta: "Current Plan",
     popular: false,
     gradient: "from-gray-400 to-gray-600",
   },
   {
-    name: "Pro",
+    name: "Starter Plan",
     icon: Zap,
-    price: "₹299",
-    period: "per month",
-    description: "Most popular for job seekers",
+    price: "₹99",
+    period: "month",
+    description: "Great for job seekers",
     features: [
-      "Unlimited resumes",
-      "Premium templates",
-      "Advanced ATS optimization",
-      "Cover letter builder",
-      "AI-powered writing",
-      "Expert review",
-      "Priority support",
+      { title: "AI career coaching", detail: "15 sessions/month" },
+      { title: "Resume builder", detail: "10 resumes with critique & ATS" },
+      { title: "Resume templates", detail: "15 templates" },
+      { title: "PDF export", detail: "10 PDFs without watermark" },
+      { title: "Interview prep", detail: "15 complete sessions/month" },
+      { title: "All languages", detail: "EN/HI/MR" },
+      { title: "ATS checker", detail: "5 analyses/month" },
+      { title: "Skill gap analysis", detail: "8 analyses/month" },
+      { title: "WhatsApp export", detail: "Clean export" },
+      { title: "Email support", detail: "Available" },
     ],
-    cta: "Start 7-Day Free Trial",
-    popular: true,
+    cta: "Upgrade Now",
+    popular: false,
     gradient: "from-teal-500 to-cyan-500",
   },
   {
-    name: "Lifetime",
+    name: "Professional Plan",
     icon: Crown,
-    price: "₹2,999",
-    period: "one-time",
-    description: "Best value for career growth",
+    price: "₹199",
+    period: "month",
+    description: "For serious career growth",
     features: [
-      "Everything in Pro",
-      "Lifetime access",
-      "All future features",
-      "LinkedIn optimization",
-      "Interview preparation",
-      "Career coaching",
-      "VIP support",
+      { title: "Unlimited AI career coaching", detail: "Unlimited" },
+      { title: "Resume builder", detail: "Unlimited resumes with critique & ATS" },
+      { title: "All premium templates", detail: "Unlimited access" },
+      { title: "Unlimited interview prep", detail: "Unlimited sessions" },
+      { title: "Unlimited ATS checker", detail: "Unlimited + detailed reports" },
+      { title: "Unlimited skill gap analysis", detail: "Unlimited analyses" },
+      { title: "PDF export", detail: "Unlimited without watermark" },
+      { title: "Advanced formatting", detail: "Available" },
+      { title: "Priority support", detail: "Available" },
+      { title: "WhatsApp notifications", detail: "Available" },
+      { title: "Advanced analytics", detail: "Available" },
     ],
-    cta: "Get Lifetime Access",
-    popular: false,
-    gradient: "from-yellow-400 to-orange-500",
+    cta: "Select Plan",
+    popular: true,
+    gradient: "from-teal-500 to-cyan-500",
   },
 ];
 
 export function PricingSnapshot() {
   return (
-    <section id="pricing" className="py-32 px-6 relative overflow-hidden bg-white">
+    <section id="pricing" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
       {/* Decorative background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(20,184,166,0.05),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(6,182,212,0.05),transparent_50%)]" />
       
@@ -75,10 +87,28 @@ export function PricingSnapshot() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <div className="inline-block px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
+          >
+            <DollarSign className="w-4 h-4 text-teal-600" />
             <span className="text-teal-700 uppercase tracking-wider">Simple Pricing</span>
-          </div>
-          <h2 className="text-gray-900 mb-6">
+          </motion.div>
+          <h2 
+            className="mb-6"
+            style={{
+              fontSize: '3rem',
+              fontWeight: 600,
+              lineHeight: 1.2,
+              background: 'linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
             Choose your perfect plan
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -164,12 +194,15 @@ export function PricingSnapshot() {
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.3, delay: index * 0.1 + featureIndex * 0.05 }}
                         viewport={{ once: true }}
-                        className="flex items-center gap-3"
+                        className="flex items-start gap-3"
                       >
-                        <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${plan.gradient} flex items-center justify-center flex-shrink-0`}>
+                        <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${plan.gradient} flex items-center justify-center flex-shrink-0 mt-0.5`}>
                           <Check className="w-3 h-3 text-white" />
                         </div>
-                        <span className="text-gray-700">{feature}</span>
+                        <div className="flex-1">
+                          <div className="text-gray-900">{feature.title}</div>
+                          <div className="text-gray-500 text-sm italic">{feature.detail}</div>
+                        </div>
                       </motion.li>
                     ))}
                   </ul>
@@ -193,18 +226,7 @@ export function PricingSnapshot() {
           ))}
         </div>
 
-        {/* Bottom note */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
-          <p className="text-gray-600">
-            All plans include <span className="text-teal-600">30-day money-back guarantee</span> • No credit card required for free plan
-          </p>
-        </motion.div>
+        {/* Remove the money-back guarantee text */}
       </div>
     </section>
   );

@@ -51,14 +51,26 @@ export function HowItWorks() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <div className="inline-block px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full">
+          <div className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm">
+            <Sparkles className="w-4 h-4 text-teal-600" />
             <span className="text-teal-700 uppercase tracking-wider">How It Works</span>
           </div>
-          <h2 className="text-gray-900 mb-6">
+          <h2 
+            className="mb-6"
+            style={{
+              fontSize: '3rem',
+              fontWeight: 600,
+              lineHeight: 1.2,
+              background: 'linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
             Four simple steps to success
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Create a professional, ATS-optimized resume in minutes with our AI-powered platform
+            From sign-up to job offer — we've made it seamless
           </p>
         </motion.div>
 

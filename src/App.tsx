@@ -6,7 +6,7 @@ import { AIServices } from "./components/AIServices";
 import { FeaturesBentoModern } from "./components/FeaturesBentoModern";
 import { HowItWorksModern } from "./components/HowItWorksModern";
 import { Templates3D } from "./components/Templates3D";
-import { SuccessStories } from "./components/SuccessStories";
+import { EstelCompanion } from "./components/EstelCompanion";
 import { PricingSnapshot } from "./components/PricingSnapshot";
 import { FinalCTA } from "./components/FinalCTA";
 import { FAQ } from "./components/FAQ";
@@ -23,7 +23,7 @@ export default function App() {
       <AIServices />
       <HowItWorksModern />
       <Templates3D />
-      <SuccessStories />
+      <EstelCompanion />
       <PricingSnapshot />
       <FinalCTA />
       <FAQ />

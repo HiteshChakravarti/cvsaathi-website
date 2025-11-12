@@ -73,7 +73,7 @@ export function FinalCTA() {
           </motion.div>
 
           {/* Main heading */}
-          <motion.div
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -82,18 +82,7 @@ export function FinalCTA() {
             <h2 className="text-white mb-6 max-w-4xl mx-auto">
               Start building your dream resume today
             </h2>
-          </motion.div>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="text-white/90 mb-12 max-w-2xl mx-auto text-xl"
-          >
-            Join 50,000+ job seekers who landed their dream jobs with CVSaathi's AI-powered resume builder
-          </motion.p>
+          </motion.h2>
 
           {/* CTA Buttons */}
           <motion.div

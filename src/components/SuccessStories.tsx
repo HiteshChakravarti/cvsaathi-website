@@ -45,9 +45,16 @@ export function SuccessStories() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <div className="inline-block px-5 py-2 mb-6 bg-white border border-teal-200 rounded-full shadow-sm">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
+          >
+            <Star className="w-4 h-4 text-teal-600" />
             <span className="text-teal-700 uppercase tracking-wider">Success Stories</span>
-          </div>
+          </motion.div>
           <h2 className="text-gray-900 mb-6">
             Real stories from real job seekers
           </h2>

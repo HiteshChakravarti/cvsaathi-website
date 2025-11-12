@@ -19,6 +19,7 @@
         'input-otp@1.4.2': 'input-otp',
         'figma:asset/ce21bd338822aa6524bd962f8da53836c0104a49.png': path.resolve(__dirname, './src/assets/ce21bd338822aa6524bd962f8da53836c0104a49.png'),
         'figma:asset/a1fa1e52b70bc90b456fc07ea39f8393a8febdc0.png': path.resolve(__dirname, './src/assets/a1fa1e52b70bc90b456fc07ea39f8393a8febdc0.png'),
+        'figma:asset/9302699bdb8cce40bf621c323ea973595b33af0a.png': path.resolve(__dirname, './src/assets/9302699bdb8cce40bf621c323ea973595b33af0a.png'),
         'figma:asset/88d543143fdfa1adae75e89cd0a9a88587a9f4c6.png': path.resolve(__dirname, './src/assets/88d543143fdfa1adae75e89cd0a9a88587a9f4c6.png'),
         'figma:asset/242bbf71ca21edeb48a137b668cfa525df7fb278.png': path.resolve(__dirname, './src/assets/242bbf71ca21edeb48a137b668cfa525df7fb278.png'),
         'figma:asset/205dd26f9b4807bb14918f45098b66dde1159143.png': path.resolve(__dirname, './src/assets/205dd26f9b4807bb14918f45098b66dde1159143.png'),

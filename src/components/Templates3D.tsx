@@ -1,39 +1,39 @@
-import { motion, useAnimation } from "motion/react";
-import { Code, TrendingUp, Briefcase, GraduationCap, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import { FileText, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "./ui/button";
 
 const templates = [
   {
-    icon: Code,
+    icon: FileText,
     title: "Tech Professional",
     description: "Modern templates for developers, engineers, and tech professionals.",
     tags: ["Developer", "Engineer", "Designer"],
     color: "teal",
   },
   {
-    icon: TrendingUp,
+    icon: Sparkles,
     title: "Marketing",
     description: "Eye-catching templates for marketers and creative professionals.",
     tags: ["Marketing", "Social Media", "Creative"],
     color: "cyan",
   },
   {
-    icon: Briefcase,
+    icon: FileText,
     title: "Business Operations",
     description: "Professional templates for business operations and management.",
     tags: ["Manager", "Consultant", "Operations"],
     color: "teal",
   },
   {
-    icon: GraduationCap,
+    icon: FileText,
     title: "Fresh Graduate",
     description: "Specially designed for students and recent graduates.",
     tags: ["Graduate", "Intern", "Entry-level"],
     color: "emerald",
   },
   {
-    icon: Briefcase,
+    icon: FileText,
     title: "Executive",
     description: "Premium templates for senior executives and leadership roles.",
     tags: ["Director", "VP", "Executive"],
@@ -47,14 +47,21 @@ export function Templates3D() {
 
   const rotate = (direction: 'left' | 'right') => {
     if (isRotating) return;
+    
     setIsRotating(true);
     const angle = 360 / templates.length;
-    setRotation(prev => direction === 'left' ? prev - angle : prev + angle);
+    
+    if (direction === 'left') {
+      setRotation(prev => prev - angle);
+    } else {
+      setRotation(prev => prev + angle);
+    }
+    
     setTimeout(() => setIsRotating(false), 800);
   };
 
   return (
-    <section id="templates" className="py-32 px-6 relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-white">
+    <section id="templates" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
       {/* Decorative elements */}
       <div className="absolute top-20 right-20 w-96 h-96 bg-teal-100/40 rounded-full blur-3xl" />
       <div className="absolute bottom-20 left-20 w-96 h-96 bg-cyan-100/40 rounded-full blur-3xl" />
@@ -68,10 +75,28 @@ export function Templates3D() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <div className="inline-block px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full">
-            <span className="text-teal-700 uppercase tracking-wider">Resume Templates</span>
-          </div>
-          <h2 className="text-gray-900 mb-6">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
+          >
+            <FileText className="w-4 h-4 text-teal-600" />
+            <span className="text-teal-700 uppercase tracking-wider">Templates</span>
+          </motion.div>
+          <h2 
+            className="mb-6"
+            style={{
+              fontSize: '3rem',
+              fontWeight: 600,
+              lineHeight: 1.2,
+              background: 'linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
             Designer-crafted templates
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">

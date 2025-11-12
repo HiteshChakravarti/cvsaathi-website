@@ -1,24 +1,24 @@
 import { motion } from "motion/react";
-import { BarChart3, TrendingUp, Users } from "lucide-react";
+import { BarChart3, TrendingUp, Users, Award } from "lucide-react";
 
 const benefits = [
   {
     icon: BarChart3,
-    title: "Real-Time Analytics",
-    description: "Stay ahead with accurate, real-time performance tracking",
+    title: "AI That Understands You",
+    description: "CV Saathi isn't just smart — it's personalized. Our multilingual AI tailors every resume, career suggestion, and interview tip to your city, your industry, and your goals.",
     illustration: "chart",
   },
   {
     icon: TrendingUp,
-    title: "AI-Driven Growth",
-    description: "Make smarter moves with accurate, real-time business insights.",
+    title: "Real-Time Career Insights",
+    description: "Track your growth instantly with live analytics and job-market signals — see which skills are trending and how your profile compares.",
     illustration: "growth",
     centerPiece: true,
   },
   {
     icon: Users,
-    title: "Sync in real time",
-    description: "Connect with your team instantly to track progress and updates",
+    title: "AI-Driven Growth",
+    description: "Every click helps you move forward. Our intelligent system learns from your progress to recommend better opportunities, faster.",
     illustration: "sync",
   },
 ];
@@ -179,7 +179,7 @@ function BenefitCard({ benefit, index }: { benefit: typeof benefits[0]; index: n
 
 export function WhyChooseUs() {
   return (
-    <section className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
+    <section id="why-choose-us" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
       {/* Subtle background decoration */}
       <div className="absolute top-20 left-20 w-72 h-72 bg-gray-100/50 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-gray-100/50 rounded-full blur-3xl" />
@@ -193,6 +193,18 @@ export function WhyChooseUs() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
+          >
+            <Award className="w-4 h-4 text-teal-600" />
+            <span className="text-teal-700 uppercase tracking-wider">Why Us</span>
+          </motion.div>
+
           <h2 
             className="mb-4"
             style={{
@@ -208,7 +220,7 @@ export function WhyChooseUs() {
             Why Choose Us
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Partner with an AI agency delivering smart solutions.
+            Empowering every career dream with intelligent, human-first AI.
           </p>
         </motion.div>
 

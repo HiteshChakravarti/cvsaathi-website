@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Github, Twitter, Linkedin, Mail, MapPin } from "lucide-react";
+import logoImage from "figma:asset/a1fa1e52b70bc90b456fc07ea39f8393a8febdc0.png";
 
 const footerLinks = {
   product: [
@@ -54,14 +55,16 @@ export function Footer() {
             >
               {/* Logo */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/30">
-                  <span className="text-white">CV</span>
-                </div>
-                <span className="text-white text-xl">CVSaathi</span>
+                <img 
+                  src={logoImage} 
+                  alt="CVSaathi" 
+                  className="h-14 w-auto"
+                />
+                <span className="text-white text-2xl" style={{ fontWeight: 600 }}>CVSaathi</span>
               </div>
 
               <p className="text-gray-400 mb-6 max-w-sm">
-                India's first AI-powered city-smart resume builder. Create professional, ATS-optimized resumes in minutes.
+                AI-Powered Career Growth Platform
               </p>
 
               {/* Location */}

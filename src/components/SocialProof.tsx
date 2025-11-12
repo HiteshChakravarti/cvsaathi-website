@@ -58,11 +58,22 @@ export function SocialProof() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-white mb-4">
+          <h2 
+            className="mb-4"
+            style={{
+              fontSize: '3rem',
+              fontWeight: 600,
+              lineHeight: 1.2,
+              background: 'linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
             Trusted by thousands of job seekers
           </h2>
           <p className="text-white/90 max-w-2xl mx-auto">
-            Join the growing community of professionals who landed their dream jobs with CVSaathi
+            Join professionals from leading companies who trust CVSaathi
           </p>
         </motion.div>
 

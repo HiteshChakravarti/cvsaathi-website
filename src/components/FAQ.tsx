@@ -57,14 +57,31 @@ export function FAQ() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-block px-5 py-2 mb-6 bg-white border border-teal-200 rounded-full shadow-sm">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
+          >
             <span className="text-teal-700 uppercase tracking-wider">FAQ</span>
-          </div>
-          <h2 className="text-gray-900 mb-6">
+          </motion.div>
+          <h2
+            className="mb-6"
+            style={{
+              fontSize: '3rem',
+              fontWeight: 600,
+              lineHeight: 1.2,
+              background: 'linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
             Frequently asked questions
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Everything you need to know about CVSaathi. Can't find the answer you're looking for? Chat with our support team.
+            Everything you need to know about CVSaathi
           </p>
         </motion.div>
 

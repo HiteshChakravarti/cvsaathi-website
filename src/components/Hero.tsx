@@ -87,7 +87,7 @@ export function Hero() {
         >
           <Sparkles className="w-4 h-4 text-teal-400" />
           <span className="text-white tracking-wide uppercase" style={{ fontSize: '0.75rem', fontWeight: 500 }}>
-            AI-Powered Resume Builder for India
+            AI-Powered Career Growth Platform
           </span>
         </motion.div>
 
@@ -123,7 +123,7 @@ export function Hero() {
             lineHeight: 1.7,
           }}
         >
-          Build a job-winning resume in minutes with expert guidance, ATS scoring, and AI-powered writing in one intuitive workspace
+          Craft your career story with AI — from a stunning, job-winning resume to personalized interview prep and real-time skill insights.
         </motion.p>
 
         {/* CTA Buttons - Adapted for dark background */}
@@ -157,30 +157,6 @@ export function Hero() {
               See Our Services
             </Button>
           </motion.div>
-        </motion.div>
-
-        {/* Trust indicators */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="mt-12 flex flex-wrap gap-8 justify-center items-center"
-        >
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 border-2 border-gray-900" />
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-400 border-2 border-gray-900" />
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-teal-400 border-2 border-gray-900" />
-            </div>
-            <span className="text-white/90 text-sm">50,000+ users</span>
-          </div>
-          <div className="text-white/90 text-sm flex items-center gap-2">
-            <span className="text-teal-400">★★★★★</span>
-            <span>4.9/5 rating</span>
-          </div>
-          <div className="text-white/90 text-sm">
-            <span className="text-teal-400">100%</span> ATS Compatible
-          </div>
         </motion.div>
       </div>
     </section>

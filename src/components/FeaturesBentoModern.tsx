@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { FileText, CheckCircle, Briefcase, Bot, TrendingUp, ArrowRight } from "lucide-react";
+import { FileText, CheckCircle, Briefcase, Bot, TrendingUp, ArrowRight, Layers } from "lucide-react";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import resumeBuilderImage from "figma:asset/ce21bd338822aa6524bd962f8da53836c0104a49.png";
@@ -11,7 +11,7 @@ const features = [
     id: 1,
     icon: FileText,
     title: "Resume Builder",
-    description: "Create stunning, professional resumes with our intuitive drag-and-drop builder. Choose from 50+ ATS-optimized templates designed for Indian job markets.",
+    description: "Create beautiful, job-winning resumes in minutes. Choose from 50+ AI-crafted templates tailored for every profession, region, and experience level — designed to impress both global recruiters and ATS systems.",
     image: resumeBuilderImage,
     hasImage: true,
     large: true,
@@ -19,15 +19,15 @@ const features = [
   {
     id: 2,
     icon: CheckCircle,
-    title: "ATS Checker",
-    description: "Get instant ATS compatibility scores and actionable feedback to ensure your resume passes all screening systems.",
+    title: "ATS Optimizer",
+    description: "Beat the bots and reach human eyes faster. Get instant ATS compatibility checks, keyword enhancements, and smart formatting suggestions to maximize your shortlisting chances.",
     hasImage: false,
   },
   {
     id: 3,
     icon: Briefcase,
-    title: "Interview Prep",
-    description: "Practice with AI-powered mock interviews tailored to your industry and role. Get real-time feedback and confidence.",
+    title: "Interview Prep Assistant",
+    description: "Train with your personal AI interviewer. Practice role-specific mock sessions, receive instant feedback, and build confidence — across any domain, industry, or language.",
     image: interviewPrepImage,
     hasImage: true,
     centerPiece: true,
@@ -36,8 +36,8 @@ const features = [
   {
     id: 4,
     icon: Bot,
-    title: "AI Coach",
-    description: "Your personal AI career advisor provides smart suggestions, content optimization, and career guidance 24/7.",
+    title: "AI Career Coach",
+    description: "Your 24×7 career companion that understands your journey. From crafting perfect resumes to preparing for interviews, get expert-level advice and tailored growth suggestions — whenever you need it.",
     image: aiCoachImage,
     hasImage: true,
     inCard: true,
@@ -46,7 +46,7 @@ const features = [
     id: 5,
     icon: TrendingUp,
     title: "Skill Gap Analysis",
-    description: "Discover missing skills for your target roles and get personalized learning paths to bridge the gap and land your dream job.",
+    description: "Know exactly what skills you need to grow. Compare your profile with top industry roles worldwide and get a personalized roadmap to upskill with AI-powered insights.",
     hasImage: false,
   },
 ];
@@ -174,7 +174,7 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
 
 export function FeaturesBentoModern() {
   return (
-    <section className="py-32 px-6 relative overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-50">
+    <section id="features" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-50">
       {/* Subtle background elements */}
       <div className="absolute top-20 right-20 w-96 h-96 bg-teal-100/30 rounded-full blur-3xl" />
       <div className="absolute bottom-20 left-20 w-96 h-96 bg-cyan-100/30 rounded-full blur-3xl" />
@@ -188,10 +188,22 @@ export function FeaturesBentoModern() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
+          >
+            <Layers className="w-4 h-4 text-teal-600" />
+            <span className="text-teal-700 uppercase tracking-wider">Features</span>
+          </motion.div>
+
           <h2 
             className="mb-4"
             style={{
-              fontSize: '3.5rem',
+              fontSize: '3rem',
               fontWeight: 600,
               lineHeight: 1.2,
               background: 'linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)',
@@ -203,7 +215,7 @@ export function FeaturesBentoModern() {
             All features in 1 tool
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Discover features that simplify workflows & grow your business.
+            Discover smart tools that simplify your job search, boost confidence, and help you grow — all in one powerful Platform.
           </p>
         </motion.div>
 
