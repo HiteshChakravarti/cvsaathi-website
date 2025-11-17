@@ -25,13 +25,11 @@ import {
 } from "lucide-react";
 
 import { CommandPalette } from "./components/CommandPalette";
-import { ModernSidebar } from "./components/ModernSidebar";
-import { Sheet, SheetContent } from "../components/ui/sheet";
+import { SidebarContent } from "./components/SidebarContent";
+import { RightRail } from "./components/RightRail";
+import { MobileDrawer } from "./components/MobileDrawer";
 import { FeatureCardLarge } from "./components/FeatureCardLarge";
 import { JobTrackerSection } from "./components/JobTrackerSection";
-import { CircularProgressCard } from "./components/CircularProgressCard";
-import { ActivityWidget } from "./components/ActivityWidget";
-import { MiniCalendar } from "./components/MiniCalendar";
 import { AICoachPage } from "./components/AICoachPage";
 import { ATSCheckerPage } from "./components/ATSCheckerPage";
 import { SkillGapAnalysisPage } from "./components/SkillGapAnalysisPage";
@@ -343,40 +341,52 @@ export function DashboardRoutes() {
         onNavigate={handleCommandNavigate}
       />
 
-      {/* Desktop Sidebar */}
-      <ModernSidebar 
-        isDark={isDark} 
-        activeSection={activeSection} 
-        onSectionChange={handleSectionChange} 
-      />
+      {/* Desktop Sidebar (fixed, md+) */}
+      <aside
+        className={`hidden md:flex fixed left-0 top-0 h-screen w-20 border-r transition-all duration-500 z-50 ${
+          isDark
+            ? "bg-slate-900 border-white/10"
+            : "bg-gradient-to-b from-teal-600 to-teal-700 border-teal-800"
+        }`}
+      >
+        <SidebarContent
+          isDark={isDark}
+          activeSection={activeSection}
+          onSectionChange={handleSectionChange}
+          compact
+        />
+      </aside>
 
-      {/* Mobile Drawer */}
-      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-72 p-0">
-          <div className={`h-full ${
-            isDark
-              ? 'bg-slate-900'
-              : 'bg-gradient-to-b from-teal-600 to-teal-700'
-          }`}>
-            <ModernSidebar 
-              isDark={isDark} 
-              activeSection={activeSection} 
-              onSectionChange={handleSectionChange}
-              onClose={() => setMobileMenuOpen(false)}
-            />
-          </div>
-        </SheetContent>
-      </Sheet>
+      {/* Right Rail (fixed, lg+) */}
+      <aside
+        className={`hidden lg:block fixed right-0 top-0 h-screen w-80 border-l transition-colors duration-500 overflow-y-auto z-40 ${
+          isDark ? "bg-slate-900 border-white/10" : "bg-white border-gray-200"
+        }`}
+      >
+        <RightRail
+          isDark={isDark}
+          statsLoading={statsLoading}
+          stats={stats}
+          activitiesLoading={activitiesLoading}
+          recentActivities={recentActivities}
+          userProfile={userProfile}
+          profileLoading={profileLoading}
+          currentPlan={currentPlan}
+          subscriptionLoading={subscriptionLoading}
+          userEmail={user?.email}
+          onFeatureClick={handleFeatureClick}
+          onMetricClick={handleMetricClick}
+        />
+      </aside>
 
-      <div className="ml-0 mr-0 md:ml-20 md:mr-4 lg:mr-80">
-        <div className={`min-h-screen border-r ${isDark ? "border-white/10" : "border-gray-200"}`}>
-          <header
-            className={`border-b transition-colors duration-500 ${
-              isDark
-                ? "border-white/10 bg-slate-900/80 backdrop-blur-xl"
-                : "border-gray-200 bg-white/80 backdrop-blur-xl"
-            }`}
-          >
+      {/* Header (sticky, mobile-friendly) */}
+      <header
+        className={`sticky top-0 z-30 border-b transition-colors duration-500 ${
+          isDark
+            ? "border-white/10 bg-slate-900/90 backdrop-blur-xl"
+            : "border-gray-200 bg-white/90 backdrop-blur-xl"
+        }`}
+      >
             <div className="px-4 py-4 md:px-8 md:py-6">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
@@ -445,9 +455,10 @@ export function DashboardRoutes() {
             </div>
           </header>
 
-          <main className="p-4 md:p-8 space-y-6">
-            <div className="space-y-6 mb-12">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-visible">
+      {/* Main Content (padding-based layout) */}
+      <main className="px-4 md:px-6 lg:px-8 md:pl-24 lg:pr-96 py-6 space-y-6">
+        <div className="space-y-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 overflow-visible">
                 <div className="animate-in slide-in-from-bottom duration-500 overflow-visible">
                   <FeatureCardLarge
                     icon={<Bot className="size-8" />}
@@ -478,7 +489,7 @@ export function DashboardRoutes() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 overflow-visible">
                 <div
                   className="animate-in slide-in-from-bottom duration-500 overflow-visible"
                   style={{ animationDelay: "200ms" }}
@@ -529,175 +540,94 @@ export function DashboardRoutes() {
               </div>
             </div>
 
-            <JobTrackerSection isDark={isDark} onViewAll={() => handleFeatureClick("job-tracker")} />
+        <JobTrackerSection isDark={isDark} onViewAll={() => handleFeatureClick("job-tracker")} />
 
-            {/* Analytics Section */}
-            <div
-              className="pt-4 animate-in slide-in-from-bottom duration-500"
-              style={{ animationDelay: "600ms" }}
-            >
-              <h2 className={`text-2xl mb-6 ${isDark ? "text-white" : "text-gray-900"}`}>
-                Analytics Overview
-              </h2>
-              <div
-                className={`rounded-2xl border p-6 ${
-                  isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200"
-                }`}
-              >
-                <div className="grid grid-cols-4 gap-6 text-center">
-                  <div>
-                    <div className="text-4xl mb-2 bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">
-                      {statsLoading ? "..." : stats.resumesCreated}
-                    </div>
-                    <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                      Resumes Created
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-4xl mb-2 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-                      {statsLoading ? "..." : stats.aiSessionsCompleted}
-                    </div>
-                    <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                      AI Sessions
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-4xl mb-2 bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
-                      {statsLoading ? "..." : stats.interviewsCompleted}
-                    </div>
-                    <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                      Interviews Prepped
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-4xl mb-2 bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
-                      {statsLoading ? "..." : stats.applicationsSubmitted}
-                    </div>
-                    <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                      Applications Submitted
-                    </div>
-                  </div>
+        {/* Analytics Section */}
+        <div
+          className="pt-4 animate-in slide-in-from-bottom duration-500"
+          style={{ animationDelay: "600ms" }}
+        >
+          <h2 className={`text-xl md:text-2xl mb-4 md:mb-6 break-words ${isDark ? "text-white" : "text-gray-900"}`}>
+            Analytics Overview
+          </h2>
+          <div
+            className={`rounded-2xl border p-4 md:p-6 ${
+              isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200"
+            }`}
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
+              <div>
+                <div className="text-2xl md:text-4xl mb-2 bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent break-words">
+                  {statsLoading ? "..." : stats.resumesCreated}
+                </div>
+                <div className={`text-xs md:text-sm break-words ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                  Resumes Created
+                </div>
+              </div>
+              <div>
+                <div className="text-2xl md:text-4xl mb-2 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent break-words">
+                  {statsLoading ? "..." : stats.aiSessionsCompleted}
+                </div>
+                <div className={`text-xs md:text-sm break-words ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                  AI Sessions
+                </div>
+              </div>
+              <div>
+                <div className="text-2xl md:text-4xl mb-2 bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent break-words">
+                  {statsLoading ? "..." : stats.interviewsCompleted}
+                </div>
+                <div className={`text-xs md:text-sm break-words ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                  Interviews Prepped
+                </div>
+              </div>
+              <div>
+                <div className="text-2xl md:text-4xl mb-2 bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent break-words">
+                  {statsLoading ? "..." : stats.applicationsSubmitted}
+                </div>
+                <div className={`text-xs md:text-sm break-words ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                  Applications Submitted
                 </div>
               </div>
             </div>
-          </main>
+          </div>
         </div>
-      </div>
 
-      <aside
-        className={`fixed right-0 top-0 w-80 h-screen border-l transition-colors duration-500 overflow-y-auto ${
-          isDark ? "bg-slate-900 border-white/10" : "bg-white border-gray-200"
-        }`}
-      >
-        <div className="p-6 space-y-6">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => handleFeatureClick("profile")}
-              className={`flex items-center gap-3 w-full p-2 rounded-xl transition-all hover:scale-[1.02] ${
-                isDark ? "hover:bg-white/5" : "hover:bg-gray-50"
-              }`}
-            >
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 cursor-pointer" />
-              <div className="text-left">
-                <p className={isDark ? "text-white" : "text-gray-900"}>
-                  {profileLoading ? "Loading..." : 
-                   userProfile?.full_name || 
-                   (userProfile?.first_name && userProfile?.last_name 
-                     ? `${userProfile.first_name} ${userProfile.last_name}` 
-                     : user?.email?.split('@')[0] || "User")}
-                </p>
-                <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                  {subscriptionLoading ? "Loading..." : currentPlan.displayName} Plan
-                </p>
-              </div>
-            </button>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className={isDark ? "text-white" : "text-gray-900"}>Performance</h3>
-              <button
-                onClick={() => handleFeatureClick("performance-metrics")}
-                className="text-sm text-teal-500 hover:text-teal-600"
-              >
-                View all
-              </button>
-            </div>
-            <div className="space-y-4">
-              <CircularProgressCard
-                value={statsLoading ? 0 : stats.resumesCreated}
-                maxValue={5}
-                label="Resumes Created"
-                subtext={statsLoading ? "Loading..." : `${stats.resumesCreated} total`}
-                gradient="from-teal-500 to-cyan-400"
-                isDark={isDark}
-                onClick={() => handleMetricClick("resumes")}
-              />
-              <CircularProgressCard
-                value={statsLoading ? 0 : stats.aiSessionsCompleted}
-                maxValue={10}
-                label="AI Sessions"
-                subtext={statsLoading ? "Loading..." : `${Math.floor(stats.totalTimeSpent / 60)}h ${stats.totalTimeSpent % 60}m total`}
-                gradient="from-purple-500 to-pink-400"
-                isDark={isDark}
-                onClick={() => handleMetricClick("ai-sessions")}
-              />
-              <CircularProgressCard
-                value={statsLoading ? 0 : stats.interviewsCompleted}
-                maxValue={5}
-                label="Interview Prep"
-                subtext={statsLoading ? "Loading..." : `${stats.interviewsCompleted} completed`}
-                gradient="from-blue-500 to-indigo-500"
-                isDark={isDark}
-                onClick={() => handleMetricClick("interviews")}
-              />
-              <CircularProgressCard
-                value={statsLoading ? 0 : stats.profileCompleteness}
-                maxValue={100}
-                label="Profile Complete"
-                subtext={statsLoading ? "Loading..." : `${stats.profileCompleteness}% complete`}
-                gradient="from-emerald-500 to-teal-500"
-                isDark={isDark}
-                onClick={() => handleMetricClick("profile")}
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className={isDark ? "text-white" : "text-gray-900"}>Recent Activity</h3>
-              <button className="text-sm text-teal-500 hover:text-teal-600">See all</button>
-            </div>
-            <div className="space-y-3">
-              {activitiesLoading ? (
-                <div className="flex items-center justify-center py-4">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-teal-500"></div>
-                </div>
-              ) : recentActivities.length > 0 ? (
-                recentActivities.map((activity) => (
-                  <ActivityWidget
-                    key={activity.id}
-                    name={activity.name}
-                    id={activity.formattedTime}
-                    avatar={activity.avatar}
-                    isDark={isDark}
-                    isOnline={activity.type === 'resume' || activity.type === 'ai_session' || activity.type === 'ats_check' || activity.type === 'skill_gap'}
-                  />
-                ))
-              ) : (
-                <p className={`text-sm text-center py-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  No recent activity
-                </p>
-              )}
-            </div>
-          </div>
-
-          <MiniCalendar
+        {/* Mobile Right Rail Content (lg:hidden) */}
+        <section className="lg:hidden space-y-6">
+          <RightRail
             isDark={isDark}
-            onViewFull={() => handleFeatureClick("calendar")}
+            statsLoading={statsLoading}
+            stats={stats}
+            activitiesLoading={activitiesLoading}
+            recentActivities={recentActivities}
+            userProfile={userProfile}
+            profileLoading={profileLoading}
+            currentPlan={currentPlan}
+            subscriptionLoading={subscriptionLoading}
+            userEmail={user?.email}
+            onFeatureClick={handleFeatureClick}
+            onMetricClick={handleMetricClick}
+          />
+        </section>
+      </main>
+
+      {/* Mobile Drawer */}
+      <MobileDrawer open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)}>
+        <div
+          className={`h-full w-full ${
+            isDark
+              ? "bg-slate-900"
+              : "bg-gradient-to-b from-teal-600 to-teal-700"
+          }`}
+        >
+          <SidebarContent
+            isDark={isDark}
+            activeSection={activeSection}
+            onSectionChange={handleSectionChange}
+            onClose={() => setMobileMenuOpen(false)}
           />
         </div>
-      </aside>
+      </MobileDrawer>
     </div>
   );
 }
