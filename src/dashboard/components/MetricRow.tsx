@@ -89,8 +89,8 @@ export function MetricRow({
         {/* Content */}
         <div className="flex-1 min-w-0">
           {/* Label and trend badge */}
-          <div className="flex items-center justify-between mb-2 gap-2">
-            <h3 className={`text-sm font-medium break-words ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {label}
             </h3>
             <div className={`flex items-center gap-1 text-xs px-2 py-1 rounded-full transition-all duration-300 ${

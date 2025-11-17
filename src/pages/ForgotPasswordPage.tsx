@@ -63,7 +63,7 @@ export function ForgotPasswordPage() {
 
   if (isEmailSent) {
     return (
-      <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 md:items-start md:justify-start md:p-6 md:pl-16">
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-start p-6 md:pl-16">
         {/* Full-bleed hero image */}
         <div className="absolute inset-0 -z-10">
           <img src={authHero} alt="CVSaathi" className="w-full h-full object-cover" />
@@ -74,9 +74,9 @@ export function ForgotPasswordPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="relative z-10 w-full max-w-md md:max-w-sm md:ml-0"
+          className="relative z-10 w-full max-w-sm md:ml-0"
         >
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl shadow-teal-500/30 border border-white/20 p-4 md:p-6 lg:p-8 text-center">
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl shadow-teal-500/30 border border-white/20 p-6 md:p-8 text-center">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -115,7 +115,7 @@ export function ForgotPasswordPage() {
   }
 
   return (
-      <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 md:items-start md:justify-start md:p-6 md:pl-16">
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-start p-6 md:pl-16">
       {/* Full-bleed hero image */}
       <div className="absolute inset-0 -z-10">
         <img src={authHero} alt="CVSaathi" className="w-full h-full object-cover" />
@@ -127,9 +127,9 @@ export function ForgotPasswordPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative z-10 w-full max-w-md md:max-w-sm md:ml-0"
+        className="relative z-10 w-full max-w-sm md:ml-0"
       >
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 p-4 md:p-6 lg:p-8">
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 p-6 md:p-8">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}

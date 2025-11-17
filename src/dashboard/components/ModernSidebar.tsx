@@ -4,10 +4,9 @@ interface ModernSidebarProps {
   isDark: boolean;
   activeSection: string;
   onSectionChange: (section: string) => void;
-  onClose?: () => void; // For mobile drawer close
 }
 
-export function ModernSidebar({ isDark, activeSection, onSectionChange, onClose }: ModernSidebarProps) {
+export function ModernSidebar({ isDark, activeSection, onSectionChange }: ModernSidebarProps) {
   const menuItems = [
     { id: 'dashboard', icon: Home, label: 'Dashboard' },
     { id: 'ai-coach', icon: Brain, label: 'AI Coach' },
@@ -32,18 +31,10 @@ export function ModernSidebar({ isDark, activeSection, onSectionChange, onClose 
     } else {
       onSectionChange(id);
     }
-    // Close mobile drawer if open
-    if (onClose) {
-      onClose();
-    }
   };
 
-  // If onClose is provided, it's in a drawer (mobile), so always render
-  // Otherwise, it's the fixed sidebar (desktop), so hide on mobile
-  const isInDrawer = !!onClose;
-  
   return (
-    <aside className={`${isInDrawer ? 'flex' : 'hidden md:flex'} ${isInDrawer ? '' : 'fixed left-0 top-0'} w-20 h-screen border-r transition-all duration-500 z-50 ${
+    <aside className={`fixed left-0 top-0 w-20 h-screen border-r transition-all duration-500 z-50 ${
       isDark
         ? 'bg-slate-900 border-white/10'
         : 'bg-gradient-to-b from-teal-600 to-teal-700 border-teal-800'
