@@ -21,15 +21,15 @@ import {
   Briefcase,
   BarChart3,
   Command,
-  Menu,
 } from "lucide-react";
 
 import { CommandPalette } from "./components/CommandPalette";
-import { SidebarContent } from "./components/SidebarContent";
-import { RightRail } from "./components/RightRail";
-import { MobileDrawer } from "./components/MobileDrawer";
+import { ModernSidebar } from "./components/ModernSidebar";
 import { FeatureCardLarge } from "./components/FeatureCardLarge";
 import { JobTrackerSection } from "./components/JobTrackerSection";
+import { CircularProgressCard } from "./components/CircularProgressCard";
+import { ActivityWidget } from "./components/ActivityWidget";
+import { MiniCalendar } from "./components/MiniCalendar";
 import { AICoachPage } from "./components/AICoachPage";
 import { ATSCheckerPage } from "./components/ATSCheckerPage";
 import { SkillGapAnalysisPage } from "./components/SkillGapAnalysisPage";
@@ -95,7 +95,6 @@ const resolveSection = (section: string) => {
 export function DashboardRoutes() {
   const [isDark, setIsDark] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [userProfile, setUserProfile] = useState<{ first_name?: string; last_name?: string; full_name?: string } | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
@@ -327,7 +326,11 @@ export function DashboardRoutes() {
   }
 
   return (
-    <div className={`min-h-screen ${isDark ? "bg-slate-900" : "bg-white"}`}>
+    <div
+      className={`min-h-screen transition-colors duration-500 ${
+        isDark ? "bg-slate-900" : "bg-gradient-to-br from-gray-50 via-teal-50/30 to-gray-50"
+      }`}
+    >
       {toaster}
 
       <CommandPalette
@@ -337,86 +340,74 @@ export function DashboardRoutes() {
         onNavigate={handleCommandNavigate}
       />
 
-      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <div className={`${isDark ? "bg-slate-900 text-white" : "bg-white text-gray-900"} h-full`}>
-          <SidebarContent
-            isDark={isDark}
-            activeSection={activeSection}
-            onSectionChange={handleSectionChange}
-            onClose={() => setDrawerOpen(false)}
-          />
-        </div>
-      </MobileDrawer>
+      <ModernSidebar isDark={isDark} activeSection={activeSection} onSectionChange={handleSectionChange} />
 
-      <header
-        className={`sticky top-0 z-30 border-b backdrop-blur ${
-          isDark ? "border-white/10 bg-slate-900/90" : "border-gray-200 bg-white/90"
-        }`}
-      >
-        <div className="px-4 py-4 md:px-8 md:py-6 flex items-center gap-3">
-          <button
-            className={`md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border ${
-              isDark ? "border-white/10 text-white" : "border-gray-200 text-gray-900"
+      <div className="ml-20 mr-80">
+        <div className={`min-h-screen border-r ${isDark ? "border-white/10" : "border-gray-200"}`}>
+          <header
+            className={`border-b transition-colors duration-500 ${
+              isDark
+                ? "border-white/10 bg-slate-900/80 backdrop-blur-xl"
+                : "border-gray-200 bg-white/80 backdrop-blur-xl"
             }`}
-            onClick={() => setDrawerOpen(true)}
-            aria-label="Open menu"
           >
-            <Menu className="h-5 w-5" />
-          </button>
+            <div className="px-8 py-6">
+              <div className="flex items-center justify-between">
+                <h1 className={`text-3xl ${isDark ? "text-white" : "text-gray-900"}`}>My Dashboard</h1>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setCommandPaletteOpen(true)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all duration-300 ${
+                      isDark
+                        ? "border-white/10 hover:bg-white/5 text-gray-400 hover:text-white"
+                        : "border-gray-200 hover:bg-gray-50 text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    <Command className="size-4" />
+                    <span className="text-sm">Quick Search</span>
+                    <kbd
+                      className={`text-xs px-2 py-0.5 rounded ${
+                        isDark ? "bg-white/10" : "bg-gray-100"
+                      }`}
+                    >
+                      ⌘K
+                    </kbd>
+                  </button>
+                  <button
+                    className={`p-2.5 rounded-xl transition-all duration-300 ${
+                      isDark ? "hover:bg-white/5" : "hover:bg-gray-100"
+                    }`}
+                  >
+                    <Search className={`size-5 ${isDark ? "text-gray-400" : "text-gray-600"}`} />
+                  </button>
+                  <button
+                    className={`p-2.5 rounded-xl transition-all duration-300 relative ${
+                      isDark ? "hover:bg-white/5" : "hover:bg-gray-100"
+                    }`}
+                  >
+                    <Bell className={`size-5 ${isDark ? "text-gray-400" : "text-gray-600"}`} />
+                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-teal-500 rounded-full" />
+                  </button>
+                  <button
+                    onClick={toggleTheme}
+                    className={`p-2.5 rounded-xl transition-all duration-300 ${
+                      isDark ? "hover:bg-white/5" : "hover:bg-gray-100"
+                    }`}
+                  >
+                    {isDark ? (
+                      <Moon className="size-5 text-gray-400" />
+                    ) : (
+                      <Sun className="size-5 text-gray-600" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </header>
 
-          <h1 className={`text-xl md:text-3xl font-semibold tracking-tight ${isDark ? "text-white" : "text-gray-900"}`}>
-            My Dashboard
-          </h1>
-
-          <div className="ml-auto flex flex-wrap items-center gap-2 sm:gap-3">
-            <button
-              onClick={() => setCommandPaletteOpen(true)}
-              className={`flex items-center gap-2 px-3 py-2 md:px-4 rounded-xl border transition-all ${
-                isDark ? "border-white/10 text-gray-300 hover:bg-white/5" : "border-gray-200 text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <Command className="size-4" />
-              <span className="hidden sm:inline text-sm">Quick Search</span>
-              <kbd
-                className={`hidden sm:inline text-xs px-2 py-0.5 rounded ${isDark ? "bg-white/10 text-white" : "bg-gray-100 text-gray-600"}`}
-              >
-                ⌘K
-              </kbd>
-            </button>
-            <button
-              className={`p-2.5 rounded-xl transition-all ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-100 text-gray-600"}`}
-            >
-              <Search className="size-5" />
-            </button>
-            <button
-              className={`p-2.5 rounded-xl transition-all relative ${
-                isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-100 text-gray-600"
-              }`}
-            >
-              <Bell className="size-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-teal-500 rounded-full" />
-            </button>
-            <button
-              onClick={toggleTheme}
-              className={`p-2.5 rounded-xl transition-all ${isDark ? "hover:bg-white/5 text-gray-300" : "hover:bg-gray-100 text-gray-600"}`}
-            >
-              {isDark ? <Moon className="size-5" /> : <Sun className="size-5" />}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="grid grid-cols-1 md:grid-cols-[80px,1fr] lg:grid-cols-[80px,1fr,320px]">
-        <aside
-          className="hidden md:block sticky top-[88px] self-start border-r border-gray-200/60 dark:border-white/10 bg-white dark:bg-slate-900"
-          style={{ height: "calc(100vh - 88px)" }}
-        >
-          <SidebarContent isDark={isDark} activeSection={activeSection} onSectionChange={handleSectionChange} compact />
-        </aside>
-
-        <main className="px-4 md:px-6 lg:px-8 py-6 w-full max-w-[1400px] mx-auto space-y-6">
+          <main className="p-8 space-y-6">
             <div className="space-y-6 mb-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 overflow-visible">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-visible">
                 <div className="animate-in slide-in-from-bottom duration-500 overflow-visible">
                   <FeatureCardLarge
                     icon={<Bot className="size-8" />}
@@ -447,7 +438,7 @@ export function DashboardRoutes() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 overflow-visible">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
                 <div
                   className="animate-in slide-in-from-bottom duration-500 overflow-visible"
                   style={{ animationDelay: "200ms" }}
@@ -501,91 +492,172 @@ export function DashboardRoutes() {
             <JobTrackerSection isDark={isDark} onViewAll={() => handleFeatureClick("job-tracker")} />
 
             {/* Analytics Section */}
-            <div className="pt-4 animate-in slide-in-from-bottom duration-500" style={{ animationDelay: "600ms" }}>
-              <h2 className={`text-xl md:text-2xl mb-4 md:mb-6 break-words ${isDark ? "text-white" : "text-gray-900"}`}>
+            <div
+              className="pt-4 animate-in slide-in-from-bottom duration-500"
+              style={{ animationDelay: "600ms" }}
+            >
+              <h2 className={`text-2xl mb-6 ${isDark ? "text-white" : "text-gray-900"}`}>
                 Analytics Overview
               </h2>
               <div
-                className={`rounded-2xl border p-4 md:p-6 ${
+                className={`rounded-2xl border p-6 ${
                   isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200"
                 }`}
               >
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
-                  <div className="break-words">
-                    <div className="text-2xl md:text-4xl mb-2 bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">
+                <div className="grid grid-cols-4 gap-6 text-center">
+                  <div>
+                    <div className="text-4xl mb-2 bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">
                       {statsLoading ? "..." : stats.resumesCreated}
                     </div>
-                    <div className={`text-xs md:text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                    <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                       Resumes Created
                     </div>
                   </div>
-                  <div className="break-words">
-                    <div className="text-2xl md:text-4xl mb-2 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                  <div>
+                    <div className="text-4xl mb-2 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                       {statsLoading ? "..." : stats.aiSessionsCompleted}
                     </div>
-                    <div className={`text-xs md:text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                    <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                       AI Sessions
                     </div>
                   </div>
-                  <div className="break-words">
-                    <div className="text-2xl md:text-4xl mb-2 bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
+                  <div>
+                    <div className="text-4xl mb-2 bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
                       {statsLoading ? "..." : stats.interviewsCompleted}
                     </div>
-                    <div className={`text-xs md:text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                    <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                       Interviews Prepped
                     </div>
                   </div>
-                  <div className="break-words">
-                    <div className="text-2xl md:text-4xl mb-2 bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
+                  <div>
+                    <div className="text-4xl mb-2 bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
                       {statsLoading ? "..." : stats.applicationsSubmitted}
                     </div>
-                    <div className={`text-xs md:text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                    <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                       Applications Submitted
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-            <section className="lg:hidden space-y-6">
-              <RightRail
-                isDark={isDark}
-                statsLoading={statsLoading}
-                stats={stats}
-                activitiesLoading={activitiesLoading}
-                recentActivities={recentActivities}
-                profileLoading={profileLoading}
-                userProfile={userProfile}
-                subscriptionLoading={subscriptionLoading}
-                currentPlan={currentPlan}
-                userEmail={user?.email}
-                onFeatureClick={handleFeatureClick}
-                onMetricClick={handleMetricClick}
-              />
-            </section>
           </main>
-        </main>
-
-        <aside
-          className="hidden lg:block sticky top-[88px] self-start border-l border-gray-200/60 dark:border-white/10 bg-white dark:bg-slate-900"
-          style={{ height: "calc(100vh - 88px)" }}
-        >
-          <RightRail
-            isDark={isDark}
-            statsLoading={statsLoading}
-            stats={stats}
-            activitiesLoading={activitiesLoading}
-            recentActivities={recentActivities}
-            profileLoading={profileLoading}
-            userProfile={userProfile}
-            subscriptionLoading={subscriptionLoading}
-            currentPlan={currentPlan}
-            userEmail={user?.email}
-            onFeatureClick={handleFeatureClick}
-            onMetricClick={handleMetricClick}
-          />
-        </aside>
+        </div>
       </div>
+
+      <aside
+        className={`fixed right-0 top-0 w-80 h-screen border-l transition-colors duration-500 overflow-y-auto ${
+          isDark ? "bg-slate-900 border-white/10" : "bg-white border-gray-200"
+        }`}
+      >
+        <div className="p-6 space-y-6">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => handleFeatureClick("profile")}
+              className={`flex items-center gap-3 w-full p-2 rounded-xl transition-all hover:scale-[1.02] ${
+                isDark ? "hover:bg-white/5" : "hover:bg-gray-50"
+              }`}
+            >
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 cursor-pointer" />
+              <div className="text-left">
+                <p className={isDark ? "text-white" : "text-gray-900"}>
+                  {profileLoading ? "Loading..." : 
+                   userProfile?.full_name || 
+                   (userProfile?.first_name && userProfile?.last_name 
+                     ? `${userProfile.first_name} ${userProfile.last_name}` 
+                     : user?.email?.split('@')[0] || "User")}
+                </p>
+                <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                  {subscriptionLoading ? "Loading..." : currentPlan.displayName} Plan
+                </p>
+              </div>
+            </button>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className={isDark ? "text-white" : "text-gray-900"}>Performance</h3>
+              <button
+                onClick={() => handleFeatureClick("performance-metrics")}
+                className="text-sm text-teal-500 hover:text-teal-600"
+              >
+                View all
+              </button>
+            </div>
+            <div className="space-y-4">
+              <CircularProgressCard
+                value={statsLoading ? 0 : stats.resumesCreated}
+                maxValue={5}
+                label="Resumes Created"
+                subtext={statsLoading ? "Loading..." : `${stats.resumesCreated} total`}
+                gradient="from-teal-500 to-cyan-400"
+                isDark={isDark}
+                onClick={() => handleMetricClick("resumes")}
+              />
+              <CircularProgressCard
+                value={statsLoading ? 0 : stats.aiSessionsCompleted}
+                maxValue={10}
+                label="AI Sessions"
+                subtext={statsLoading ? "Loading..." : `${Math.floor(stats.totalTimeSpent / 60)}h ${stats.totalTimeSpent % 60}m total`}
+                gradient="from-purple-500 to-pink-400"
+                isDark={isDark}
+                onClick={() => handleMetricClick("ai-sessions")}
+              />
+              <CircularProgressCard
+                value={statsLoading ? 0 : stats.interviewsCompleted}
+                maxValue={5}
+                label="Interview Prep"
+                subtext={statsLoading ? "Loading..." : `${stats.interviewsCompleted} completed`}
+                gradient="from-blue-500 to-indigo-500"
+                isDark={isDark}
+                onClick={() => handleMetricClick("interviews")}
+              />
+              <CircularProgressCard
+                value={statsLoading ? 0 : stats.profileCompleteness}
+                maxValue={100}
+                label="Profile Complete"
+                subtext={statsLoading ? "Loading..." : `${stats.profileCompleteness}% complete`}
+                gradient="from-emerald-500 to-teal-500"
+                isDark={isDark}
+                onClick={() => handleMetricClick("profile")}
+              />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className={isDark ? "text-white" : "text-gray-900"}>Recent Activity</h3>
+              <button className="text-sm text-teal-500 hover:text-teal-600">See all</button>
+            </div>
+            <div className="space-y-3">
+              {activitiesLoading ? (
+                <div className="flex items-center justify-center py-4">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-teal-500"></div>
+                </div>
+              ) : recentActivities.length > 0 ? (
+                recentActivities.map((activity) => (
+                  <ActivityWidget
+                    key={activity.id}
+                    name={activity.name}
+                    id={activity.formattedTime}
+                    avatar={activity.avatar}
+                    isDark={isDark}
+                    isOnline={activity.type === 'resume' || activity.type === 'ai_session' || activity.type === 'ats_check' || activity.type === 'skill_gap'}
+                  />
+                ))
+              ) : (
+                <p className={`text-sm text-center py-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  No recent activity
+                </p>
+              )}
+            </div>
+          </div>
+
+          <MiniCalendar
+            isDark={isDark}
+            onViewFull={() => handleFeatureClick("calendar")}
+          />
+        </div>
+      </aside>
     </div>
   );
 }

@@ -98,43 +98,41 @@ export function FeatureCardLarge({
       }`}
     >
       {/* Visual Illustration Area */}
-      <div className="relative overflow-hidden rounded-t-2xl">
-        <div className={`w-full aspect-[16/9] ${colors.bg} ${colors.hover} transition-all duration-300 flex items-center justify-center`}>
-          {/* Estel Mascot Image - Popping out effect */}
-          {mascotImage ? (
-            <div className="w-full h-full flex items-center justify-center p-6">
-              <img
-                src={mascotImage}
-                alt={`Estel helping with ${title}`}
-                className="h-full w-full object-contain transform group-hover:scale-105 transition-all duration-300 drop-shadow-2xl"
-                style={{
-                  filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.25))",
-                }}
-              />
+      <div className={`relative h-64 ${colors.bg} ${colors.hover} transition-all duration-300 flex items-center justify-center overflow-visible`}>
+        {/* Estel Mascot Image - Popping out effect */}
+        {mascotImage ? (
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 w-full h-80 flex items-end justify-center">
+            <img 
+              src={mascotImage} 
+              alt={`Estel helping with ${title}`}
+              className="h-full w-auto object-contain transform group-hover:scale-110 transition-all duration-300 drop-shadow-2xl"
+              style={{
+                filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.3))'
+              }}
+            />
+          </div>
+        ) : (
+          <>
+            {/* Fallback: Decorative elements */}
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-4 left-4 w-16 h-16 bg-white/20 rounded-lg"></div>
+              <div className="absolute top-8 right-8 w-24 h-2 bg-white/20 rounded"></div>
+              <div className="absolute top-14 right-8 w-16 h-2 bg-white/20 rounded"></div>
+              <div className="absolute bottom-8 left-8 w-20 h-2 bg-white/20 rounded"></div>
+              <div className="absolute bottom-12 left-8 w-32 h-2 bg-white/20 rounded"></div>
             </div>
-          ) : (
-            <>
-              {/* Fallback: Decorative elements */}
-              <div className="absolute inset-0 opacity-20">
-                <div className="absolute top-4 left-4 w-16 h-16 bg-white/20 rounded-lg"></div>
-                <div className="absolute top-8 right-8 w-24 h-2 bg-white/20 rounded"></div>
-                <div className="absolute top-14 right-8 w-16 h-2 bg-white/20 rounded"></div>
-                <div className="absolute bottom-8 left-8 w-20 h-2 bg-white/20 rounded"></div>
-                <div className="absolute bottom-12 left-8 w-32 h-2 bg-white/20 rounded"></div>
-              </div>
-
-              {/* Icon */}
-              <div className={`relative z-10 ${colors.icon} transform group-hover:scale-110 transition-transform duration-300`}>
-                {icon}
-              </div>
-            </>
-          )}
-
-          {/* Arrow overlay on hover */}
-          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0 translate-x-2">
-            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <ArrowRight className="size-4 text-white" />
+            
+            {/* Icon */}
+            <div className={`relative z-10 ${colors.icon} transform group-hover:scale-110 transition-transform duration-300`}>
+              {icon}
             </div>
+          </>
+        )}
+
+        {/* Arrow overlay on hover */}
+        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0 translate-x-2">
+          <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            <ArrowRight className="size-4 text-white" />
           </div>
         </div>
       </div>
