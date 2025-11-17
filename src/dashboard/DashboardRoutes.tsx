@@ -21,10 +21,12 @@ import {
   Briefcase,
   BarChart3,
   Command,
+  Menu,
 } from "lucide-react";
 
 import { CommandPalette } from "./components/CommandPalette";
 import { ModernSidebar } from "./components/ModernSidebar";
+import { Sheet, SheetContent } from "../components/ui/sheet";
 import { FeatureCardLarge } from "./components/FeatureCardLarge";
 import { JobTrackerSection } from "./components/JobTrackerSection";
 import { CircularProgressCard } from "./components/CircularProgressCard";
@@ -95,6 +97,7 @@ const resolveSection = (section: string) => {
 export function DashboardRoutes() {
   const [isDark, setIsDark] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userProfile, setUserProfile] = useState<{ first_name?: string; last_name?: string; full_name?: string } | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
@@ -340,9 +343,32 @@ export function DashboardRoutes() {
         onNavigate={handleCommandNavigate}
       />
 
-      <ModernSidebar isDark={isDark} activeSection={activeSection} onSectionChange={handleSectionChange} />
+      {/* Desktop Sidebar */}
+      <ModernSidebar 
+        isDark={isDark} 
+        activeSection={activeSection} 
+        onSectionChange={handleSectionChange} 
+      />
 
-      <div className="ml-20 mr-80">
+      {/* Mobile Drawer */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side="left" className="w-72 p-0">
+          <div className={`h-full ${
+            isDark
+              ? 'bg-slate-900'
+              : 'bg-gradient-to-b from-teal-600 to-teal-700'
+          }`}>
+            <ModernSidebar 
+              isDark={isDark} 
+              activeSection={activeSection} 
+              onSectionChange={handleSectionChange}
+              onClose={() => setMobileMenuOpen(false)}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <div className="ml-0 mr-0 md:ml-20 md:mr-4 lg:mr-80">
         <div className={`min-h-screen border-r ${isDark ? "border-white/10" : "border-gray-200"}`}>
           <header
             className={`border-b transition-colors duration-500 ${
@@ -351,22 +377,36 @@ export function DashboardRoutes() {
                 : "border-gray-200 bg-white/80 backdrop-blur-xl"
             }`}
           >
-            <div className="px-8 py-6">
-              <div className="flex items-center justify-between">
-                <h1 className={`text-3xl ${isDark ? "text-white" : "text-gray-900"}`}>My Dashboard</h1>
+            <div className="px-4 py-4 md:px-8 md:py-6">
+              <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
+                  {/* Mobile Menu Button */}
+                  <button
+                    onClick={() => setMobileMenuOpen(true)}
+                    className={`md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border transition-all duration-300 ${
+                      isDark
+                        ? "border-white/10 hover:bg-white/5 text-gray-400 hover:text-white"
+                        : "border-gray-200 hover:bg-gray-50 text-gray-600 hover:text-gray-900"
+                    }`}
+                    aria-label="Open menu"
+                  >
+                    <Menu className="h-5 w-5" />
+                  </button>
+                  <h1 className={`text-2xl md:text-3xl ${isDark ? "text-white" : "text-gray-900"}`}>My Dashboard</h1>
+                </div>
+                <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
                   <button
                     onClick={() => setCommandPaletteOpen(true)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all duration-300 ${
+                    className={`flex items-center gap-2 px-3 py-2 md:px-4 rounded-xl border transition-all duration-300 ${
                       isDark
                         ? "border-white/10 hover:bg-white/5 text-gray-400 hover:text-white"
                         : "border-gray-200 hover:bg-gray-50 text-gray-600 hover:text-gray-900"
                     }`}
                   >
                     <Command className="size-4" />
-                    <span className="text-sm">Quick Search</span>
+                    <span className="hidden sm:inline text-sm">Quick Search</span>
                     <kbd
-                      className={`text-xs px-2 py-0.5 rounded ${
+                      className={`hidden sm:inline text-xs px-2 py-0.5 rounded ${
                         isDark ? "bg-white/10" : "bg-gray-100"
                       }`}
                     >
@@ -405,7 +445,7 @@ export function DashboardRoutes() {
             </div>
           </header>
 
-          <main className="p-8 space-y-6">
+          <main className="p-4 md:p-8 space-y-6">
             <div className="space-y-6 mb-12">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-visible">
                 <div className="animate-in slide-in-from-bottom duration-500 overflow-visible">
