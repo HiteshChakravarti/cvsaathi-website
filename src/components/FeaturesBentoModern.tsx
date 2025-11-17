@@ -1,10 +1,13 @@
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { FileText, CheckCircle, Briefcase, Bot, TrendingUp, ArrowRight, Layers } from "lucide-react";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import resumeBuilderImage from "figma:asset/ce21bd338822aa6524bd962f8da53836c0104a49.png";
-import interviewPrepImage from "figma:asset/242bbf71ca21edeb48a137b668cfa525df7fb278.png";
-import aiCoachImage from "figma:asset/88d543143fdfa1adae75e89cd0a9a88587a9f4c6.png";
+// Use local assets from public/ for images
+const resumeBuilderImage = "/Resume Builder.png";
+const interviewPrepImage = "/AI interview Prep.png";
+// Use local Estel asset from public/Assets (placed by user)
+const aiCoachImage = "/ESHA HERO BANNERS.png";
 
 const features = [
   {
@@ -36,11 +39,12 @@ const features = [
   {
     id: 4,
     icon: Bot,
-    title: "AI Career Coach",
-    description: "Your 24×7 career companion that understands your journey. From crafting perfect resumes to preparing for interviews, get expert-level advice and tailored growth suggestions — whenever you need it.",
+    title: "AI Career Companion Estel",
+    description: "Your 24×7 AI career companion that understands your journey. Estel powers all our features — from crafting perfect resumes to preparing for interviews, get expert-level advice and tailored growth suggestions — whenever you need it.",
     image: aiCoachImage,
     hasImage: true,
     inCard: true,
+    isCore: true, // Mark as core feature
   },
   {
     id: 5,
@@ -61,7 +65,9 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
       whileHover={{ y: -8, transition: { duration: 0.3 } }}
       className={`group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden ${
         feature.large ? 'row-span-2' : ''
-      } ${feature.centerPiece ? 'md:col-span-1' : ''}`}
+      } ${feature.centerPiece ? 'md:col-span-1' : ''} ${
+        feature.isCore ? 'ring-2 ring-teal-500/50 ring-offset-2' : ''
+      }`}
     >
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -221,29 +227,29 @@ export function FeaturesBentoModern() {
 
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {/* Resume Builder - Large top-left */}
-          <div className="lg:col-span-2 lg:row-span-1">
+          {/* Estel - Core Feature (Large, Prominent) */}
+          <div className="lg:col-span-2 lg:row-span-2 order-first">
+            <FeatureCard feature={features[3]} index={3} />
+          </div>
+
+          {/* Resume Builder - Top right */}
+          <div className="lg:col-span-1 lg:row-span-1">
             <FeatureCard feature={features[0]} index={0} />
           </div>
 
-          {/* ATS Checker - Top right */}
+          {/* ATS Checker - Middle right */}
           <div className="lg:col-span-1 lg:row-span-1">
             <FeatureCard feature={features[1]} index={1} />
           </div>
 
-          {/* Skill Gap Analysis - Bottom left */}
-          <div className="lg:col-span-1 lg:row-span-1">
-            <FeatureCard feature={features[4]} index={4} />
-          </div>
-
-          {/* Interview Prep - Center bottom (large with image) */}
+          {/* Interview Prep - Bottom left */}
           <div className="lg:col-span-1 lg:row-span-1">
             <FeatureCard feature={features[2]} index={2} />
           </div>
 
-          {/* AI Coach - Bottom right */}
+          {/* Skill Gap Analysis - Bottom right */}
           <div className="lg:col-span-1 lg:row-span-1">
-            <FeatureCard feature={features[3]} index={3} />
+            <FeatureCard feature={features[4]} index={4} />
           </div>
         </div>
 
@@ -256,14 +262,16 @@ export function FeaturesBentoModern() {
           className="flex flex-wrap gap-4 justify-center"
         >
           <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>
-            <Button
-              size="lg"
-              className="bg-gray-900 hover:bg-gray-800 text-white gap-2 shadow-lg rounded-xl px-8"
-              style={{ fontSize: '1rem', fontWeight: 600, padding: '1.25rem 2rem' }}
-            >
-              Get Started
-              <ArrowRight className="w-5 h-5" />
-            </Button>
+            <Link to="/auth/signup">
+              <Button
+                size="lg"
+                className="bg-gray-900 hover:bg-gray-800 text-white gap-2 shadow-lg rounded-xl px-8"
+                style={{ fontSize: '1rem', fontWeight: 600, padding: '1.25rem 2rem' }}
+              >
+                Get Started
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
           </motion.div>
 
           <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>

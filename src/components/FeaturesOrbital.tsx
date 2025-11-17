@@ -135,17 +135,18 @@ export function FeaturesOrbital() {
                 className="absolute"
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                animate={{
-                  rotateZ: [angle, angle + 360],
-                }}
                 transition={{
+                  duration: 0.5,
+                  delay: index * 0.1,
                   rotateZ: {
                     duration: orbitDuration,
                     repeat: Infinity,
                     ease: "linear",
-                  }
+                  },
+                }}
+                viewport={{ once: true }}
+                animate={{
+                  rotateZ: [angle, angle + 360],
                 }}
                 style={{
                   transformOrigin: "center center",
@@ -163,7 +164,7 @@ export function FeaturesOrbital() {
                       duration: orbitDuration,
                       repeat: Infinity,
                       ease: "linear",
-                    }
+                    },
                   }}
                 >
                   <motion.div

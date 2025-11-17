@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { Check, Sparkles, Zap, Crown, DollarSign } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -209,16 +210,18 @@ export function PricingSnapshot() {
 
                   {/* CTA Button */}
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Button
-                      size="lg"
-                      className={`w-full ${
-                        plan.popular
-                          ? 'bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white shadow-lg shadow-teal-500/30'
-                          : 'bg-white text-gray-900 border-2 border-gray-300 hover:border-teal-500 hover:bg-teal-50'
-                      }`}
-                    >
-                      {plan.cta}
-                    </Button>
+                    <Link to="/auth/signup" className="w-full">
+                      <Button
+                        size="lg"
+                        className={`w-full ${
+                          plan.popular
+                            ? 'bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white shadow-lg shadow-teal-500/30'
+                            : 'bg-white text-gray-900 border-2 border-gray-300 hover:border-teal-500 hover:bg-teal-50'
+                        }`}
+                      >
+                        {plan.cta}
+                      </Button>
+                    </Link>
                   </motion.div>
                 </div>
               </div>

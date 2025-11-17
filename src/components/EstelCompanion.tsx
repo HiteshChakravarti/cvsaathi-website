@@ -1,7 +1,8 @@
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { ArrowRight, Bot } from "lucide-react";
 import { Button } from "./ui/button";
-import estelImage from "figma:asset/9302699bdb8cce40bf621c323ea973595b33af0a.png";
+const heroBanner = "/ESHA HERO BANNERS.png";
 
 export function EstelCompanion() {
   return (
@@ -16,7 +17,7 @@ export function EstelCompanion() {
           className="w-full mb-16"
         >
           <img
-            src={estelImage}
+          src={heroBanner}
             alt="Estel AI Career Companion"
             className="w-full h-auto object-cover rounded-3xl"
           />
@@ -103,14 +104,16 @@ export function EstelCompanion() {
               className="pt-4"
             >
               <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white gap-2 shadow-xl px-8 rounded-xl"
-                  style={{ fontSize: '1rem', fontWeight: 600, padding: '1.25rem 2rem' }}
-                >
-                  Start Chatting with Estel
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
+                <Link to="/auth/signup">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white gap-2 shadow-xl px-8 rounded-xl"
+                    style={{ fontSize: '1rem', fontWeight: 600, padding: '1.25rem 2rem' }}
+                  >
+                    Start Chatting with Estel
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
+                </Link>
               </motion.div>
             </motion.div>
           </motion.div>

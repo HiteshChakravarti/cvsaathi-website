@@ -1,0 +1,21 @@
+# dependencies & builds
+node_modules/
+dist/
+build/
+.build/
+.cache/
+.vercel/
+
+# env & logs
+.env
+.env.local
+*.log
+
+# editors & OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# backups
+Aipoweredresumebuilder_backups/
+

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -93,13 +94,15 @@ export function FinalCTA() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                size="lg"
-                className="bg-white text-teal-600 hover:bg-gray-50 shadow-2xl shadow-black/20 px-10 text-lg h-14 gap-2"
-              >
-                Get Started Free
-                <ArrowRight className="w-5 h-5" />
-              </Button>
+              <Link to="/auth/signup">
+                <Button
+                  size="lg"
+                  className="bg-white text-teal-600 hover:bg-gray-50 shadow-2xl shadow-black/20 px-10 text-lg h-14 gap-2"
+                >
+                  Get Started Free
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              </Link>
             </motion.div>
             
             <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>

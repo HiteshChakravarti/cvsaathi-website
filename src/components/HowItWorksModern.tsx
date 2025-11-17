@@ -1,6 +1,11 @@
 import { motion } from "motion/react";
 import { Upload, Sparkles, CheckCircle, Download } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+// Import images from project Assets so Vite bundles them
+import step1Img from "../../Assets/Four simple steps to success/Upload or Start Fresh step 1.png";
+import step2Img from "../../Assets/Four simple steps to success/AI Enhancement Step 2.png";
+import step3Img from "../../Assets/Four simple steps to success/Review & Customize step 3.png";
+import step4Img from "../../Assets/Four simple steps to success/Download & Apply step 4.png";
 
 const steps = [
   {
@@ -8,7 +13,7 @@ const steps = [
     icon: Upload,
     title: "Upload or Start Fresh",
     description: "Import your existing resume or start with a blank template. Our AI will guide you through every step.",
-    image: "https://images.unsplash.com/photo-1762330472769-cb8e6c8324d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjByZXN1bWUlMjBidWlsZGluZ3xlbnwxfHx8fDE3NjI3ODM4NTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    image: step1Img,
     tall: true,
   },
   {
@@ -16,21 +21,21 @@ const steps = [
     icon: Sparkles,
     title: "AI Enhancement",
     description: "Our AI analyzes your content, suggests improvements, and optimizes for ATS systems automatically.",
-    image: "https://images.unsplash.com/photo-1759395162739-84190996783c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxBSSUyMHRlY2hub2xvZ3klMjBhdXRvbWF0aW9ufGVufDF8fHx8MTc2Mjc4Mzg1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    image: step2Img,
   },
   {
     number: "03",
     icon: CheckCircle,
     title: "Review & Customize",
     description: "Fine-tune your resume with our intuitive editor. Choose from premium templates and customize colors.",
-    image: "https://images.unsplash.com/photo-1762341118954-d0ce391674d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBjYXJlZXIlMjBzdWNjZXNzfGVufDF8fHx8MTc2MjY4NDgxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    image: step3Img,
   },
   {
     number: "04",
     icon: Download,
     title: "Download & Apply",
     description: "Export your ATS-optimized resume in multiple formats. Track applications and land interviews.",
-    image: "https://images.unsplash.com/photo-1618034100983-e1d78be0dc80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkb3dubG9hZCUyMGRvY3VtZW50JTIwZGlnaXRhbHxlbnwxfHx8fDE3NjI3ODM4NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    image: step4Img,
   },
 ];
 

@@ -1,11 +1,22 @@
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
-import heroImage from "figma:asset/205dd26f9b4807bb14918f45098b66dde1159143.png";
+// Use local hero banner image from Assets to sit behind CVSaathi text
+import heroBanner from "../../Assets/HERO BANNERS.png";
+import logoImage from "../../Assets/Logo.png";
 
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      {/* Top-right logo */}
+      <div className="pointer-events-none absolute top-6 right-6 z-20">
+        <img
+          src={logoImage}
+          alt="CVSaathi logo"
+          className="w-20 h-20 object-contain opacity-80 mix-blend-screen"
+        />
+      </div>
       {/* 3D Hero Image Background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Background gradient base */}
@@ -32,9 +43,9 @@ export function Hero() {
           className="absolute inset-0"
         >
           <img
-            src={heroImage}
+          src={heroBanner}
             alt="CVSaathi Platform"
-            className="w-full h-full object-cover opacity-50"
+          className="w-full h-full object-cover opacity-70"
           />
         </motion.div>
         
@@ -134,14 +145,16 @@ export function Hero() {
           className="flex flex-wrap gap-4 justify-center"
         >
           <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white gap-2 shadow-lg shadow-teal-500/50 px-8 rounded-xl border-0"
-              style={{ fontSize: '1rem', fontWeight: 600, padding: '1rem 2rem' }}
-            >
-              Get Template
-              <ArrowRight className="w-5 h-5" />
-            </Button>
+            <Link to="/auth/signup">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white gap-2 shadow-lg shadow-teal-500/50 px-8 rounded-xl border-0"
+                style={{ fontSize: '1rem', fontWeight: 600, padding: '1rem 2rem' }}
+              >
+                Get Template
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
           </motion.div>
           
           <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>

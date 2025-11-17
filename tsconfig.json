@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "sonner@2.0.3": ["node_modules/sonner/dist/index"],
+      "vaul@1.1.2": ["node_modules/vaul/dist/index"],
+      "recharts@2.15.2": ["node_modules/recharts/types/index"],
+      "react-resizable-panels@2.1.7": ["node_modules/react-resizable-panels/dist/index"],
+      "react-hook-form@7.55.0": ["node_modules/react-hook-form/dist/index"],
+      "react-day-picker@8.10.1": ["node_modules/react-day-picker/dist/index"],
+      "next-themes@0.4.6": ["node_modules/next-themes/dist/index"],
+      "lucide-react@0.487.0": ["node_modules/lucide-react/dist/index"],
+      "embla-carousel-react@8.6.0": ["node_modules/embla-carousel-react/dist/index"],
+      "cmdk@1.1.1": ["node_modules/cmdk/dist/index"],
+      "class-variance-authority@0.7.1": ["node_modules/class-variance-authority/dist/index"],
+      "input-otp@1.4.2": ["node_modules/input-otp/dist/index"],
+      "figma:asset/*": ["src/assets/*"]
+    }
+  },
+  "include": ["src"],
+  "references": []
+}
