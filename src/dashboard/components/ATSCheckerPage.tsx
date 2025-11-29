@@ -11,6 +11,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabaseClient";
 import { exportElementToPrint, exportElementToPdf } from "../../services/exportService";
 import { exportATSReportWeb } from "../../lib/cvsaathi-export/atsReportGenerator";
+import { useTranslation } from "react-i18next";
 
 interface ATSCheckerPageProps {
   isDark: boolean;
@@ -40,6 +41,7 @@ interface AnalysisResult {
 }
 
 export function ATSCheckerPage({ isDark, onBack }: ATSCheckerPageProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [currentState, setCurrentState] = useState<PageState>('upload');
   const [progress, setProgress] = useState(0);
@@ -110,23 +112,23 @@ export function ATSCheckerPage({ isDark, onBack }: ATSCheckerPageProps) {
 
   // Format relative time
   const formatRelativeTime = (dateString: string | null): string => {
-    if (!dateString) return 'Unknown';
+    if (!dateString) return t('dashboard.atsChecker.timeLabels.unknown');
     
     const date = new Date(dateString);
     const now = new Date();
     const diffSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
     
-    if (diffSeconds < 60) return 'just now';
+    if (diffSeconds < 60) return t('dashboard.atsChecker.timeLabels.justNow');
     const diffMinutes = Math.floor(diffSeconds / 60);
-    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+    if (diffMinutes < 60) return t('dashboard.atsChecker.timeLabels.minutesAgo', { n: diffMinutes });
     const diffHours = Math.floor(diffMinutes / 60);
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return t('dashboard.atsChecker.timeLabels.hoursAgo', { n: diffHours });
     const diffDays = Math.floor(diffHours / 24);
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return t('dashboard.atsChecker.timeLabels.daysAgo', { n: diffDays });
     const diffWeeks = Math.floor(diffDays / 7);
-    if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
+    if (diffWeeks < 4) return t('dashboard.atsChecker.timeLabels.weeksAgo', { n: diffWeeks });
     const diffMonths = Math.floor(diffDays / 30);
-    return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+    return t('dashboard.atsChecker.timeLabels.monthsAgo', { n: diffMonths });
   };
 
   // Load previous scan results
@@ -172,13 +174,13 @@ export function ATSCheckerPage({ isDark, onBack }: ATSCheckerPageProps) {
         // Fetch AI recommendations for this result
         await fetchAIRecommendations(result);
         
-        toast.success('Previous scan loaded!');
+        toast.success(t('dashboard.atsChecker.messages.scanLoaded'));
       } else {
-        toast.error('Could not load scan results');
+        toast.error(t('dashboard.atsChecker.messages.couldNotLoad'));
       }
     } catch (error: any) {
       console.error('Error loading previous scan:', error);
-      toast.error('Failed to load previous scan');
+      toast.error(t('dashboard.atsChecker.messages.loadFailed'));
     }
   };
 
@@ -612,7 +614,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                 className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
               >
                 <ChevronLeft className="size-4" />
-                <span className="text-sm">Back to Dashboard</span>
+                <span className="text-sm">{t('dashboard.atsChecker.backToDashboard')}</span>
               </button>
               <div className={`h-6 w-px ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}></div>
               <div className="flex items-center gap-3">
@@ -621,12 +623,12 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                 </div>
                 <div>
                   <h1 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    ATS Checker
+                    {t('dashboard.atsChecker.title')}
                   </h1>
                   <p className="text-sm text-gray-400">
-                    {currentState === 'upload' && 'Upload your resume to analyze'}
-                    {currentState === 'analyzing' && 'Analyzing your resume...'}
-                    {currentState === 'results' && 'Analysis complete'}
+                    {currentState === 'upload' && t('dashboard.atsChecker.uploadDescription')}
+                    {currentState === 'analyzing' && t('dashboard.atsChecker.analyzingTitle')}
+                    {currentState === 'results' && t('dashboard.atsChecker.analysisComplete')}
                   </p>
                 </div>
               </div>
@@ -639,7 +641,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                   className="bg-white/10 hover:bg-white/20 text-white border-0"
                 >
                   <Upload className="size-4 mr-2" />
-                  New Scan
+                  {t('dashboard.atsChecker.buttons.tryAnother')}
                 </Button>
                 <Button
                   onClick={async () => {
@@ -656,7 +658,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                   }}
                   className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white border-0">
                   <Download className="size-4 mr-2" />
-                  Download Report
+                  {t('dashboard.atsChecker.buttons.download')}
                 </Button>
               </div>
             )}
@@ -679,10 +681,10 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                 />
               </div>
               <h2 className={`text-4xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Check Your Resume's <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">ATS Score</span>
+                {t('dashboard.atsChecker.uploadTitle')}
               </h2>
               <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Upload your resume and get instant feedback on how well it will perform with Applicant Tracking Systems
+                {t('dashboard.atsChecker.uploadDescription')}
               </p>
             </div>
 
@@ -712,10 +714,10 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                 </div>
                 
                 <h3 className={`text-2xl mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  Drop your resume here
+                  {t('dashboard.atsChecker.dropResume')}
                 </h3>
                 <p className={`text-lg mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  or click to browse files
+                  {t('dashboard.atsChecker.clickToBrowse')}
                 </p>
                 
                 <div className="flex items-center justify-center gap-4 mb-6">
@@ -733,7 +735,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                   </div>
                 </div>
                 
-                <p className="text-sm text-gray-500">Maximum file size: 5MB</p>
+                <p className="text-sm text-gray-500">{t('dashboard.atsChecker.maxFileSize')}</p>
               </label>
             </div>
 
@@ -741,7 +743,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
             {recentScans.length > 0 && (
               <div className="mt-12">
                 <h3 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  Recent Scans
+                  {t('dashboard.atsChecker.recentScans')}
                 </h3>
                 {loadingScans ? (
                   <div className="flex items-center justify-center py-8">
@@ -799,13 +801,13 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
             </div>
             
             <h2 className={`text-4xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              Analyzing Your Resume...
+              {t('dashboard.atsChecker.analyzingTitle')}
             </h2>
             <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-              {progress < 30 && "Scanning document structure..."}
-              {progress >= 30 && progress < 60 && "Checking keyword optimization..."}
-              {progress >= 60 && progress < 90 && "Analyzing ATS compatibility..."}
-              {progress >= 90 && "Finalizing results..."}
+              {progress < 30 && t('dashboard.atsChecker.progress.formatting')}
+              {progress >= 30 && progress < 60 && t('dashboard.atsChecker.progress.keywords')}
+              {progress >= 60 && progress < 90 && t('dashboard.atsChecker.progress.structure')}
+              {progress >= 90 && t('dashboard.atsChecker.progress.score')}
             </p>
 
             {/* Progress Bar */}
@@ -817,17 +819,17 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                 ></div>
               </div>
               <p className={`text-sm mt-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                {progress}% complete
+                {t('dashboard.atsChecker.progressComplete', { percent: progress })}
               </p>
             </div>
 
             {/* Scanning Steps */}
             <div className="mt-8 space-y-3">
               {[
-                { step: 'Format Analysis', done: progress > 25 },
-                { step: 'Keyword Matching', done: progress > 50 },
-                { step: 'Section Detection', done: progress > 75 },
-                { step: 'ATS Compatibility', done: progress > 90 }
+                { step: t('dashboard.atsChecker.steps.formatAnalysis'), done: progress > 25 },
+                { step: t('dashboard.atsChecker.steps.keywordMatching'), done: progress > 50 },
+                { step: t('dashboard.atsChecker.steps.sectionDetection'), done: progress > 75 },
+                { step: t('dashboard.atsChecker.steps.atsCompatibility'), done: progress > 90 }
               ].map((item, index) => (
                 <div 
                   key={index}
@@ -861,7 +863,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                     : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-lg mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Overall ATS Score
+                    {t('dashboard.atsChecker.results.overallScore')}
                   </h3>
                   
                   {/* Circular Progress */}
@@ -898,38 +900,38 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                       <span className={`text-5xl mb-1 ${getScoreColor(analysisResult.overallScore)}`}>
                         {analysisResult.overallScore}
                       </span>
-                      <span className="text-sm text-gray-500">out of 100</span>
+                      <span className="text-sm text-gray-500">{t('dashboard.atsChecker.outOf100')}</span>
                     </div>
                   </div>
 
                   <div className={`p-4 rounded-xl mb-4 ${
                     isDark ? 'bg-white/5' : 'bg-gray-50'
                   }`}>
-                    <div className="text-sm text-gray-500 mb-2">Status</div>
+                    <div className="text-sm text-gray-500 mb-2">{t('dashboard.atsChecker.status')}</div>
                     <div className={`text-lg ${
                       analysisResult.overallScore >= 80 ? 'text-green-500' :
                       analysisResult.overallScore >= 60 ? 'text-yellow-500' : 'text-red-500'
                     }`}>
-                      {analysisResult.overallScore >= 80 ? '✓ Excellent' :
-                       analysisResult.overallScore >= 60 ? '⚠ Good' : '✗ Needs Work'}
+                      {analysisResult.overallScore >= 80 ? t('dashboard.atsChecker.excellent') :
+                       analysisResult.overallScore >= 60 ? t('dashboard.atsChecker.good') : t('dashboard.atsChecker.needsWork')}
                     </div>
                   </div>
 
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500">File Name:</span>
+                      <span className="text-gray-500">{t('dashboard.atsChecker.fileName')}:</span>
                       <span className={`truncate ml-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {analysisResult.fileName}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500">File Size:</span>
+                      <span className="text-gray-500">{t('dashboard.atsChecker.fileSize')}:</span>
                       <span className={isDark ? 'text-white' : 'text-gray-900'}>
                         {analysisResult.fileSize}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500">Analyzed:</span>
+                      <span className="text-gray-500">{t('dashboard.atsChecker.analyzed')}:</span>
                       <span className={isDark ? 'text-white' : 'text-gray-900'}>
                         {analysisResult.uploadDate}
                       </span>
@@ -938,7 +940,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
 
                   <Button className="w-full mt-6 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white border-0">
                     <Sparkles className="size-4 mr-2" />
-                    Optimize with AI
+                    {t('dashboard.atsChecker.optimizeWithAI')}
                   </Button>
                 </div>
               </div>
@@ -952,7 +954,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                     : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Score Breakdown
+                    {t('dashboard.atsChecker.results.breakdown.title')}
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     {(Object.entries(analysisResult.scores) as [string, number][]).map(([key, value]) => (
@@ -962,7 +964,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                       >
                         <div className="flex items-center justify-between mb-2">
                           <span className={`capitalize ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                            {key}
+                            {t(`dashboard.atsChecker.results.breakdown.${key}`)}
                           </span>
                           <span className={`text-2xl ${getScoreColor(value)}`}>
                             {value}
@@ -986,7 +988,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                     : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Issues & Recommendations
+                    {t('dashboard.atsChecker.results.issues.title')}
                   </h3>
 
                   {/* Critical Issues */}
@@ -995,7 +997,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                       <div className="flex items-center gap-2 mb-3">
                         <XCircle className="size-5 text-red-500" />
                         <h4 className={`${isDark ? 'text-white' : 'text-gray-900'}`}>
-                          Critical Issues ({analysisResult.criticalIssues.length})
+                          {t('dashboard.atsChecker.results.issues.critical', { count: analysisResult.criticalIssues.length })}
                         </h4>
                       </div>
                       <div className="space-y-2">
@@ -1013,7 +1015,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                               size="sm"
                               className="ml-3 bg-red-500 hover:bg-red-600 text-white border-0 text-xs px-3 py-1 h-auto"
                             >
-                              Fix Now
+                              {t('dashboard.atsChecker.fixNow')}
                             </Button>
                           </div>
                         ))}
@@ -1027,7 +1029,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                       <div className="flex items-center gap-2 mb-3">
                         <AlertCircle className="size-5 text-yellow-500" />
                         <h4 className={`${isDark ? 'text-white' : 'text-gray-900'}`}>
-                          Warnings ({analysisResult.warnings.length})
+                          {t('dashboard.atsChecker.results.issues.warnings', { count: analysisResult.warnings.length })}
                         </h4>
                       </div>
                       <div className="space-y-2">
@@ -1059,7 +1061,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                       <div className="flex items-center gap-2 mb-3">
                         <CheckCircle className="size-5 text-green-500" />
                         <h4 className={`${isDark ? 'text-white' : 'text-gray-900'}`}>
-                          Passed Checks ({analysisResult.passed.length})
+                          {t('dashboard.atsChecker.results.issues.passed', { count: analysisResult.passed.length })}
                         </h4>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
@@ -1087,13 +1089,13 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                     : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Keyword Analysis
+                    {t('dashboard.atsChecker.results.keywords.title')}
                   </h3>
 
                   {/* Found Keywords */}
                   <div className="mb-6">
                     <h4 className={`text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                      ✓ Found Keywords ({analysisResult.foundKeywords.length})
+                      {t('dashboard.atsChecker.results.keywords.found', { count: analysisResult.foundKeywords.length })}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {analysisResult.foundKeywords.map((keyword, index) => (
@@ -1114,7 +1116,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                   {/* Missing Keywords */}
                   <div className="mb-6">
                     <h4 className={`text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                      ✗ Missing Keywords ({analysisResult.missingKeywords.length})
+                      {t('dashboard.atsChecker.results.keywords.missing', { count: analysisResult.missingKeywords.length })}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {analysisResult.missingKeywords.map((keyword, index) => (
@@ -1136,7 +1138,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                   {/* Suggested Keywords */}
                   <div>
                     <h4 className={`text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                      💡 Suggested Keywords ({analysisResult.suggestedKeywords.length})
+                      {t('dashboard.atsChecker.results.keywords.suggested', { count: analysisResult.suggestedKeywords.length })}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {analysisResult.suggestedKeywords.map((keyword, index) => (
@@ -1165,13 +1167,13 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                     </div>
                     <div className="flex-1">
                       <h3 className={`text-lg mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        Estel's AI Recommendations
+                        {t('dashboard.atsChecker.results.aiRecommendations')}
                       </h3>
                       {loadingAI ? (
                         <div className="flex items-center gap-2 py-4">
                           <Loader2 className="size-4 animate-spin text-pink-500" />
                           <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                            Generating personalized recommendations...
+                            {t('dashboard.atsChecker.generatingRecommendations')}
                           </span>
                         </div>
                       ) : aiRecommendations.length > 0 ? (

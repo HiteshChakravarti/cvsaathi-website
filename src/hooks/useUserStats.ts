@@ -126,23 +126,30 @@ export const useUserStats = (userId: string | undefined) => {
       try {
         // Fetch all relevant data (live, per-user) from existing tables
         const [
-          { data: resumes },
-          { data: applications },
-          { data: interviews },
-          { data: profile },
-          { data: aiMessages },
-          { data: userStatsRow },
+          { data: resumes, error: resumesError },
+          { data: applications, error: applicationsError },
+          { data: interviews, error: interviewsError },
+          { data: profile, error: profileError },
+          { data: aiMessages, error: aiMessagesError },
+          { data: userStatsRow, error: userStatsError },
         ] = await Promise.all([
           supabase.from('resumes').select('id, created_at').eq('user_id', userId),
           supabase.from('applications').select('id, created_at, status').eq('user_id', userId),
           // Only completed interviews count toward "interviewsCompleted"
-          supabase.from('interview_sessions').select('id, created_at, duration_minutes, completed_at').eq('user_id', userId),
+          supabase.from('interview_sessions').select('id, created_at, session_duration_minutes, completed_at, status').eq('user_id', userId),
           supabase.from('profiles').select('*').eq('user_id', userId).single(),
           // AI sessions are counted when at least one AI reply exists for a session_id
           supabase.from('ai_chat_conversations').select('session_id, created_at, response').eq('user_id', userId),
           // Optional snapshot counters (if present)
           supabase.from('user_stats').select('resumes_created, interviews_practiced, ai_conversations, total_time_spent, current_streak, ats_average_score').eq('user_id', userId).maybeSingle(),
         ]);
+
+        // Log errors for debugging
+        if (resumesError) console.error('Error fetching resumes:', resumesError);
+        if (applicationsError) console.error('Error fetching applications:', applicationsError);
+        if (interviewsError) console.error('Error fetching interviews:', interviewsError);
+        if (aiMessagesError) console.error('Error fetching AI messages:', aiMessagesError);
+        if (userStatsError && userStatsError.code !== 'PGRST116') console.warn('Error fetching user_stats:', userStatsError);
 
         if (!isMounted) return;
 
@@ -156,7 +163,7 @@ export const useUserStats = (userId: string | undefined) => {
         const points = calculatePoints({
           resumes: resumes?.length || 0,
           applications: applications?.length || 0,
-          interviews: (interviews || []).filter(i => i?.completed_at).length || 0,
+          interviews: (interviews || []).filter(i => i?.completed_at || i?.status === 'completed').length || 0,
           profileCompleteness,
           // Use number of AI sessions (unique session_id with a non-empty response) as engagement proxy
           aiCreditsUsed: (() => {
@@ -172,11 +179,11 @@ export const useUserStats = (userId: string | undefined) => {
 
         // Calculate total time spent (interview sessions)
         const totalTimeSpent = ((interviews || []).reduce((total, session) => 
-          total + (session?.duration_minutes || 0), 0) || 0);
+          total + (session?.session_duration_minutes || 0), 0) || 0);
 
         // Calculate lessons completed (resumes + interviews + applications)
         const lessonsCompleted = (resumes?.length || 0) + 
-                                (((interviews || []).filter(i => i?.completed_at).length) || 0) + 
+                                (((interviews || []).filter(i => i?.completed_at || i?.status === 'completed').length) || 0) + 
                                 (applications?.length || 0);
 
         // AI sessions completed (unique session_ids with a non-empty response)
@@ -192,10 +199,23 @@ export const useUserStats = (userId: string | undefined) => {
 
         // Prefer snapshot counters from user_stats when available; otherwise fallback to live counts
         const resumesCreated = userStatsRow?.resumes_created ?? (resumes?.length || 0);
-        const interviewsCompleted = userStatsRow?.interviews_practiced ?? (((interviews || []).filter(i => i?.completed_at).length) || 0);
+        // Count interviews that are completed (have completed_at OR status is 'completed')
+        const interviewsCompleted = userStatsRow?.interviews_practiced ?? (((interviews || []).filter(i => i?.completed_at || i?.status === 'completed').length) || 0);
         const aiConversations = userStatsRow?.ai_conversations ?? aiSessionsCompleted;
         const totalMinutes = userStatsRow?.total_time_spent ?? totalTimeSpent;
         const streak = userStatsRow?.current_streak ?? daysStreak;
+
+        // Debug logging
+        console.log('Analytics Stats Calculated:', {
+          resumesCount: resumes?.length || 0,
+          resumesCreated,
+          applicationsCount: applications?.length || 0,
+          applicationsSubmitted: applications?.length || 0,
+          interviewsCount: interviews?.length || 0,
+          interviewsCompleted,
+          aiSessionsCount: aiSessionsCompleted,
+          aiConversations,
+        });
 
         setStats({
           lessonsCompleted,

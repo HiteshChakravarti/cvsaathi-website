@@ -1,9 +1,11 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
 
 export function FinalCTA() {
+  const { t } = useTranslation();
   return (
     <section className="py-32 px-6 relative overflow-hidden bg-gradient-to-br from-teal-600 via-teal-500 to-cyan-600">
       {/* Animated background pattern */}
@@ -69,7 +71,7 @@ export function FinalCTA() {
           >
             <Sparkles className="w-5 h-5 text-white" />
             <span className="text-white uppercase tracking-wider">
-              Ready to Transform Your Career?
+              {t('landing.finalCta.badge')}
             </span>
           </motion.div>
 
@@ -81,7 +83,7 @@ export function FinalCTA() {
             viewport={{ once: true }}
           >
             <h2 className="text-white mb-6 max-w-4xl mx-auto">
-              Start building your dream resume today
+              {t('landing.finalCta.title')}
             </h2>
           </motion.h2>
 
@@ -99,7 +101,7 @@ export function FinalCTA() {
                   size="lg"
                   className="bg-white text-teal-600 hover:bg-gray-50 shadow-2xl shadow-black/20 px-10 text-lg h-14 gap-2"
                 >
-                  Get Started Free
+                  {t('landing.finalCta.getStarted')}
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
@@ -110,8 +112,11 @@ export function FinalCTA() {
                 size="lg"
                 variant="outline"
                 className="border-2 border-white text-white hover:bg-white/10 bg-transparent backdrop-blur-sm px-10 text-lg h-14"
+                onClick={() => {
+                  document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
-                View Pricing
+                {t('landing.finalCta.viewPricing')}
               </Button>
             </motion.div>
           </motion.div>
@@ -128,19 +133,19 @@ export function FinalCTA() {
               <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <span>No credit card required</span>
+              <span>{t('landing.finalCta.noCreditCard')}</span>
             </div>
             <div className="flex items-center gap-2">
               <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <span>7-day free trial</span>
+              <span>{t('landing.finalCta.freeTrial')}</span>
             </div>
             <div className="flex items-center gap-2">
               <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <span>Cancel anytime</span>
+              <span>{t('landing.finalCta.cancelAnytime')}</span>
             </div>
           </motion.div>
         </motion.div>

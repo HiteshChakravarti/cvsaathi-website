@@ -2,23 +2,34 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabaseClient';
 
+// Aligns with backend interview_sessions schema, but keeps fields optional
+// so we can evolve without breaking callers.
 export interface InterviewSession {
   id: string;
   user_id: string;
-  target_roles?: string;
+  role?: string;
   industry?: string;
-  questions?: any[]; // JSONB array of questions and answers
-  audio_urls?: Record<string, string>; // JSONB object mapping questionId to audio URL
-  total_score?: number;
-  average_score?: number;
-  duration_minutes?: number;
-  completed_at?: string;
+  experience_level?: string;
+  scenario?: string | null;
+  questions_attempted?: number;
+  questions_completed?: number;
+  total_questions?: number;
+  session_duration_minutes?: number;
+  status?: string;
+  completion_percentage?: number;
+  session_data?: any; // JSONB: { answers: InterviewAnswer[], scores, meta, ... }
+  avg_response_time_seconds?: number;
+  confidence_score?: number;
+  ai_feedback?: string | null;
+  started_at?: string | null;
+  completed_at?: string | null;
   created_at: string;
   updated_at: string;
+  audio_urls?: Record<string, string>; // JSONB object mapping questionId to audio URL
 }
 
 export interface InterviewAnswer {
-  questionId: number;
+  questionId: number | string;
   question: string;
   answer: string;
   audioUrl?: string; // URL to the audio recording in Supabase Storage
@@ -38,8 +49,10 @@ export const useInterviewSessions = () => {
   const [error, setError] = useState<Error | null>(null);
   const [saving, setSaving] = useState(false);
 
+  const isReady = () => !!user?.id;
+
   useEffect(() => {
-    if (!user?.id) {
+    if (!isReady()) {
       setLoading(false);
       return;
     }
@@ -52,11 +65,25 @@ export const useInterviewSessions = () => {
         const { data, error: fetchError } = await supabase
           .from('interview_sessions')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', user!.id)
           .order('created_at', { ascending: false });
 
-        if (fetchError) throw fetchError;
-        setSessions(data || []);
+        if (fetchError) {
+          console.error('Error fetching interview sessions:', fetchError);
+          throw fetchError;
+        }
+        
+        console.log('Fetched interview sessions:', {
+          count: data?.length || 0,
+          sessions: data?.map(s => ({
+            id: s.id,
+            role: s.role,
+            status: s.status,
+            confidence_score: s.confidence_score
+          }))
+        });
+        
+        setSessions((data as InterviewSession[]) || []);
       } catch (err) {
         console.error('Error fetching interview sessions:', err);
         setError(err as Error);
@@ -68,8 +95,8 @@ export const useInterviewSessions = () => {
     fetchSessions();
   }, [user?.id]);
 
-  const createSession = async (role?: string, industry?: string) => {
-    if (!user?.id) {
+  const createSession = async (role?: string, industry?: string, experienceLevel?: string) => {
+    if (!isReady()) {
       throw new Error('User not authenticated');
     }
 
@@ -78,11 +105,12 @@ export const useInterviewSessions = () => {
       setError(null);
 
       const sessionData: any = {
-        user_id: user.id,
-        target_roles: role || 'General Interview',
+        user_id: user!.id,
+        role: role || 'General Interview',
         industry: industry || '',
-        // questions will be set when session is completed
-        // duration_minutes will be set when session is completed
+        experience_level: experienceLevel || '0-2 years', // Default to '0-2 years' if not provided (NOT NULL constraint)
+        status: 'in_progress',
+        session_data: {},
       };
 
       const { data, error: insertError } = await supabase
@@ -96,8 +124,9 @@ export const useInterviewSessions = () => {
         throw new Error(`Failed to create session: ${insertError.message}`);
       }
 
-      setSessions(prev => [data, ...prev]);
-      return data;
+      const typed = data as InterviewSession;
+      setSessions(prev => [typed, ...prev]);
+      return typed;
     } catch (err) {
       console.error('Error creating interview session:', err);
       setError(err as Error);
@@ -110,15 +139,21 @@ export const useInterviewSessions = () => {
   const updateSession = async (
     sessionId: string,
     updates: {
-      questions?: InterviewAnswer[];
+      questions_attempted?: number;
+      questions_completed?: number;
+      total_questions?: number;
+      session_duration_minutes?: number;
+      status?: string;
+      completion_percentage?: number;
+      session_data?: any;
+      avg_response_time_seconds?: number;
+      confidence_score?: number;
+      ai_feedback?: string;
       audio_urls?: Record<string, string>;
-      total_score?: number;
-      average_score?: number;
-      duration_minutes?: number;
       completed_at?: string;
     }
   ) => {
-    if (!user?.id) {
+    if (!isReady()) {
       throw new Error('User not authenticated');
     }
 
@@ -133,14 +168,15 @@ export const useInterviewSessions = () => {
           updated_at: new Date().toISOString(),
         })
         .eq('id', sessionId)
-        .eq('user_id', user.id)
+        .eq('user_id', user!.id)
         .select()
         .single();
 
       if (updateError) throw updateError;
 
-      setSessions(prev => prev.map(s => s.id === sessionId ? data : s));
-      return data;
+      const typed = data as InterviewSession;
+      setSessions(prev => prev.map(s => (s.id === sessionId ? typed : s)));
+      return typed;
     } catch (err) {
       console.error('Error updating interview session:', err);
       setError(err as Error);
@@ -151,7 +187,7 @@ export const useInterviewSessions = () => {
   };
 
   const deleteSession = async (sessionId: string) => {
-    if (!user?.id) {
+    if (!isReady()) {
       throw new Error('User not authenticated');
     }
 
@@ -160,7 +196,7 @@ export const useInterviewSessions = () => {
         .from('interview_sessions')
         .delete()
         .eq('id', sessionId)
-        .eq('user_id', user.id);
+        .eq('user_id', user!.id);
 
       if (deleteError) throw deleteError;
 
@@ -181,19 +217,18 @@ export const useInterviewSessions = () => {
     updateSession,
     deleteSession,
     refetch: async () => {
-      if (user?.id) {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from('interview_sessions')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false });
-        
-        if (!error && data) {
-          setSessions(data);
-        }
-        setLoading(false);
+      if (!isReady()) return;
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('interview_sessions')
+        .select('*')
+        .eq('user_id', user!.id)
+        .order('created_at', { ascending: false });
+      
+      if (!error && data) {
+        setSessions(data as InterviewSession[]);
       }
+      setLoading(false);
     }
   };
 };

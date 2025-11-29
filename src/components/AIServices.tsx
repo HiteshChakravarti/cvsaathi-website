@@ -1,44 +1,47 @@
 import { motion } from "motion/react";
 import { BookOpen, Pen, MessageCircle, Languages, Settings, Triangle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-const services = [
-  {
-    id: 1,
-    icon: BookOpen,
-    title: "AI Learning Recommendations",
-    description: "Grow faster with personalized learning paths. Our AI analyzes your career goals and skill-gap data, then connects you to the most relevant courses from Coursera, Udemy, and beyond — so you learn what truly matters.",
-    hasUI: false,
-    floatingIcons: [BookOpen],
-  },
-  {
-    id: 2,
-    icon: Pen,
-    title: "AI Content Generation",
-    description: "Build a powerful personal brand with precision. Generate professional resumes, bios, and statements of purpose crafted in your voice — optimized for tone, clarity, and global hiring standards.",
-    hasUI: true,
-    large: true,
-    floatingIcons: [Pen],
-  },
-  {
-    id: 3,
-    icon: MessageCircle,
-    title: "AI-Powered Chat Assistants",
-    description: "Meet your 24 × 7 career coach. From resume building to interview prep, our conversational AI delivers instant, human-like support in multiple languages — always available, always adapting to your needs.",
-    hasUI: true,
-    largeBottom: true,
-    floatingIcons: [MessageCircle],
-  },
-  {
-    id: 4,
-    icon: Languages,
-    title: "Multilingual AI Translation & Localization",
-    description: "Break barriers and go global. Instantly translate resumes, cover letters, and feedback into 10 + languages — while keeping context, tone, and professional polish intact.",
-    hasUI: false,
-    floatingIcons: [Languages, Pen, Settings, Triangle],
-  },
-];
+function getServices(t: any) {
+  return [
+    {
+      id: 1,
+      icon: BookOpen,
+      title: t('landing.aiServices.services.learningRecommendations.title'),
+      description: t('landing.aiServices.services.learningRecommendations.description'),
+      hasUI: false,
+      floatingIcons: [BookOpen],
+    },
+    {
+      id: 2,
+      icon: Pen,
+      title: t('landing.aiServices.services.contentGeneration.title'),
+      description: t('landing.aiServices.services.contentGeneration.description'),
+      hasUI: true,
+      large: true,
+      floatingIcons: [Pen],
+    },
+    {
+      id: 3,
+      icon: MessageCircle,
+      title: t('landing.aiServices.services.chatAssistants.title'),
+      description: t('landing.aiServices.services.chatAssistants.description'),
+      hasUI: true,
+      largeBottom: true,
+      floatingIcons: [MessageCircle],
+    },
+    {
+      id: 4,
+      icon: Languages,
+      title: t('landing.aiServices.services.multilingualTranslation.title'),
+      description: t('landing.aiServices.services.multilingualTranslation.description'),
+      hasUI: false,
+      floatingIcons: [Languages, Pen, Settings, Triangle],
+    },
+  ];
+}
 
-function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
+function ServiceCard({ service, index, t }: { service: ReturnType<typeof getServices>[0]; index: number; t: any }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -122,13 +125,13 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           <div className="space-y-3 mb-4">
             <div className="flex items-center gap-2 text-gray-400 text-sm">
               <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
-              <span>Continue writing</span>
+              <span>{t('landing.aiServices.services.contentGeneration.uiContinueWriting')}</span>
             </div>
-            <div className="text-gray-600 text-sm">Fix spelling</div>
-            <div className="text-gray-600 text-sm">Explain in detail</div>
+            <div className="text-gray-600 text-sm">{t('landing.aiServices.services.contentGeneration.uiFixSpelling')}</div>
+            <div className="text-gray-600 text-sm">{t('landing.aiServices.services.contentGeneration.uiExplainDetail')}</div>
           </div>
           <button className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 text-sm hover:bg-gray-50 transition-colors">
-            Generate
+            {t('landing.aiServices.services.contentGeneration.uiGenerate')}
           </button>
         </div>
       )}
@@ -138,7 +141,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
         <div className="mb-6 bg-gray-50 rounded-2xl p-4 border border-gray-200">
           <input
             type="text"
-            placeholder="Type a message"
+            placeholder={t('landing.aiServices.services.chatAssistants.uiPlaceholder')}
             className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-600 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
             disabled
           />
@@ -162,6 +165,9 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
 }
 
 export function AIServices() {
+  const { t } = useTranslation();
+  const services = getServices(t);
+
   return (
     <section id="services" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-50">
       {/* Subtle background decoration */}
@@ -186,7 +192,7 @@ export function AIServices() {
             className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
           >
             <Settings className="w-4 h-4 text-teal-600" />
-            <span className="text-teal-700 uppercase tracking-wider">Services</span>
+            <span className="text-teal-700 uppercase tracking-wider">{t('landing.aiServices.badge')}</span>
           </motion.div>
 
           <h2 
@@ -201,10 +207,10 @@ export function AIServices() {
               backgroundClip: 'text',
             }}
           >
-            Our AI-Driven Services
+            {t('landing.aiServices.title')}
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Leverage AI features that boost performance to your business.
+            {t('landing.aiServices.description')}
           </p>
         </motion.div>
 
@@ -212,22 +218,22 @@ export function AIServices() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* AI Strategy Consulting - Top left */}
           <div>
-            <ServiceCard service={services[0]} index={0} />
+            <ServiceCard service={services[0]} index={0} t={t} />
           </div>
 
           {/* Content Generation - Top right (tall) */}
           <div className="md:row-span-2">
-            <ServiceCard service={services[1]} index={1} />
+            <ServiceCard service={services[1]} index={1} t={t} />
           </div>
 
           {/* AI-Powered Chatbots - Bottom left (tall) */}
           <div className="md:row-span-2">
-            <ServiceCard service={services[2]} index={2} />
+            <ServiceCard service={services[2]} index={2} t={t} />
           </div>
 
           {/* Automated Workflows - Bottom right */}
           <div>
-            <ServiceCard service={services[3]} index={3} />
+            <ServiceCard service={services[3]} index={3} t={t} />
           </div>
         </div>
       </div>

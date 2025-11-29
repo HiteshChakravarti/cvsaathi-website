@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Upload, Sparkles, CheckCircle, Download } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 // Import images from project Assets so Vite bundles them
 import step1Img from "../../Assets/Four simple steps to success/Upload or Start Fresh step 1.png";
@@ -7,39 +8,41 @@ import step2Img from "../../Assets/Four simple steps to success/AI Enhancement S
 import step3Img from "../../Assets/Four simple steps to success/Review & Customize step 3.png";
 import step4Img from "../../Assets/Four simple steps to success/Download & Apply step 4.png";
 
-const steps = [
-  {
-    number: "01",
-    icon: Upload,
-    title: "Upload or Start Fresh",
-    description: "Import your existing resume or start with a blank template. Our AI will guide you through every step.",
-    image: step1Img,
-    tall: true,
-  },
-  {
-    number: "02",
-    icon: Sparkles,
-    title: "AI Enhancement",
-    description: "Our AI analyzes your content, suggests improvements, and optimizes for ATS systems automatically.",
-    image: step2Img,
-  },
-  {
-    number: "03",
-    icon: CheckCircle,
-    title: "Review & Customize",
-    description: "Fine-tune your resume with our intuitive editor. Choose from premium templates and customize colors.",
-    image: step3Img,
-  },
-  {
-    number: "04",
-    icon: Download,
-    title: "Download & Apply",
-    description: "Export your ATS-optimized resume in multiple formats. Track applications and land interviews.",
-    image: step4Img,
-  },
-];
+function getSteps(t: any) {
+  return [
+    {
+      number: "01",
+      icon: Upload,
+      title: t('landing.howItWorks.steps.step1.title'),
+      description: t('landing.howItWorks.steps.step1.description'),
+      image: step1Img,
+      tall: true,
+    },
+    {
+      number: "02",
+      icon: Sparkles,
+      title: t('landing.howItWorks.steps.step2.title'),
+      description: t('landing.howItWorks.steps.step2.description'),
+      image: step2Img,
+    },
+    {
+      number: "03",
+      icon: CheckCircle,
+      title: t('landing.howItWorks.steps.step3.title'),
+      description: t('landing.howItWorks.steps.step3.description'),
+      image: step3Img,
+    },
+    {
+      number: "04",
+      icon: Download,
+      title: t('landing.howItWorks.steps.step4.title'),
+      description: t('landing.howItWorks.steps.step4.description'),
+      image: step4Img,
+    },
+  ];
+}
 
-function StepCard({ step, index }: { step: typeof steps[0]; index: number }) {
+function StepCard({ step, index }: { step: ReturnType<typeof getSteps>[0]; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -120,6 +123,9 @@ function StepCard({ step, index }: { step: typeof steps[0]; index: number }) {
 }
 
 export function HowItWorksModern() {
+  const { t } = useTranslation();
+  const steps = getSteps(t);
+
   return (
     <section id="how-it-works" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
       {/* Subtle background decoration */}
@@ -144,7 +150,7 @@ export function HowItWorksModern() {
             className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
           >
             <Sparkles className="w-4 h-4 text-teal-600" />
-            <span className="text-teal-700 uppercase tracking-wider">Process</span>
+            <span className="text-teal-700 uppercase tracking-wider">{t('landing.howItWorks.badge')}</span>
           </motion.div>
 
           <h2 
@@ -159,10 +165,10 @@ export function HowItWorksModern() {
               backgroundClip: 'text',
             }}
           >
-            Four simple steps to success
+            {t('landing.howItWorks.title')}
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            A transparent process of collaboration and feedback
+            {t('landing.howItWorks.description')}
           </p>
         </motion.div>
 
@@ -202,7 +208,7 @@ export function HowItWorksModern() {
             whileTap={{ scale: 0.98 }}
             className="px-8 py-4 bg-gray-900 text-white rounded-xl shadow-lg hover:shadow-2xl transition-all"
           >
-            Start Building Now - It's Free
+            {t('landing.howItWorks.ctaButton')}
           </motion.button>
         </motion.div>
       </div>

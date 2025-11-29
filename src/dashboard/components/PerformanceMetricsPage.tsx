@@ -11,6 +11,7 @@ import { supabase } from "../../lib/supabaseClient";
 import { LineChart, Line, BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { useNavigate } from "react-router-dom";
 import { exportElementToPrint } from "../../services/exportService";
+import { useTranslation } from "react-i18next";
 
 interface PerformanceMetricsPageProps {
   isDark: boolean;
@@ -18,6 +19,7 @@ interface PerformanceMetricsPageProps {
 }
 
 export function PerformanceMetricsPage({ isDark, onBack }: PerformanceMetricsPageProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
   const { stats, loading: statsLoading } = useUserStats(user?.id);

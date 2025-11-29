@@ -1,27 +1,30 @@
 import { motion } from "motion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { toast } from "sonner";
-import { Loader2, ArrowRight, Sparkles } from "lucide-react";
+import { Loader2, ArrowRight, Sparkles, Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 import authHero from "../../Assets/Auth Page hero image.png";
 
-const signInSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(1, "Password is required"),
-});
-
 export function SignInPage() {
+  const { t } = useTranslation();
+  const signInSchema = useMemo(() => z.object({
+    email: z.string().email(t('authPages.common.invalidEmail')),
+    password: z.string().min(1, t('authPages.common.passwordRequired')),
+  }), [t]);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { signIn, user, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -53,7 +56,7 @@ export function SignInPage() {
       // Sign in user
       await signIn(formData.email, formData.password);
       
-      toast.success("Welcome back! Redirecting to dashboard...");
+      toast.success(t('authPages.signIn.successToast'));
       
       // Redirect to dashboard after a short delay
       setTimeout(() => {
@@ -68,11 +71,12 @@ export function SignInPage() {
           }
         });
         setErrors(fieldErrors);
-        toast.error("Please fix the errors in the form");
+        toast.error(t('authPages.common.formError'));
       } else if (error instanceof Error) {
-        toast.error(error.message || "Invalid email or password. Please try again.");
+        console.error(error);
+        toast.error(t('authPages.common.invalidCredentials'));
       } else {
-        toast.error("An unexpected error occurred. Please try again.");
+        toast.error(t('authPages.common.unexpectedError'));
       }
     } finally {
       setIsLoading(false);
@@ -84,7 +88,7 @@ export function SignInPage() {
       {/* Full-bleed hero image */}
       <div className="absolute inset-0 -z-10">
         <img src={authHero} alt="CVSaathi" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/65 via-black/45 to-black/15" />
       </div>
 
       {/* Auth Card */}
@@ -94,7 +98,7 @@ export function SignInPage() {
         transition={{ duration: 0.6 }}
         className="relative z-10 w-full max-w-sm md:ml-0"
       >
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 p-6 md:p-8">
+        <div className="bg-gradient-to-br from-white/98 via-white/95 to-teal-50/70 backdrop-blur-xl rounded-3xl shadow-[0_35px_65px_rgba(15,23,42,0.35)] border border-white/50 p-6 md:p-8 lg:p-10">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -104,7 +108,7 @@ export function SignInPage() {
           >
             <Sparkles className="w-4 h-4 text-teal-600" />
             <span className="text-teal-700 text-sm font-medium tracking-wide">
-              Welcome Back
+              {t('authPages.signIn.badge')}
             </span>
           </motion.div>
 
@@ -116,7 +120,7 @@ export function SignInPage() {
             className="text-3xl md:text-4xl font-bold text-gray-900 mb-2"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            Sign In
+            {t('authPages.signIn.title')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -125,7 +129,7 @@ export function SignInPage() {
             className="text-gray-600 mb-8"
             style={{ fontFamily: 'var(--font-body)' }}
           >
-            Continue your career journey with CVSaathi
+            {t('authPages.signIn.description')}
           </motion.p>
 
           {/* Form */}
@@ -137,7 +141,7 @@ export function SignInPage() {
               transition={{ duration: 0.5, delay: 0.5 }}
             >
               <Label htmlFor="email" className="text-gray-700 font-medium mb-2 block">
-                Email Address
+                {t('authPages.common.emailLabel')}
               </Label>
               <Input
                 id="email"
@@ -163,26 +167,36 @@ export function SignInPage() {
             >
               <div className="flex items-center justify-between mb-2">
                 <Label htmlFor="password" className="text-gray-700 font-medium">
-                  Password
+                  {t('authPages.common.passwordLabel')}
                 </Label>
                 <Link
                   to="/auth/forgot-password"
                   className="text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
                 >
-                  Forgot Password?
+                  {t('authPages.common.forgotPasswordLink')}
                 </Link>
               </div>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                className={`w-full ${errors.password ? 'border-red-500 focus-visible:ring-red-500/50' : 'focus-visible:ring-teal-500/50'}`}
-                disabled={isLoading}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                  className={`w-full pr-12 ${errors.password ? 'border-red-500 focus-visible:ring-red-500/50' : 'focus-visible:ring-teal-500/50'}`}
+                  disabled={isLoading}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-gray-500 hover:text-gray-700"
+                  aria-label={showPassword ? t('authPages.common.hidePassword') : t('authPages.common.showPassword')}
+                >
+                  {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}
@@ -204,11 +218,11 @@ export function SignInPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Signing In...
+                    {t('authPages.signIn.submitting')}
                   </>
                 ) : (
                   <>
-                    Sign In
+                    {t('authPages.signIn.submit')}
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
@@ -224,12 +238,12 @@ export function SignInPage() {
             className="mt-6 text-center"
           >
             <p className="text-gray-600 text-sm">
-              Don't have an account?{" "}
+              {t('authPages.common.noAccountPrompt')}{" "}
               <Link
                 to="/auth/signup"
                 className="text-teal-600 hover:text-teal-700 font-semibold transition-colors"
               >
-                Sign Up
+                {t('authPages.common.signUpLinkText')}
               </Link>
             </p>
           </motion.div>

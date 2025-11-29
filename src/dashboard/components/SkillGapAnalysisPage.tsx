@@ -11,6 +11,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabaseClient";
 import { exportElementToPrint, exportElementToPdf } from "../../services/exportService";
 import { exportSkillGapReportWeb } from "../../lib/cvsaathi-export/skillGapReportGenerator";
+import { useTranslation } from "react-i18next";
 import { 
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid
@@ -41,46 +42,46 @@ interface SkillGap {
   category: 'Technical' | 'Soft Skills' | 'Domain Knowledge';
 }
 
-const userTypes = [
+const getUserTypes = (t: any) => [
   {
     id: 'fresher',
-    title: 'Fresher',
-    description: 'Starting my career journey',
+    title: t('dashboard.skillGap.userTypes.fresher.title'),
+    description: t('dashboard.skillGap.userTypes.fresher.description'),
     icon: GraduationCap,
     gradient: 'from-teal-400 to-cyan-500'
   },
   {
     id: 'career-growth',
-    title: 'Career Growth',
-    description: 'Advancing in current field',
+    title: t('dashboard.skillGap.userTypes.careerGrowth.title'),
+    description: t('dashboard.skillGap.userTypes.careerGrowth.description'),
     icon: TrendingUp,
     gradient: 'from-purple-400 to-pink-500'
   },
   {
     id: 'career-switch',
-    title: 'Career Switch',
-    description: 'Transitioning to new role',
+    title: t('dashboard.skillGap.userTypes.careerSwitch.title'),
+    description: t('dashboard.skillGap.userTypes.careerSwitch.description'),
     icon: ArrowRight,
     gradient: 'from-blue-400 to-indigo-500'
   },
   {
     id: 'explorer',
-    title: 'Explorer',
-    description: 'Exploring opportunities',
+    title: t('dashboard.skillGap.userTypes.explorer.title'),
+    description: t('dashboard.skillGap.userTypes.explorer.description'),
     icon: Search,
     gradient: 'from-emerald-400 to-teal-500'
   },
   {
     id: 'skill-assessment',
-    title: 'Skill Assessment',
-    description: 'Evaluate my current skills',
+    title: t('dashboard.skillGap.userTypes.skillAssessment.title'),
+    description: t('dashboard.skillGap.userTypes.skillAssessment.description'),
     icon: Award,
     gradient: 'from-orange-400 to-red-500'
   },
   {
     id: 'market-insights',
-    title: 'Market Insights',
-    description: 'Understand industry trends',
+    title: t('dashboard.skillGap.userTypes.marketInsights.title'),
+    description: t('dashboard.skillGap.userTypes.marketInsights.description'),
     icon: BarChart3,
     gradient: 'from-pink-400 to-rose-500'
   }
@@ -105,6 +106,7 @@ const industryOptions = [
 const locationOptions = ['Bangalore', 'Mumbai', 'Delhi', 'Hyderabad', 'Pune', 'Chennai', 'Remote', 'Other'];
 
 export function SkillGapAnalysisPage({ isDark, onBack }: SkillGapAnalysisPageProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState<Step>('user-type');
   const [progress, setProgress] = useState(0);
@@ -198,25 +200,27 @@ export function SkillGapAnalysisPage({ isDark, onBack }: SkillGapAnalysisPagePro
     fetchRecentScans();
   }, [user?.id]);
 
+  const userTypes = getUserTypes(t);
+  
   // Format relative time
   const formatRelativeTime = (dateString: string | null): string => {
-    if (!dateString) return 'Unknown';
+    if (!dateString) return t('dashboard.skillGap.unknown');
     
     const date = new Date(dateString);
     const now = new Date();
     const diffSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
     
-    if (diffSeconds < 60) return 'just now';
+    if (diffSeconds < 60) return t('dashboard.skillGap.justNow');
     const diffMinutes = Math.floor(diffSeconds / 60);
-    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+    if (diffMinutes < 60) return t('dashboard.skillGap.minutesAgo', { n: diffMinutes });
     const diffHours = Math.floor(diffMinutes / 60);
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return t('dashboard.skillGap.hoursAgo', { n: diffHours });
     const diffDays = Math.floor(diffHours / 24);
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return t('dashboard.skillGap.daysAgo', { n: diffDays });
     const diffWeeks = Math.floor(diffDays / 7);
-    if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
+    if (diffWeeks < 4) return t('dashboard.skillGap.weeksAgo', { n: diffWeeks });
     const diffMonths = Math.floor(diffDays / 30);
-    return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+    return t('dashboard.skillGap.monthsAgo', { n: diffMonths });
   };
 
   // Load previous scan results
@@ -258,13 +262,13 @@ export function SkillGapAnalysisPage({ isDark, onBack }: SkillGapAnalysisPagePro
         // Go to results step
         setCurrentStep('results');
         
-        toast.success('Previous analysis loaded!');
+        toast.success(t('dashboard.skillGap.analysisLoaded'));
       } else {
-        toast.error('Could not load analysis results');
+        toast.error(t('dashboard.skillGap.couldNotLoad'));
       }
     } catch (error: any) {
       console.error('Error loading previous scan:', error);
-      toast.error('Failed to load previous analysis');
+      toast.error(t('dashboard.skillGap.loadFailed'));
     }
   };
 
@@ -687,7 +691,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
       }
     } catch (error: any) {
       console.error('Error in skill gap analysis:', error);
-      toast.error(`Failed to analyze skills: ${error?.message || 'Unknown error'}`);
+      toast.error(t('dashboard.skillGap.analysisFailed', { error: error?.message || t('dashboard.skillGap.unknownError') }));
       // Set default results on error
       setAnalysisResults(defaultAnalysisResults);
       setCurrentStep('results');
@@ -732,7 +736,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                 className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
               >
                 <ChevronLeft className="size-4" />
-                <span className="text-sm">Back to Dashboard</span>
+                <span className="text-sm">{t('dashboard.skillGap.backToDashboard')}</span>
               </button>
               <div className={`h-6 w-px ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}></div>
               <div className="flex items-center gap-3">
@@ -741,13 +745,13 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                 </div>
                 <div>
                   <h1 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Skill Gap Analysis
+                    {t('dashboard.skillGap.title')}
                   </h1>
                   <p className="text-sm text-gray-400">
-                    {currentStep === 'user-type' && 'Tell us about yourself'}
-                    {currentStep === 'profile' && 'Complete your profile'}
-                    {currentStep === 'analyzing' && 'Analyzing your skills...'}
-                    {currentStep === 'results' && 'Your personalized analysis'}
+                    {currentStep === 'user-type' && t('dashboard.skillGap.steps.userType')}
+                    {currentStep === 'profile' && t('dashboard.skillGap.steps.profile')}
+                    {currentStep === 'analyzing' && t('dashboard.skillGap.steps.analyzing')}
+                    {currentStep === 'results' && t('dashboard.skillGap.steps.results')}
                   </p>
                 </div>
               </div>
@@ -789,10 +793,10 @@ Format as JSON array with these fields: title, provider, duration, level, priori
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className={`text-4xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Who Are <span className="bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">You?</span>
+                {t('dashboard.skillGap.whoAreYou')} <span className="bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">{t('dashboard.skillGap.you')}</span>
               </h2>
               <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Help us understand your journey to provide personalized insights
+                {t('dashboard.skillGap.helpUsUnderstand')}
               </p>
             </div>
 
@@ -837,13 +841,13 @@ Format as JSON array with these fields: title, provider, duration, level, priori
             {/* Recent Scans */}
             <div className="mt-12">
               <h3 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Recent Analyses
+                {t('dashboard.skillGap.profile.recentAnalyses')}
               </h3>
               {loadingScans ? (
                 <div className="flex items-center justify-center py-8">
                   <Loader2 className="size-6 animate-spin text-teal-500" />
                   <span className={`ml-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Loading recent analyses...
+                    {t('dashboard.skillGap.profile.loadingAnalyses')}
                   </span>
                 </div>
               ) : recentScans.length > 0 ? (
@@ -898,7 +902,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                 }`}>
                   <BarChart3 className={`size-12 mx-auto mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
                   <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    No recent analyses yet. Complete your first analysis to see it here!
+                    {t('dashboard.skillGap.profile.noRecentAnalyses')}
                   </p>
                 </div>
               )}
@@ -911,10 +915,10 @@ Format as JSON array with these fields: title, provider, duration, level, priori
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className={`text-4xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Tell Us About <span className="bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">Yourself</span>
+                {t('dashboard.skillGap.profile.title')} <span className="bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">{t('dashboard.skillGap.yourself')}</span>
               </h2>
               <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Share your details to get accurate skill gap analysis
+                {t('dashboard.skillGap.profile.subtitle')}
               </p>
             </div>
 
@@ -926,7 +930,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                 <div>
                   <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     <GraduationCap className="size-4 inline mr-2" />
-                    Education
+                    {t('dashboard.skillGap.profile.education')}
                   </label>
                   <select
                     value={profile.education}
@@ -937,7 +941,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                         : 'bg-white border-gray-200 text-gray-900'
                     }`}
                   >
-                    <option value="">Select your education</option>
+                    <option value="">{t('dashboard.skillGap.profile.selectEducation')}</option>
                     {educationOptions.map(edu => (
                       <option key={edu} value={edu}>{edu}</option>
                     ))}
@@ -948,13 +952,13 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                 <div>
                   <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     <Target className="size-4 inline mr-2" />
-                    Target Role
+                    {t('dashboard.skillGap.profile.targetRole')}
                   </label>
                   <input
                     type="text"
                     value={profile.targetRole}
                     onChange={(e) => setProfile({ ...profile, targetRole: e.target.value })}
-                    placeholder="e.g., Business Analyst, Data Scientist"
+                    placeholder={t('dashboard.skillGap.profile.targetRolePlaceholder')}
                     className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                       isDark
                         ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -967,7 +971,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                 <div>
                   <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     <Briefcase className="size-4 inline mr-2" />
-                    Industry
+                    {t('dashboard.skillGap.profile.industry')}
                   </label>
                   {!showCustomIndustry ? (
                     <>
@@ -987,7 +991,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                             : 'bg-white border-gray-200 text-gray-900'
                         }`}
                       >
-                        <option value="">Select industry</option>
+                        <option value="">{t('dashboard.skillGap.profile.selectIndustry')}</option>
                         {industryOptions.map(ind => (
                           <option key={ind} value={ind}>{ind}</option>
                         ))}
@@ -999,7 +1003,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                         type="text"
                         value={customIndustry}
                         onChange={(e) => setCustomIndustry(e.target.value)}
-                        placeholder="Enter your industry (e.g., Supply Chain, Operations, etc.)"
+                        placeholder={t('dashboard.skillGap.customIndustryPlaceholder')}
                         className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                           isDark
                             ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1014,7 +1018,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                         }}
                         className={`text-sm ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
                       >
-                        ← Back to dropdown
+                        {t('dashboard.skillGap.backToDropdown')}
                       </button>
                     </div>
                   )}
@@ -1024,7 +1028,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                 <div>
                   <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     <MapPin className="size-4 inline mr-2" />
-                    Preferred Location
+                    {t('dashboard.skillGap.profile.location')}
                   </label>
                   <select
                     value={profile.location}
@@ -1035,7 +1039,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                         : 'bg-white border-gray-200 text-gray-900'
                     }`}
                   >
-                    <option value="">Select location</option>
+                    <option value="">{t('dashboard.skillGap.profile.selectLocation')}</option>
                     {locationOptions.map(loc => (
                       <option key={loc} value={loc}>{loc}</option>
                     ))}
@@ -1046,7 +1050,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                 <div>
                   <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     <Award className="size-4 inline mr-2" />
-                    Current Skills
+                    {t('dashboard.skillGap.profile.addSkills')}
                   </label>
                   
                   {/* Skill Input */}
@@ -1055,7 +1059,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                       type="text"
                       value={skillInput}
                       onChange={(e) => handleSkillInputChange(e.target.value)}
-                      placeholder="Type a skill (e.g., Python, Leadership)"
+                      placeholder={t('dashboard.skillGap.skillPlaceholder')}
                       className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                         isDark
                           ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1087,7 +1091,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Skill Level
+                        {t('dashboard.skillGap.profile.skillLevel')}
                       </span>
                       <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {skillLevel}/5
@@ -1102,8 +1106,8 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                       className="w-full"
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-1">
-                      <span>Beginner</span>
-                      <span>Expert</span>
+                      <span>{t('dashboard.skillGap.beginner')}</span>
+                      <span>{t('dashboard.skillGap.expert')}</span>
                     </div>
                   </div>
 
@@ -1114,14 +1118,14 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                     className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 mb-4"
                   >
                     <Plus className="size-4 mr-2" />
-                    Add Skill
+                    {t('dashboard.skillGap.profile.addSkill')}
                   </Button>
 
                   {/* Skills List */}
                   {profile.currentSkills.length > 0 && (
                     <div className="space-y-2">
                       <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-2`}>
-                        Added Skills ({profile.currentSkills.length})
+                        {t('dashboard.skillGap.addedSkills', { count: profile.currentSkills.length })}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {profile.currentSkills.map((skill) => (
@@ -1156,7 +1160,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   className="flex-1 bg-white/10 hover:bg-white/20 text-white border-0"
                 >
                   <ChevronLeft className="size-4 mr-2" />
-                  Back
+                  {t('dashboard.resumeBuilder.buttons.previous')}
                 </Button>
                 <Button
                   onClick={startAnalysis}
@@ -1164,7 +1168,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   className="flex-1 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0"
                 >
                   <Sparkles className="size-4 mr-2" />
-                  Analyze My Skills
+                  {t('dashboard.skillGap.profile.startAnalysis')}
                   <ArrowRight className="size-4 ml-2" />
                 </Button>
               </div>
@@ -1186,13 +1190,13 @@ Format as JSON array with these fields: title, provider, duration, level, priori
             </div>
             
             <h2 className={`text-4xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              Analyzing Your Skills...
+              {t('dashboard.skillGap.analyzing')}
             </h2>
             <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-              {progress < 30 && "🔍 Scanning your profile..."}
-              {progress >= 30 && progress < 60 && "📊 Comparing with 10,000+ job listings..."}
-              {progress >= 60 && progress < 90 && "🎯 Identifying skill gaps..."}
-              {progress >= 90 && "✨ Generating personalized recommendations..."}
+              {progress < 30 && t('dashboard.skillGap.scanningProfile')}
+              {progress >= 30 && progress < 60 && t('dashboard.skillGap.comparingJobs')}
+              {progress >= 60 && progress < 90 && t('dashboard.skillGap.identifyingGaps')}
+              {progress >= 90 && t('dashboard.skillGap.generatingRecommendations')}
             </p>
 
             {/* Progress Bar */}
@@ -1204,17 +1208,17 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                 ></div>
               </div>
               <p className={`text-sm mt-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                {progress}% complete
+                {t('dashboard.skillGap.complete', { percent: progress })}
               </p>
             </div>
 
             {/* Analyzing Steps */}
             <div className="mt-8 space-y-3">
               {[
-                { step: 'Profile Analysis', done: progress > 25 },
-                { step: 'Market Research', done: progress > 50 },
-                { step: 'Skill Matching', done: progress > 75 },
-                { step: 'Report Generation', done: progress > 95 }
+                { step: t('dashboard.skillGap.analyzingSteps.profileAnalysis'), done: progress > 25 },
+                { step: t('dashboard.skillGap.analyzingSteps.marketResearch'), done: progress > 50 },
+                { step: t('dashboard.skillGap.analyzingSteps.skillMatching'), done: progress > 75 },
+                { step: t('dashboard.skillGap.analyzingSteps.reportGeneration'), done: progress > 95 }
               ].map((item, index) => (
                 <div 
                   key={index}
@@ -1247,7 +1251,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-lg mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Overall Match Score
+                    {t('dashboard.skillGap.results.overallScore')}
                   </h3>
                   
                   {/* Circular Progress */}
@@ -1284,16 +1288,16 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                       <span className="text-5xl mb-1 bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">
                         {analysisResults.overallScore}
                       </span>
-                      <span className="text-sm text-gray-500">out of 100</span>
+                      <span className="text-sm text-gray-500">{t('dashboard.skillGap.results.outOf100')}</span>
                     </div>
                   </div>
 
                   <div className={`p-4 rounded-xl mb-4 ${
                     isDark ? 'bg-white/5' : 'bg-gray-50'
                   }`}>
-                    <div className="text-sm text-gray-500 mb-2">For Role</div>
+                    <div className="text-sm text-gray-500 mb-2">{t('dashboard.skillGap.results.forRole')}</div>
                     <div className={`text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      {profile.targetRole || 'Target Role'}
+                      {profile.targetRole || t('dashboard.skillGap.profile.targetRole')}
                     </div>
                     <div className="text-sm text-gray-500 mt-1">
                       {showCustomIndustry && customIndustry ? customIndustry : profile.industry}
@@ -1303,12 +1307,12 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   {/* Skill Distribution */}
                   <div className="space-y-3">
                     <h4 className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                      Skill Distribution
+                      {t('dashboard.skillGap.results.skillDistribution')}
                     </h4>
                     
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>Technical</span>
+                        <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>{t('dashboard.skillGap.results.technical')}</span>
                         <span className="text-teal-500">{analysisResults.skillDistribution.technical}%</span>
                       </div>
                       <div className={`h-2 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}>
@@ -1321,7 +1325,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
 
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>Soft Skills</span>
+                        <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>{t('dashboard.skillGap.results.softSkills')}</span>
                         <span className="text-purple-500">{analysisResults.skillDistribution.softSkills}%</span>
                       </div>
                       <div className={`h-2 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}>
@@ -1334,7 +1338,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
 
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>Domain Knowledge</span>
+                        <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>{t('dashboard.skillGap.results.domainKnowledge')}</span>
                         <span className="text-blue-500">{analysisResults.skillDistribution.domain}%</span>
                       </div>
                       <div className={`h-2 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}>
@@ -1369,7 +1373,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                     }}
                     className="w-full mt-6 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0">
                     <Download className="size-4 mr-2" />
-                    Download Report
+                    {t('dashboard.skillGap.results.downloadReport')}
                   </Button>
                 </div>
 
@@ -1378,12 +1382,12 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
                 }`}>
                   <h4 className={`text-sm mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    💰 Salary Range
+                    {t('dashboard.skillGap.results.salaryRangeTitle')}
                   </h4>
                   <div className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {analysisResults.salaryRange.currency}{analysisResults.salaryRange.min/1000}K - {analysisResults.salaryRange.max/1000}K
                   </div>
-                  <p className="text-sm text-gray-500">Per annum for this role</p>
+                  <p className="text-sm text-gray-500">{t('dashboard.skillGap.results.perAnnum')}</p>
                 </div>
               </div>
 
@@ -1394,7 +1398,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    🎯 Skill Gaps Identified
+                    {t('dashboard.skillGap.results.skillGapsIdentified')}
                   </h3>
 
                   <div className="space-y-4">
@@ -1423,7 +1427,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                             
                             <div className="grid grid-cols-2 gap-4">
                               <div>
-                                <div className="text-xs text-gray-500 mb-1">Current Level</div>
+                                <div className="text-xs text-gray-500 mb-1">{t('dashboard.skillGap.results.currentLevel')}</div>
                                 <div className={`h-2 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}>
                                   <div 
                                     className="h-full bg-gray-400"
@@ -1434,7 +1438,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                               </div>
                               
                               <div>
-                                <div className="text-xs text-gray-500 mb-1">Required Level</div>
+                                <div className="text-xs text-gray-500 mb-1">{t('dashboard.skillGap.results.requiredLevel')}</div>
                                 <div className={`h-2 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}>
                                   <div 
                                     className="h-full bg-gradient-to-r from-teal-500 to-cyan-500"
@@ -1457,14 +1461,14 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                             } text-white border-0`}
                           >
                             <BookOpen className="size-4 mr-2" />
-                            Learn Now
+                            {t('dashboard.skillGap.results.learnNow')}
                           </Button>
                           <Button 
                             size="sm"
                             className="bg-white/10 hover:bg-white/20 text-white border-0"
                           >
                             <Plus className="size-4 mr-2" />
-                            Add to Plan
+                            {t('dashboard.skillGap.results.addToPlan')}
                           </Button>
                         </div>
                       </div>
@@ -1477,7 +1481,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    📊 Skill Comparison Radar
+                    {t('dashboard.skillGap.results.skillComparisonRadar')}
                   </h3>
                   <div className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
@@ -1493,14 +1497,14 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                           tick={{ fill: isDark ? 'rgb(156,163,175)' : 'rgb(75,85,99)' }}
                         />
                         <Radar 
-                          name="Your Skills" 
+                          name={t('dashboard.skillGap.results.yourSkills')} 
                           dataKey="current" 
                           stroke="#14b8a6" 
                           fill="#14b8a6" 
                           fillOpacity={0.3}
                         />
                         <Radar 
-                          name="Required" 
+                          name={t('dashboard.skillGap.results.required')} 
                           dataKey="required" 
                           stroke="#6366f1" 
                           fill="#6366f1" 
@@ -1518,7 +1522,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    📚 Recommended Learning Paths
+                    {t('dashboard.skillGap.results.recommendedLearningPaths')}
                   </h3>
                   
                   <div className="space-y-4">
@@ -1544,7 +1548,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                                     ? 'bg-orange-500/20 text-orange-500'
                                     : 'bg-yellow-500/20 text-yellow-500'
                               }`}>
-                                {rec.priority} Priority
+                                {rec.priority} {t('dashboard.skillGap.results.priority')}
                               </span>
                             </div>
                             <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
@@ -1567,7 +1571,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                             className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0"
                           >
                             <ExternalLink className="size-4 mr-2" />
-                            Enroll
+                            {t('dashboard.skillGap.results.enroll')}
                           </Button>
                         </div>
                       </div>
@@ -1580,7 +1584,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    📈 Market Demand Trend
+                    {t('dashboard.skillGap.results.marketDemandTrend')}
                   </h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
@@ -1617,7 +1621,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                   isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
                 }`}>
                   <h3 className={`text-xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    🏢 Top Companies Hiring
+                    {t('dashboard.skillGap.results.topCompaniesHiring')}
                   </h3>
                   <div className="flex flex-wrap gap-3">
                     {analysisResults.topCompanies.map((company, index) => (
@@ -1645,14 +1649,14 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                     </div>
                     <div className="flex-1">
                       <h3 className={`text-xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        🎯 Your Learning Roadmap
+                        {t('dashboard.skillGap.results.yourLearningRoadmap')}
                       </h3>
                       
                       <div className="space-y-6">
                         {Object.entries(analysisResults.timeline as Record<string, string[]>).map(([period, tasks]) => (
                           <div key={period}>
                             <h4 className={`text-sm mb-3 ${isDark ? 'text-teal-300' : 'text-teal-700'}`}>
-                              {period === '30days' ? '📅 First 30 Days' : period === '60days' ? '📅 Next 30 Days (60 total)' : '📅 Final 30 Days (90 total)'}
+                              {period === '30days' ? t('dashboard.skillGap.results.first30Days') : period === '60days' ? t('dashboard.skillGap.results.next30Days') : t('dashboard.skillGap.results.final30Days')}
                             </h4>
                             <ul className="space-y-2">
                               {(tasks as string[]).map((task, index) => (

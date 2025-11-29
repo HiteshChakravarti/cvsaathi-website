@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 import { Button } from "../components/ui/button";
@@ -8,13 +8,14 @@ import { Label } from "../components/ui/label";
 import { toast } from "sonner";
 import { Loader2, ArrowLeft, Sparkles, Mail } from "lucide-react";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 import authHero from "../../Assets/Auth Page hero image.png";
 
-const forgotPasswordSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-});
-
 export function ForgotPasswordPage() {
+  const { t } = useTranslation();
+  const forgotPasswordSchema = useMemo(() => z.object({
+    email: z.string().email(t('authPages.common.invalidEmail')),
+  }), [t]);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -45,16 +46,18 @@ export function ForgotPasswordPage() {
       }
 
       setIsEmailSent(true);
-      toast.success("Password reset email sent! Check your inbox.");
+      toast.success(t('authPages.forgotPassword.toastSuccess'));
     } catch (error) {
       if (error instanceof z.ZodError) {
-        setError(error.errors[0].message);
-        toast.error("Please enter a valid email address");
+        const message = error.errors[0].message;
+        setError(message);
+        toast.error(message);
       } else if (error instanceof Error) {
-        setError(error.message);
-        toast.error(error.message || "Failed to send reset email. Please try again.");
+        console.error(error);
+        setError(t('authPages.common.passwordResetFailed'));
+        toast.error(t('authPages.common.passwordResetFailed'));
       } else {
-        toast.error("An unexpected error occurred. Please try again.");
+        toast.error(t('authPages.common.unexpectedError'));
       }
     } finally {
       setIsLoading(false);
@@ -87,10 +90,10 @@ export function ForgotPasswordPage() {
             </motion.div>
 
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-display)' }}>
-              Check Your Email
+              {t('authPages.forgotPassword.successTitle')}
             </h1>
             <p className="text-gray-600 mb-8" style={{ fontFamily: 'var(--font-body)' }}>
-              We've sent a password reset link to <strong>{email}</strong>. Please check your inbox and follow the instructions.
+              {t('authPages.forgotPassword.successDescription', { email })}
             </p>
 
             <div className="space-y-4">
@@ -98,14 +101,14 @@ export function ForgotPasswordPage() {
                 onClick={() => navigate("/auth/signin")}
                 className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white shadow-lg shadow-teal-500/30 h-12"
               >
-                Back to Sign In
+                {t('authPages.forgotPassword.successButton')}
               </Button>
               <Button
                 onClick={() => setIsEmailSent(false)}
                 variant="outline"
                 className="w-full border-gray-300"
               >
-                Send Another Email
+                {t('authPages.forgotPassword.resendButton')}
               </Button>
             </div>
           </div>
@@ -139,7 +142,7 @@ export function ForgotPasswordPage() {
           >
             <Sparkles className="w-4 h-4 text-teal-600" />
             <span className="text-teal-700 text-sm font-medium tracking-wide">
-              Reset Password
+              {t('authPages.forgotPassword.badge')}
             </span>
           </motion.div>
 
@@ -151,7 +154,7 @@ export function ForgotPasswordPage() {
             className="text-3xl md:text-4xl font-bold text-gray-900 mb-2"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            Forgot Password?
+            {t('authPages.forgotPassword.title')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -160,7 +163,7 @@ export function ForgotPasswordPage() {
             className="text-gray-600 mb-8"
             style={{ fontFamily: 'var(--font-body)' }}
           >
-            No worries! Enter your email and we'll send you a reset link.
+            {t('authPages.forgotPassword.description')}
           </motion.p>
 
           {/* Form */}
@@ -172,7 +175,7 @@ export function ForgotPasswordPage() {
               transition={{ duration: 0.5, delay: 0.5 }}
             >
               <Label htmlFor="email" className="text-gray-700 font-medium mb-2 block">
-                Email Address
+                {t('authPages.common.emailLabel')}
               </Label>
               <Input
                 id="email"
@@ -206,11 +209,11 @@ export function ForgotPasswordPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Sending...
+                    {t('authPages.forgotPassword.submitting')}
                   </>
                 ) : (
                   <>
-                    Send Reset Link
+                    {t('authPages.forgotPassword.submit')}
                     <Mail className="w-5 h-5" />
                   </>
                 )}
@@ -230,7 +233,7 @@ export function ForgotPasswordPage() {
               className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-semibold transition-colors text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Sign In
+              {t('authPages.forgotPassword.backToSignIn')}
             </Link>
           </motion.div>
         </div>

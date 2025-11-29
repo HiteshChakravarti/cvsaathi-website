@@ -41,6 +41,7 @@ import { useUserProfile } from "../../hooks/useUserProfile";
 import { useUserPreferences } from "../../hooks/useUserPreferences";
 import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabaseClient";
+import { useTranslation } from "react-i18next";
 
 interface SettingsPageProps {
   isDark: boolean;
@@ -60,6 +61,7 @@ type SettingsTab =
   | "advanced";
 
 export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
   const { profile, loading: profileLoading, updateProfile } = useUserProfile();
@@ -136,15 +138,15 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
   }, [preferences]);
 
   const tabs = [
-    { id: "profile" as SettingsTab, name: "Profile", icon: User },
-    { id: "account" as SettingsTab, name: "Account", icon: Settings },
-    { id: "notifications" as SettingsTab, name: "Notifications", icon: Bell },
+    { id: "profile" as SettingsTab, name: t('dashboard.settings.tabs.profile'), icon: User },
+    { id: "account" as SettingsTab, name: t('dashboard.settings.tabs.account'), icon: Settings },
+    { id: "notifications" as SettingsTab, name: t('dashboard.settings.tabs.notifications'), icon: Bell },
     // Appearance tab hidden
-    { id: "subscription" as SettingsTab, name: "Subscription", icon: CreditCard },
-    { id: "privacy" as SettingsTab, name: "Privacy & Security", icon: Shield },
-    { id: "integrations" as SettingsTab, name: "Integrations", icon: Link2 },
+    { id: "subscription" as SettingsTab, name: t('dashboard.settings.tabs.subscription'), icon: CreditCard },
+    { id: "privacy" as SettingsTab, name: t('dashboard.settings.tabs.privacy'), icon: Shield },
+    { id: "integrations" as SettingsTab, name: t('dashboard.settings.tabs.integrations'), icon: Link2 },
     // Preferences (Job Preferences) tab hidden
-    { id: "advanced" as SettingsTab, name: "Advanced", icon: AlertTriangle },
+    { id: "advanced" as SettingsTab, name: t('dashboard.settings.tabs.advanced'), icon: AlertTriangle },
   ];
 
   // Handle profile picture upload (frontend only - localStorage)
@@ -163,7 +165,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
       if (user?.id) {
         localStorage.setItem(`profile_pic_${user.id}`, base64String);
         setProfilePic(base64String);
-        toast.success("Profile picture updated!");
+        toast.success(t('dashboard.settings.profilePicUpdated'));
       }
     };
     reader.readAsDataURL(file);
@@ -180,7 +182,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
   // Save all settings to backend
   const handleSave = async () => {
     if (!user?.id) {
-      toast.error("Please log in to save settings");
+      toast.error(t('dashboard.settings.pleaseLogin'));
       return;
     }
 
@@ -206,34 +208,34 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
       // Save password if changed
       if (newPassword && newPassword.length > 0) {
         if (newPassword !== confirmPassword) {
-          toast.error("New passwords do not match");
-          setSaving(false);
-          return;
-        }
-        if (newPassword.length < 6) {
-          toast.error("Password must be at least 6 characters");
-          setSaving(false);
-          return;
-        }
-        
-        const { error: passwordError } = await supabase.auth.updateUser({
-          password: newPassword,
-        });
-
-        if (passwordError) {
-          toast.error(`Failed to update password: ${passwordError.message}`);
-        } else {
-          toast.success("Password updated successfully!");
-          setCurrentPassword("");
-          setNewPassword("");
-          setConfirmPassword("");
-        }
+          toast.error(t('dashboard.settings.passwordMismatch'));
+        setSaving(false);
+        return;
       }
+      if (newPassword.length < 6) {
+        toast.error(t('dashboard.settings.passwordTooShort'));
+        setSaving(false);
+        return;
+      }
+      
+      const { error: passwordError } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
 
-      toast.success("Settings saved successfully!");
-    } catch (error: any) {
-      console.error("Error saving settings:", error);
-      toast.error(`Failed to save settings: ${error?.message || "Unknown error"}`);
+      if (passwordError) {
+        toast.error(t('dashboard.settings.passwordUpdateFailed', { error: passwordError.message }));
+      } else {
+        toast.success(t('dashboard.settings.passwordUpdated'));
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      }
+    }
+
+    toast.success(t('dashboard.settings.savedSuccessfully'));
+  } catch (error: any) {
+    console.error("Error saving settings:", error);
+    toast.error(t('dashboard.settings.saveFailed', { error: error?.message || t('dashboard.settings.unknownError') }));
     } finally {
       setSaving(false);
     }
@@ -246,7 +248,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
     } else {
       onThemeChange?.(mode === "dark");
     }
-    toast.success(`Theme changed to ${mode}`);
+    toast.success(t('dashboard.settings.themeChanged', { mode }));
   };
 
   return (
@@ -274,9 +276,9 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                 <ArrowLeft className={`size-5 ${isDark ? "text-white" : "text-gray-900"}`} />
               </button>
               <div>
-                <h1 className={`text-3xl ${isDark ? "text-white" : "text-gray-900"}`}>Settings</h1>
+                <h1 className={`text-3xl ${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.title')}</h1>
                 <p className={`text-sm mt-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                  Manage your account settings and preferences
+                  {t('dashboard.settings.description')}
                 </p>
               </div>
             </div>
@@ -288,10 +290,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
               {saving ? (
                 <>
                   <Loader2 className="size-4 mr-2 animate-spin" />
-                  Saving...
+                  {t('dashboard.settings.saving')}
                 </>
               ) : (
-                "Save Changes"
+                t('dashboard.settings.saveChanges')
               )}
             </Button>
           </div>
@@ -346,10 +348,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   <>
                     <div>
                       <h2 className={`text-2xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                        Profile Settings
+                        {t('dashboard.settings.profile.title')}
                       </h2>
                       <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        Update your personal information and profile picture
+                        {t('dashboard.settings.profile.description')}
                       </p>
                     </div>
 
@@ -359,7 +361,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                       }`}
                     >
                       <label className={`block mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                        Profile Picture
+                        {t('dashboard.settings.profile.profilePicture')}
                       </label>
                       <div className="flex items-center gap-6">
                         <div className="relative">
@@ -389,7 +391,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                             onClick={() => fileInputRef.current?.click()}
                           >
                             <Upload className="size-4 mr-2" />
-                            Upload Photo
+                            {t('dashboard.settings.profile.uploadPhoto')}
                           </Button>
                           {profilePic && (
                             <Button
@@ -398,13 +400,13 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                               onClick={handleRemoveProfilePic}
                             >
                               <Trash2 className="size-4 mr-2" />
-                              Remove
+                              {t('dashboard.settings.profile.remove')}
                             </Button>
                           )}
                         </div>
                       </div>
                       <p className={`text-xs mt-2 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                        Profile picture is stored locally and not synced to the server
+                        {t('dashboard.settings.profile.profilePicStoredLocally')}
                       </p>
                     </div>
 
@@ -414,13 +416,13 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                       }`}
                     >
                       <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                        Personal Information
+                        {t('dashboard.settings.profile.personalInformation')}
                       </h3>
                       <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                              First Name
+                              {t('dashboard.settings.profile.firstName')}
                             </label>
                             <input
                               type="text"
@@ -435,7 +437,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                           </div>
                           <div>
                             <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                              Last Name
+                              {t('dashboard.settings.profile.lastName')}
                             </label>
                             <input
                               type="text"
@@ -451,7 +453,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                         </div>
                         <div>
                           <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                            Email Address
+                            {t('dashboard.settings.profile.emailAddress')}
                           </label>
                           <input
                             type="email"
@@ -464,12 +466,12 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                             }`}
                           />
                           <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                            Email cannot be changed here. Use account settings to update email.
+                            {t('dashboard.settings.profile.emailCannotBeChanged')}
                           </p>
                         </div>
                         <div>
                           <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                            Phone Number
+                            {t('dashboard.settings.profile.phoneNumber')}
                           </label>
                           <input
                             type="tel"
@@ -484,7 +486,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                         </div>
                         <div>
                           <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                            Bio
+                            {t('dashboard.settings.profile.bio')}
                           </label>
                           <textarea
                             rows={4}
@@ -495,7 +497,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                                 ? "bg-white/5 border-white/10 text-white"
                                 : "bg-white border-gray-200 text-gray-900"
                             }`}
-                            placeholder="Tell us about yourself..."
+                            placeholder={t('dashboard.settings.profile.bioPlaceholder')}
                           />
                         </div>
                       </div>
@@ -509,10 +511,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
               <div className="space-y-6 animate-in slide-in-from-right duration-300">
                 <div>
                   <h2 className={`text-2xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Account Settings
+                    {t('dashboard.settings.account.title')}
                   </h2>
                   <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                    Manage your account security and preferences
+                    {t('dashboard.settings.account.description')}
                   </p>
                 </div>
 
@@ -522,18 +524,18 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   }`}
                 >
                   <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Change Password
+                    {t('dashboard.settings.account.changePassword')}
                   </h3>
                   <div className="space-y-4">
                     <div>
                       <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        New Password
+                        {t('dashboard.settings.account.newPassword')}
                       </label>
                       <input
                         type="password"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
-                        placeholder="Leave empty to keep current password"
+                        placeholder={t('dashboard.settings.account.newPasswordPlaceholder')}
                         className={`w-full px-4 py-2 rounded-lg border transition-colors ${
                           isDark
                             ? "bg-white/5 border-white/10 text-white"
@@ -544,7 +546,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     {newPassword && (
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                          Confirm New Password
+                          {t('dashboard.settings.account.confirmNewPassword')}
                         </label>
                         <input
                           type="password"
@@ -569,10 +571,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className={`mb-1 ${isDark ? "text-white" : "text-gray-900"}`}>
-                        Two-Factor Authentication
+                        {t('dashboard.settings.account.twoFactorAuth')}
                       </h3>
                       <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        Add an extra layer of security to your account
+                        {t('dashboard.settings.account.twoFactorDescription')}
                       </p>
                     </div>
                     <button
@@ -599,13 +601,13 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     isDark ? "bg-red-500/10 border-red-500/30" : "bg-red-50 border-red-200"
                   }`}
                 >
-                  <h3 className={`mb-4 ${isDark ? "text-red-400" : "text-red-600"}`}>Danger Zone</h3>
+                  <h3 className={`mb-4 ${isDark ? "text-red-400" : "text-red-600"}`}>{t('dashboard.settings.account.dangerZone')}</h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className={isDark ? "text-white" : "text-gray-900"}>Delete Account</p>
+                        <p className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.account.deleteAccount')}</p>
                         <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                          Permanently delete your account and all data
+                          {t('dashboard.settings.account.deleteAccountDescription')}
                         </p>
                       </div>
                       <Button
@@ -613,7 +615,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                         className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
                       >
                         <Trash2 className="size-4 mr-2" />
-                        Delete
+                        {t('dashboard.settings.account.delete')}
                       </Button>
                     </div>
                   </div>
@@ -625,10 +627,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
               <div className="space-y-6 animate-in slide-in-from-right duration-300">
                 <div>
                   <h2 className={`text-2xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Notification Preferences
+                    {t('dashboard.settings.notifications.title')}
                   </h2>
                   <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                    Choose how you want to be notified
+                    {t('dashboard.settings.notifications.description')}
                   </p>
                 </div>
 
@@ -638,14 +640,14 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   }`}
                 >
                   <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Email Notifications
+                    {t('dashboard.settings.notifications.emailNotifications')}
                   </h3>
                   <div className="space-y-4">
                     <label className="flex items-center justify-between cursor-pointer">
                       <div>
-                        <span className={isDark ? "text-white" : "text-gray-900"}>Email Notifications</span>
+                        <span className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.notifications.emailNotifications')}</span>
                         <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                          Receive email updates and notifications
+                          {t('dashboard.settings.notifications.emailNotificationsDescription')}
                         </p>
                       </div>
                       <button
@@ -667,9 +669,9 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     </label>
                     <label className="flex items-center justify-between cursor-pointer">
                       <div>
-                        <span className={isDark ? "text-white" : "text-gray-900"}>Job Alerts</span>
+                        <span className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.notifications.jobAlerts')}</span>
                         <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                          Get notified about relevant job opportunities
+                          {t('dashboard.settings.notifications.jobAlertsDescription')}
                         </p>
                       </div>
                       <button
@@ -691,9 +693,9 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     </label>
                     <label className="flex items-center justify-between cursor-pointer">
                       <div>
-                        <span className={isDark ? "text-white" : "text-gray-900"}>Weekly Digest</span>
+                        <span className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.notifications.weeklyDigest')}</span>
                         <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                          Receive a weekly summary of your activity
+                          {t('dashboard.settings.notifications.weeklyDigestDescription')}
                         </p>
                       </div>
                       <button
@@ -722,13 +724,13 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   }`}
                 >
                   <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Push Notifications
+                    {t('dashboard.settings.notifications.pushNotifications')}
                   </h3>
                   <label className="flex items-center justify-between cursor-pointer">
                     <div>
-                      <span className={isDark ? "text-white" : "text-gray-900"}>Push Notifications</span>
+                      <span className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.notifications.pushNotifications')}</span>
                       <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                        Receive browser push notifications
+                        {t('dashboard.settings.notifications.pushNotificationsDescription')}
                       </p>
                     </div>
                     <button
@@ -756,10 +758,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
               <div className="space-y-6 animate-in slide-in-from-right duration-300">
                 <div>
                   <h2 className={`text-2xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Appearance Settings
+                    {t('dashboard.settings.appearance.title')}
                   </h2>
                   <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                    Customize how CVSaathi looks for you
+                    {t('dashboard.settings.appearance.description')}
                   </p>
                 </div>
 
@@ -768,12 +770,12 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200"
                   }`}
                 >
-                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>Theme</h3>
+                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.appearance.theme')}</h3>
                   <div className="grid grid-cols-3 gap-4">
                     {[
-                      { mode: "light" as const, icon: Sun, label: "Light" },
-                      { mode: "dark" as const, icon: Moon, label: "Dark" },
-                      { mode: "auto" as const, icon: Monitor, label: "Auto" },
+                      { mode: "light" as const, icon: Sun, label: t('dashboard.settings.appearance.light') },
+                      { mode: "dark" as const, icon: Moon, label: t('dashboard.settings.appearance.dark') },
+                      { mode: "auto" as const, icon: Monitor, label: t('dashboard.settings.appearance.auto') },
                     ].map((theme) => {
                       const Icon = theme.icon;
                       return (
@@ -819,7 +821,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200"
                   }`}
                 >
-                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>Language</h3>
+                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.appearance.language')}</h3>
                   <select
                     className={`w-full px-4 py-2 rounded-lg border ${
                       isDark
@@ -827,10 +829,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                         : "bg-white border-gray-200 text-gray-900"
                     }`}
                   >
-                    <option>English (US)</option>
-                    <option>Spanish</option>
-                    <option>French</option>
-                    <option>German</option>
+                    <option>{t('dashboard.settings.appearance.englishUS')}</option>
+                    <option>{t('dashboard.settings.appearance.spanish')}</option>
+                    <option>{t('dashboard.settings.appearance.french')}</option>
+                    <option>{t('dashboard.settings.appearance.german')}</option>
                   </select>
                 </div>
               </div>
@@ -840,10 +842,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
               <div className="space-y-6 animate-in slide-in-from-right duration-300">
                 <div>
                   <h2 className={`text-2xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Subscription & Billing
+                    {t('dashboard.settings.subscription.title')}
                   </h2>
                   <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                    Manage your subscription and payment methods
+                    {t('dashboard.settings.subscription.description')}
                   </p>
                 </div>
 
@@ -855,17 +857,17 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   <div className="flex items-start justify-between">
                     <div>
                       <h3 className={`text-xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                        Free Plan
+                        {t('dashboard.settings.subscription.freePlan')}
                       </h3>
                       <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        You're currently on the free plan
+                        {t('dashboard.settings.subscription.currentlyOnFreePlan')}
                       </p>
                     </div>
                     <Button
                       onClick={() => navigate("/app/pricing")}
                       className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white"
                     >
-                      Upgrade to Pro
+                      {t('dashboard.settings.subscription.upgradeToPro')}
                     </Button>
                   </div>
                 </div>
@@ -877,10 +879,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
               <div className="space-y-6 animate-in slide-in-from-right duration-300">
                 <div>
                   <h2 className={`text-2xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Privacy & Security
+                    {t('dashboard.settings.privacy.title')}
                   </h2>
                   <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                    Control your data and privacy settings
+                    {t('dashboard.settings.privacy.description')}
                   </p>
                 </div>
 
@@ -897,16 +899,16 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                         <Eye className="size-5 text-white" />
                       </div>
                       <div>
-                        <h3 className={`${isDark ? "text-white" : "text-gray-900"}`}>Activity Log</h3>
+                        <h3 className={`${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.privacy.activityLog')}</h3>
                         <p className={`text-sm mt-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                          A clean timeline of recent logins, security changes and alerts.
+                          {t('dashboard.settings.privacy.activityLogDescription')}
                         </p>
                       </div>
                     </div>
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${isDark ? "bg-white/10 text-gray-300" : "bg-gray-100 text-gray-700"}`}
                     >
-                      Planned
+                      {t('dashboard.settings.privacy.planned')}
                     </span>
                   </div>
                 </div>
@@ -924,16 +926,16 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                         <Smartphone className="size-5 text-white" />
                       </div>
                       <div>
-                        <h3 className={`${isDark ? "text-white" : "text-gray-900"}`}>Connected Devices</h3>
+                        <h3 className={`${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.privacy.connectedDevices')}</h3>
                         <p className={`text-sm mt-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                          See devices currently signed in and revoke access with one click.
+                          {t('dashboard.settings.privacy.connectedDevicesDescription')}
                         </p>
                       </div>
                     </div>
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${isDark ? "bg-white/10 text-gray-300" : "bg-gray-100 text-gray-700"}`}
                     >
-                      Planned
+                      {t('dashboard.settings.privacy.planned')}
                     </span>
                   </div>
                 </div>
@@ -951,16 +953,16 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                         <Shield className="size-5 text-white" />
                       </div>
                       <div>
-                        <h3 className={`${isDark ? "text-white" : "text-gray-900"}`}>Active Sessions</h3>
+                        <h3 className={`${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.privacy.activeSessions')}</h3>
                         <p className={`text-sm mt-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                          Review where you’re logged in and sign out remotely.
+                          {t('dashboard.settings.privacy.activeSessionsDescription')}
                         </p>
                       </div>
                     </div>
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${isDark ? "bg-white/10 text-gray-300" : "bg-gray-100 text-gray-700"}`}
                     >
-                      Planned
+                      {t('dashboard.settings.privacy.planned')}
                     </span>
                   </div>
                 </div>
@@ -978,16 +980,16 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                         <Clock className="size-5 text-white" />
                       </div>
                       <div>
-                        <h3 className={`${isDark ? "text-white" : "text-gray-900"}`}>Login History</h3>
+                        <h3 className={`${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.privacy.loginHistory')}</h3>
                         <p className={`text-sm mt-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                          A chronological list of successful and failed sign‑in attempts.
+                          {t('dashboard.settings.privacy.loginHistoryDescription')}
                         </p>
                       </div>
                     </div>
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${isDark ? "bg-white/10 text-gray-300" : "bg-gray-100 text-gray-700"}`}
                     >
-                      Planned
+                      {t('dashboard.settings.privacy.planned')}
                     </span>
                   </div>
                 </div>
@@ -997,13 +999,13 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200"
                   }`}
                 >
-                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>Data Privacy Controls</h3>
+                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.privacy.dataPrivacyControls')}</h3>
                   <div className="space-y-4">
                     <label className="flex items-center justify-between cursor-pointer">
                       <div>
-                        <span className={isDark ? "text-white" : "text-gray-900"}>Allow analytics tracking</span>
+                        <span className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.privacy.allowAnalyticsTracking')}</span>
                         <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                          Help us improve by sharing usage analytics
+                          {t('dashboard.settings.privacy.analyticsTrackingDescription')}
                         </p>
                       </div>
                       <button
@@ -1025,9 +1027,9 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     </label>
                     <label className="flex items-center justify-between cursor-pointer">
                       <div>
-                        <span className={isDark ? "text-white" : "text-gray-900"}>Share anonymized usage data</span>
+                        <span className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.privacy.shareAnonymizedData')}</span>
                         <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                          Share anonymized data for research and improvement
+                          {t('dashboard.settings.privacy.shareAnonymizedDataDescription')}
                         </p>
                       </div>
                       <button
@@ -1049,9 +1051,9 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     </label>
                     <label className="flex items-center justify-between cursor-pointer">
                       <div>
-                        <span className={isDark ? "text-white" : "text-gray-900"}>Allow personalized recommendations</span>
+                        <span className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.privacy.allowPersonalizedRecommendations')}</span>
                         <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                          Get personalized career recommendations
+                          {t('dashboard.settings.privacy.personalizedRecommendationsDescription')}
                         </p>
                       </div>
                       <button
@@ -1073,9 +1075,9 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     </label>
                     <label className="flex items-center justify-between cursor-pointer">
                       <div>
-                        <span className={isDark ? "text-white" : "text-gray-900"}>Third-party data sharing</span>
+                        <span className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.privacy.thirdPartyDataSharing')}</span>
                         <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                          Allow sharing data with trusted partners
+                          {t('dashboard.settings.privacy.thirdPartyDataSharingDescription')}
                         </p>
                       </div>
                       <button
@@ -1103,7 +1105,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200"
                   }`}
                 >
-                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>Legal Documents</h3>
+                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.privacy.legalDocuments')}</h3>
                   <div className="space-y-3">
                     <button
                       onClick={() => {
@@ -1167,9 +1169,9 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                       <div className="flex items-center gap-3">
                         <Shield className={`size-5 ${isDark ? "text-teal-400" : "text-teal-600"}`} />
                         <div className="text-left">
-                          <p className={isDark ? "text-white" : "text-gray-900"}>Privacy Policy</p>
+                          <p className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.privacy.privacyPolicy')}</p>
                           <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                            How we protect and use your data
+                            {t('dashboard.settings.privacy.privacyPolicyDescription')}
                           </p>
                         </div>
                       </div>
@@ -1222,9 +1224,9 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                       <div className="flex items-center gap-3">
                         <FileText className={`size-5 ${isDark ? "text-teal-400" : "text-teal-600"}`} />
                         <div className="text-left">
-                          <p className={isDark ? "text-white" : "text-gray-900"}>Terms of Service</p>
+                          <p className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.settings.privacy.termsOfService')}</p>
                           <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                            Legal terms and conditions
+                            {t('dashboard.settings.privacy.termsOfServiceDescription')}
                           </p>
                         </div>
                       </div>
@@ -1241,19 +1243,19 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className={`mb-1 ${isDark ? "text-white" : "text-gray-900"}`}>
-                        Export Your Data
+                        {t('dashboard.settings.privacy.exportYourData')}
                       </h3>
                       <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        Download a copy of all your data in JSON format
+                        {t('dashboard.settings.privacy.exportDataDescription')}
                       </p>
                     </div>
                     <Button
                       variant="outline"
                       className={isDark ? "border-white/10" : ""}
-                      onClick={() => toast.success("Data export started. You'll receive an email when ready.")}
+                      onClick={() => toast.success(t('dashboard.settings.privacy.dataExportStarted'))}
                     >
                       <Download className="size-4 mr-2" />
-                      Export
+                      {t('dashboard.settings.privacy.export')}
                     </Button>
                   </div>
                 </div>
@@ -1263,13 +1265,13 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200"
                   }`}
                 >
-                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>Cookie Preferences</h3>
+                  <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.settings.privacy.cookiePreferences')}</h3>
                   <div className="space-y-4">
                     {[
-                      { label: "Essential cookies", checked: true, disabled: true },
-                      { label: "Performance cookies", checked: true, disabled: false },
-                      { label: "Functional cookies", checked: false, disabled: false },
-                      { label: "Marketing cookies", checked: false, disabled: false },
+                      { label: t('dashboard.settings.privacy.essentialCookies'), checked: true, disabled: true },
+                      { label: t('dashboard.settings.privacy.performanceCookies'), checked: true, disabled: false },
+                      { label: t('dashboard.settings.privacy.functionalCookies'), checked: false, disabled: false },
+                      { label: t('dashboard.settings.privacy.marketingCookies'), checked: false, disabled: false },
                     ].map((item, i) => (
                       <label
                         key={i}
@@ -1281,7 +1283,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                           <span className={isDark ? "text-white" : "text-gray-900"}>{item.label}</span>
                           {item.disabled && (
                             <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-                              Required for basic functionality
+                              {t('dashboard.settings.privacy.requiredForBasicFunctionality')}
                             </p>
                           )}
                         </div>
@@ -1312,15 +1314,15 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
               <div className="space-y-6 animate-in slide-in-from-right duration-300">
                 <div>
                   <h2 className={`text-2xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Integrations
+                    {t('dashboard.settings.integrations.title')}
                   </h2>
                   <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                    Connect with third-party services
+                    {t('dashboard.settings.integrations.description')}
                   </p>
                 </div>
 
                 <p className={`text-center text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                  No integrations available yet
+                  {t('dashboard.settings.integrations.noIntegrationsAvailable')}
                 </p>
               </div>
             )}
@@ -1329,10 +1331,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
               <div className="space-y-6 animate-in slide-in-from-right duration-300">
                 <div>
                   <h2 className={`text-2xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Job Preferences
+                    {t('dashboard.settings.preferences.title')}
                   </h2>
                   <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                    Set your career goals and preferences
+                    {t('dashboard.settings.preferences.description')}
                   </p>
                 </div>
 
@@ -1342,12 +1344,12 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   }`}
                 >
                   <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Job Search Settings
+                    {t('dashboard.settings.preferences.jobSearchSettings')}
                   </h3>
                   <div className="space-y-4">
                     <div>
                       <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        Desired Job Title
+                        {t('dashboard.settings.preferences.desiredJobTitle')}
                       </label>
                       <input
                         type="text"
@@ -1361,7 +1363,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     </div>
                     <div>
                       <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        Preferred Industry
+                        {t('dashboard.settings.preferences.preferredIndustry')}
                       </label>
                       <select
                         className={`w-full px-4 py-2 rounded-lg border ${
@@ -1370,10 +1372,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                             : "bg-white border-gray-200 text-gray-900"
                         }`}
                       >
-                        <option>Technology</option>
-                        <option>Finance</option>
-                        <option>Healthcare</option>
-                        <option>Education</option>
+                        <option>{t('dashboard.settings.preferences.technology')}</option>
+                        <option>{t('dashboard.settings.preferences.finance')}</option>
+                        <option>{t('dashboard.settings.preferences.healthcare')}</option>
+                        <option>{t('dashboard.settings.preferences.education')}</option>
                       </select>
                     </div>
                   </div>
@@ -1385,10 +1387,10 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
               <div className="space-y-6 animate-in slide-in-from-right duration-300">
                 <div>
                   <h2 className={`text-2xl mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Advanced Settings
+                    {t('dashboard.settings.advanced.title')}
                   </h2>
                   <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                    Configure advanced options and system settings
+                    {t('dashboard.settings.advanced.description')}
                   </p>
                 </div>
 
@@ -1398,12 +1400,12 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   }`}
                 >
                   <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    API Access
+                    {t('dashboard.settings.advanced.apiAccess')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        API Key
+                        {t('dashboard.settings.advanced.apiKey')}
                       </label>
                       <input
                         type="text"
@@ -1417,7 +1419,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     </div>
                     <div>
                       <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        Database Connection
+                        {t('dashboard.settings.advanced.databaseConnection')}
                       </label>
                       <input
                         type="text"
@@ -1431,7 +1433,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     </div>
                     <div>
                       <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        Hard Drive Storage
+                        {t('dashboard.settings.advanced.hardDriveStorage')}
                       </label>
                       <input
                         type="text"
@@ -1445,7 +1447,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                     </div>
                     <div>
                       <label className={`block text-sm mb-2 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                        Refresh Interval
+                        {t('dashboard.settings.advanced.refreshInterval')}
                       </label>
                       <input
                         type="text"
@@ -1466,21 +1468,21 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   }`}
                 >
                   <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    System Logs
+                    {t('dashboard.settings.advanced.systemLogs')}
                   </h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className={`text-sm ${isDark ? "text-white" : "text-gray-900"}`}>
-                          View system logs and error reports
+                          {t('dashboard.settings.advanced.viewSystemLogs')}
                         </p>
                         <p className={`text-xs mt-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                          For debugging and performance monitoring
+                          {t('dashboard.settings.advanced.systemLogsDescription')}
                         </p>
                       </div>
                       <Button variant="outline" className={isDark ? "border-white/10" : ""}>
                         <RefreshCw className="size-4 mr-2" />
-                        View Logs
+                        {t('dashboard.settings.advanced.viewLogs')}
                       </Button>
                     </div>
                   </div>
@@ -1492,13 +1494,13 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   }`}
                 >
                   <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Data Export
+                    {t('dashboard.settings.advanced.dataExport')}
                   </h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className={`text-sm ${isDark ? "text-white" : "text-gray-900"}`}>
-                          Export all your data in JSON format
+                          {t('dashboard.settings.privacy.exportDataDescription')}
                         </p>
                         <p className={`text-xs mt-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                           For backup and portability
@@ -1506,7 +1508,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                       </div>
                       <Button variant="outline" className={isDark ? "border-white/10" : ""}>
                         <Download className="size-4 mr-2" />
-                        Export Data
+                        {t('dashboard.settings.advanced.exportData')}
                       </Button>
                     </div>
                   </div>
@@ -1518,7 +1520,7 @@ export function SettingsPage({ isDark, onBack, onThemeChange }: SettingsPageProp
                   }`}
                 >
                   <h3 className={`mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                    Session Management
+                    {t('dashboard.settings.advanced.sessionManagement')}
                   </h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">

@@ -2,10 +2,13 @@ import { motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "./ui/button";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import logoImage from "../../Assets/Logo.png";
 
 export function Navigation() {
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -18,12 +21,12 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { label: 'Why Choose Us', href: '#why-choose-us' },
-    { label: 'Features', href: '#features' },
-    { label: 'Services', href: '#services' },
-    { label: 'Process', href: '#how-it-works' },
-    { label: 'Templates', href: '#templates' },
-    { label: 'Pricing', href: '#pricing' },
+    { label: t('landing.navigation.whyChooseUs'), href: '#why-choose-us' },
+    { label: t('landing.navigation.features'), href: '#features' },
+    { label: t('landing.navigation.services'), href: '#services' },
+    { label: t('landing.navigation.process'), href: '#how-it-works' },
+    { label: t('landing.navigation.templates'), href: '#templates' },
+    { label: t('landing.navigation.pricing'), href: '#pricing' },
   ];
 
   return (
@@ -71,12 +74,13 @@ export function Navigation() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
+            <LanguageSwitcher />
             <Link to="/auth/signin">
               <Button
                 variant="ghost"
                 className="text-gray-700 hover:text-teal-600 hover:bg-teal-50"
               >
-                Sign In
+                {t('landing.navigation.signIn')}
               </Button>
             </Link>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
@@ -84,7 +88,7 @@ export function Navigation() {
                 <Button
                   className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white shadow-lg shadow-teal-500/30"
                 >
-                  Get Started Free
+                  {t('landing.navigation.getStarted')}
                 </Button>
               </Link>
             </motion.div>
@@ -119,14 +123,17 @@ export function Navigation() {
                 </a>
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-gray-200">
+                <div className="pb-2">
+                  <LanguageSwitcher />
+                </div>
                 <Link to="/auth/signin" className="w-full">
                   <Button variant="outline" className="w-full border-gray-300">
-                    Sign In
+                    {t('landing.navigation.signIn')}
                   </Button>
                 </Link>
                 <Link to="/auth/signup" className="w-full">
                   <Button className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 text-white">
-                    Get Started Free
+                    {t('landing.navigation.getStarted')}
                   </Button>
                 </Link>
               </div>

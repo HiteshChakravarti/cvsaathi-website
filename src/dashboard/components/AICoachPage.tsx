@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { Plus, ChevronLeft, MoreHorizontal, Send, Search, Loader2, Trash2 } from "lucide-react";
+import { Plus, ChevronLeft, MoreHorizontal, Send, Search, Loader2, Trash2, AlertCircle } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { toast } from "sonner";
 import { useAIConversations, AIMessage } from "../../hooks/useAIConversations";
 import { useAICareerService } from "../../services/aiCareerService";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
+import { useSubscription } from "../../hooks/useSubscription";
 // AI Career Coach mascot - using public path
 const estelMascot = "/AI Career Coch.png";
 
@@ -13,24 +15,77 @@ interface AICoachPageProps {
   onBack: () => void;
 }
 
-const quickPrompts = [
-  "Review my resume",
-  "Career guidance advice",
-  "Optimize my LinkedIn profile",
-  "Interview preparation tips",
-  "Plan my career path",
-  "Cover letter help",
+const getQuickPrompts = (t: any) => [
+  t('dashboard.aiCoach.quickPrompts.reviewResume'),
+  t('dashboard.aiCoach.quickPrompts.careerGuidance'),
+  t('dashboard.aiCoach.quickPrompts.optimizeLinkedIn'),
+  t('dashboard.aiCoach.quickPrompts.interviewTips'),
+  t('dashboard.aiCoach.quickPrompts.careerPath'),
+  t('dashboard.aiCoach.quickPrompts.coverLetter'),
 ];
 
 export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { conversations, loading: conversationsLoading, createConversation, addMessage, saveAIResponse, deleteConversation } = useAIConversations();
   const { sendMessage: sendAIMessage } = useAICareerService();
+  const { canUseResource, trackUsage, getUsageForResource, currentPlan, loadUsageStats, getFeatureLimits } = useSubscription();
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<AIMessage[]>([]);
   const [message, setMessage] = useState("");
   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
+  const [usageInfo, setUsageInfo] = useState<{ remaining: number; limit: number } | null>(null);
+  const [checkingUsage, setCheckingUsage] = useState(false);
+  
+  const quickPrompts = getQuickPrompts(t);
+
+  // Load usage info on mount and when plan changes
+  useEffect(() => {
+    const loadUsageInfo = async () => {
+      if (!user?.id) return;
+      
+      try {
+        setCheckingUsage(true);
+        const usage = getUsageForResource('ai_career_coaching');
+        if (usage) {
+          setUsageInfo({
+            remaining: usage.remaining,
+            limit: usage.limit
+          });
+        } else {
+          // If no usage data, check directly and reload stats
+          await loadUsageStats();
+          const updatedUsage = getUsageForResource('ai_career_coaching');
+          if (updatedUsage) {
+            setUsageInfo({
+              remaining: updatedUsage.remaining,
+              limit: updatedUsage.limit
+            });
+          } else {
+            // Fallback: check directly
+            const result = await canUseResource('ai_career_coaching');
+            // Get limit from plan limits
+            const planLimits = getFeatureLimits();
+            const limit = planLimits.aiSessionsPerMonth;
+            setUsageInfo({
+              remaining: result.remaining,
+              limit: limit
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error loading usage info:', error);
+        // Don't block UI if usage check fails - set to null so UI doesn't show incorrect info
+        setUsageInfo(null);
+      } finally {
+        setCheckingUsage(false);
+      }
+    };
+
+    loadUsageInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, currentPlan.name]);
 
   // Load messages when conversation changes
   useEffect(() => {
@@ -49,15 +104,30 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
 
   const handleNewChat = async () => {
     try {
-      const newConv = await createConversation('New Conversation', 'general');
+      const newConv = await createConversation(t('dashboard.aiCoach.newConversation'), 'general');
       setCurrentSessionId(newConv.session_id);
       setMessages([]);
       setMessage("");
-      toast.success('New conversation created!');
+      
+      // Reload usage info to ensure it's up to date
+      try {
+        await loadUsageStats();
+        const usage = getUsageForResource('ai_career_coaching');
+        if (usage) {
+          setUsageInfo({
+            remaining: usage.remaining,
+            limit: usage.limit
+          });
+        }
+      } catch (error) {
+        console.warn('Failed to reload usage info:', error);
+      }
+      
+      toast.success(t('dashboard.aiCoach.conversationCreated'));
     } catch (error: any) {
       console.error('Error creating conversation:', error);
-      const errorMessage = error?.message || 'Unknown error occurred';
-      toast.error(`Failed to create new conversation: ${errorMessage}. Check console for details.`);
+      const errorMessage = error?.message || t('dashboard.aiCoach.unknownError');
+      toast.error(t('dashboard.aiCoach.createFailed', { error: errorMessage }));
     }
   };
 
@@ -74,6 +144,52 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
     if (!message.trim() || sending) return;
 
     const userMessage = message.trim();
+    
+    // Check usage before sending (non-blocking - if check fails, still allow sending)
+    try {
+      const usageCheck = await canUseResource('ai_career_coaching');
+      
+      if (!usageCheck.canUse) {
+        // User has reached limit
+        toast.error(
+          t('dashboard.aiCoach.limitReached', { 
+            limit: usageCheck.remaining || 0,
+            plan: currentPlan.displayName 
+          }),
+          {
+            duration: 6000,
+            action: {
+              label: t('dashboard.aiCoach.upgrade'),
+              onClick: () => {
+                // Navigate to pricing page
+                window.location.href = '/app/pricing';
+              }
+            }
+          }
+        );
+        return; // Block sending if limit reached
+      }
+
+      // Update usage info with correct limit from plan
+      const planLimits = getFeatureLimits();
+      const limit = planLimits.aiSessionsPerMonth;
+      setUsageInfo({
+        remaining: usageCheck.remaining,
+        limit: limit
+      });
+
+      // Show warning if approaching limit
+      if (usageCheck.remaining > 0 && usageCheck.remaining <= 2 && usageCheck.remaining !== -1) {
+        toast.warning(
+          t('dashboard.aiCoach.lowUsage', { remaining: usageCheck.remaining }),
+          { duration: 4000 }
+        );
+      }
+    } catch (error) {
+      // If usage check fails, log but don't block - let backend handle it
+      console.warn('Usage check failed, proceeding anyway:', error);
+    }
+
     setMessage("");
     setSending(true);
 
@@ -87,7 +203,8 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
           setCurrentSessionId(sessionId);
         } catch (createError: any) {
           console.error('Failed to create conversation:', createError);
-          toast.error(`Failed to create conversation: ${createError?.message || 'Unknown error'}`);
+          const errorMessage = createError?.message || t('dashboard.aiCoach.unknownError');
+          toast.error(t('dashboard.aiCoach.createFailed', { error: errorMessage }));
           setSending(false);
           return;
         }
@@ -111,7 +228,7 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
       
       if (!response) {
         console.error('AI service returned null - check subscription, usage limits, or API connection');
-        throw new Error('No response from AI service. Please check your subscription status or try again later.');
+        throw new Error(t('dashboard.aiCoach.noResponseFromAI'));
       }
 
       console.log('AI response received:', {
@@ -135,11 +252,50 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
         conversationId: sessionId,
       });
 
-      toast.success('Message sent successfully!');
+      // Track usage after successful message (non-blocking)
+      try {
+        await trackUsage('ai_career_coaching', null, {
+          session_id: sessionId,
+          message_length: userMessage.length,
+          response_length: aiContent.length
+        });
+        
+        // Reload usage stats to get accurate count
+        await loadUsageStats();
+        
+        // Update usage info from fresh data
+        const updatedUsage = getUsageForResource('ai_career_coaching');
+        if (updatedUsage) {
+          setUsageInfo({
+            remaining: updatedUsage.remaining,
+            limit: updatedUsage.limit
+          });
+        } else {
+          // Fallback: manually decrement if we can't get fresh data
+          if (usageInfo && usageInfo.remaining !== -1) {
+            setUsageInfo(prev => prev ? {
+              ...prev,
+              remaining: Math.max(0, prev.remaining - 1)
+            } : null);
+          }
+        }
+      } catch (trackingError) {
+        // Don't fail if tracking fails - just log it
+        console.warn('Failed to track usage:', trackingError);
+        // Still try to update UI optimistically
+        if (usageInfo && usageInfo.remaining !== -1) {
+          setUsageInfo(prev => prev ? {
+            ...prev,
+            remaining: Math.max(0, prev.remaining - 1)
+          } : null);
+        }
+      }
+
+      toast.success(t('dashboard.aiCoach.messageSent'));
     } catch (error: any) {
       console.error('Error sending message:', error);
-      const errorMessage = error?.message || 'Unknown error occurred';
-      toast.error(`Failed to send message: ${errorMessage}. Check console for details.`);
+      const errorMessage = error?.message || t('dashboard.aiCoach.unknownError');
+      toast.error(t('dashboard.aiCoach.sendFailed', { error: errorMessage }));
       // Remove the user message from UI if it failed
       setMessages(prev => prev.filter((msg, idx) => idx < prev.length - 1 || msg.role !== 'user'));
     } finally {
@@ -155,10 +311,10 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} min ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    if (diffMins < 1) return t('dashboard.aiCoach.timeFormat.justNow');
+    if (diffMins < 60) return t('dashboard.aiCoach.timeFormat.minAgo', { n: diffMins });
+    if (diffHours < 24) return t('dashboard.aiCoach.timeFormat.hoursAgo', { n: diffHours, plural: diffHours > 1 ? 's' : '' });
+    if (diffDays < 7) return t('dashboard.aiCoach.timeFormat.daysAgo', { n: diffDays, plural: diffDays > 1 ? 's' : '' });
     return date.toLocaleDateString();
   };
 
@@ -177,7 +333,7 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
             className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
           >
             <ChevronLeft className="size-4" />
-            <span className="text-sm">Back to Dashboard</span>
+            <span className="text-sm">{t('dashboard.aiCoach.backToDashboard')}</span>
           </button>
         </div>
 
@@ -195,8 +351,39 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
 
         {/* Estel Name */}
         <div className="px-6 pb-4 text-center">
-          <h2 className="text-xl text-white mb-1">Estel</h2>
-          <p className="text-sm text-gray-400">AI Career Coach</p>
+          <h2 className="text-xl text-white mb-1">{t('dashboard.aiCoach.estelName')}</h2>
+          <p className="text-sm text-gray-400">{t('dashboard.aiCoach.estelTitle')}</p>
+          
+          {/* Usage Info */}
+          {usageInfo && !checkingUsage && (
+            <div className={`mt-4 p-3 rounded-lg ${
+              usageInfo.remaining === -1 
+                ? 'bg-teal-500/20 border border-teal-500/30'
+                : usageInfo.remaining <= 2
+                ? 'bg-yellow-500/20 border border-yellow-500/30'
+                : 'bg-white/5 border border-white/10'
+            }`}>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-gray-300">{t('dashboard.aiCoach.sessionsRemaining')}</span>
+                <span className={`font-semibold ${
+                  usageInfo.remaining === -1 
+                    ? 'text-teal-400'
+                    : usageInfo.remaining <= 2
+                    ? 'text-yellow-400'
+                    : 'text-white'
+                }`}>
+                  {usageInfo.remaining === -1 ? '∞' : usageInfo.remaining}
+                  {usageInfo.limit !== -1 && `/${usageInfo.limit}`}
+                </span>
+              </div>
+              {usageInfo.remaining <= 2 && usageInfo.remaining !== -1 && (
+                <div className="mt-2 flex items-center gap-1 text-yellow-400 text-xs">
+                  <AlertCircle className="size-3" />
+                  <span>{t('dashboard.aiCoach.upgradePrompt')}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* New Chat Button */}
@@ -206,14 +393,14 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
             className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0"
           >
             <Plus className="size-4 mr-2" />
-            New Chat
+            {t('dashboard.aiCoach.newChat')}
           </Button>
         </div>
 
         {/* History */}
         <div className="flex-1 overflow-y-auto px-4 pb-4">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm text-gray-400">History</h3>
+            <h3 className="text-sm text-gray-400">{t('dashboard.aiCoach.history')}</h3>
           </div>
           {conversationsLoading ? (
             <div className="flex items-center justify-center py-8">
@@ -233,7 +420,7 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-300 truncate">{conv.title || 'New Conversation'}</p>
+                      <p className="text-sm text-gray-300 truncate">{conv.title || t('dashboard.aiCoach.newConversation')}</p>
                       <p className="text-xs text-gray-500 mt-1">{formatTime(conv.updated_at)}</p>
                     </div>
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
@@ -255,7 +442,7 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
                 </div>
               ))}
               {conversations.length === 0 && (
-                <p className="text-sm text-gray-500 text-center py-8">No conversations yet</p>
+                <p className="text-sm text-gray-500 text-center py-8">{t('dashboard.aiCoach.noConversations')}</p>
               )}
             </div>
           )}
@@ -276,9 +463,9 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
                 {/* Greeting */}
                 <div className="text-center mb-12">
                   <h1 className={`text-5xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Hey, it's <span className="bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">Estel</span> 👋
+                    {t('dashboard.aiCoach.greeting')} <span className="bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">{t('dashboard.aiCoach.estelName')}</span> 👋
                   </h1>
-                  <p className={`text-2xl ${isDark ? 'text-white/90' : 'text-gray-700'}`}>How can I help?</p>
+                  <p className={`text-2xl ${isDark ? 'text-white/90' : 'text-gray-700'}`}>{t('dashboard.aiCoach.howCanIHelp')}</p>
                 </div>
 
                 {/* Quick Prompts */}
@@ -347,7 +534,7 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Send a message..."
+                placeholder={t('dashboard.aiCoach.sendMessage')}
                 className={`w-full px-6 py-4 pr-12 rounded-2xl backdrop-blur-sm border focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-colors duration-500 ${
                   isDark
                     ? 'bg-white/10 border-white/20 text-white placeholder-white/50'
@@ -363,7 +550,7 @@ export function AICoachPage({ isDark, onBack }: AICoachPageProps) {
               </button>
             </div>
             <p className={`text-xs text-center mt-3 ${isDark ? 'text-white/50' : 'text-gray-500'}`}>
-              Estel helpers may make mistakes. Consider checking important information.
+              {t('dashboard.aiCoach.disclaimer')}
             </p>
           </div>
         </div>

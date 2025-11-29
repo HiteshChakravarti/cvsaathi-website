@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { ResumeData } from './ResumeBuilderPage';
+import { useTranslation } from 'react-i18next';
 
 interface LayoutCustomizationProps {
   resumeData: ResumeData;
@@ -92,16 +93,16 @@ const fontFamilies: Record<string, Array<{ name: string; value: string; category
   ],
 };
 
-const sectionLabels: Record<string, { label: string; icon: any }> = {
-  summary: { label: 'Professional Summary', icon: FileText },
-  experience: { label: 'Experience', icon: Briefcase },
-  education: { label: 'Education', icon: GraduationCap },
-  skills: { label: 'Skills', icon: Award },
-  projects: { label: 'Projects', icon: Code },
-  certifications: { label: 'Certifications', icon: Award },
-  languages: { label: 'Languages', icon: Languages },
-  awards: { label: 'Awards', icon: Trophy },
-};
+const getSectionLabels = (t: any): Record<string, { label: string; icon: any }> => ({
+  summary: { label: t('dashboard.resumeBuilder.layout.sections.summary'), icon: FileText },
+  experience: { label: t('dashboard.resumeBuilder.layout.sections.experience'), icon: Briefcase },
+  education: { label: t('dashboard.resumeBuilder.layout.sections.education'), icon: GraduationCap },
+  skills: { label: t('dashboard.resumeBuilder.layout.sections.skills'), icon: Award },
+  projects: { label: t('dashboard.resumeBuilder.layout.sections.projects'), icon: Code },
+  certifications: { label: t('dashboard.resumeBuilder.layout.sections.certifications'), icon: Award },
+  languages: { label: t('dashboard.resumeBuilder.layout.sections.languages'), icon: Languages },
+  awards: { label: t('dashboard.resumeBuilder.layout.sections.awards'), icon: Trophy },
+});
 
 export function LayoutCustomization({
   resumeData,
@@ -110,22 +111,26 @@ export function LayoutCustomization({
   prevStep,
   nextStep,
 }: LayoutCustomizationProps) {
+  const { t } = useTranslation();
   const availableFonts = fontFamilies[resumeData.templateId] || fontFamilies['modern-pro'];
+  const sectionLabels = getSectionLabels(t);
 
   return (
     <div>
       <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-        Layout & Design
+        {t('dashboard.resumeBuilder.layout.title')}
       </h2>
       <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-        Customize your resume's appearance and structure
+        {t('dashboard.resumeBuilder.layout.description')}
       </p>
 
       {/* Accent Color */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-4">
           <Palette className="size-5 text-purple-500" />
-          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Accent Color</h3>
+          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t('dashboard.resumeBuilder.layout.accentColor')}
+          </h3>
         </div>
         <div className="grid grid-cols-6 gap-3 mb-4">
           {accentColors.map((color) => (
@@ -149,7 +154,7 @@ export function LayoutCustomization({
         {/* Custom Color Picker */}
         <div className={`p-4 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
           <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-            Custom Color
+            {t('dashboard.resumeBuilder.layout.customColor')}
           </label>
           <div className="flex items-center gap-3">
             <input
@@ -175,7 +180,9 @@ export function LayoutCustomization({
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-4">
           <Type className="size-5 text-purple-500" />
-          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Font Family</h3>
+          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t('dashboard.resumeBuilder.layout.fontFamily')}
+          </h3>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {availableFonts.map((font) => (
@@ -200,7 +207,12 @@ export function LayoutCustomization({
                 )}
               </div>
               <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {font.category}
+                {(() => {
+                  const categoryKey = font.category.replace(/\s+/g, '').toLowerCase();
+                  const translationKey = `dashboard.resumeBuilder.layout.fontCategories.${categoryKey}`;
+                  const translated = t(translationKey);
+                  return translated !== translationKey ? translated : font.category;
+                })()}
               </p>
             </button>
           ))}
@@ -211,13 +223,15 @@ export function LayoutCustomization({
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-4">
           <AlignLeft className="size-5 text-purple-500" />
-          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Header Style</h3>
+          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t('dashboard.resumeBuilder.layout.headerStyle')}
+          </h3>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {[
-            { value: 'centered', label: 'Centered', icon: AlignLeft },
-            { value: 'left', label: 'Left Aligned', icon: AlignLeft },
-            { value: 'two-column', label: 'Two Column', icon: Columns },
+            { value: 'centered', label: t('dashboard.resumeBuilder.layout.headerStyles.centered'), icon: AlignLeft },
+            { value: 'left', label: t('dashboard.resumeBuilder.layout.headerStyles.left'), icon: AlignLeft },
+            { value: 'two-column', label: t('dashboard.resumeBuilder.layout.headerStyles.twoColumn'), icon: Columns },
           ].map((style) => (
             <button
               key={style.value}
@@ -243,12 +257,14 @@ export function LayoutCustomization({
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-4">
           <Columns className="size-5 text-purple-500" />
-          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Column Layout</h3>
+          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t('dashboard.resumeBuilder.layout.columnLayout')}
+          </h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
           {[
-            { value: 1, label: 'Single Column', description: 'Traditional layout' },
-            { value: 2, label: 'Two Columns', description: 'Space efficient' },
+            { value: 1, label: t('dashboard.resumeBuilder.layout.columns.single'), description: t('dashboard.resumeBuilder.layout.columns.singleDescription') },
+            { value: 2, label: t('dashboard.resumeBuilder.layout.columns.two'), description: t('dashboard.resumeBuilder.layout.columns.twoDescription') },
           ].map((col) => (
             <button
               key={col.value}
@@ -276,13 +292,15 @@ export function LayoutCustomization({
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-4">
           <Type className="size-5 text-purple-500" />
-          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Font Size</h3>
+          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t('dashboard.resumeBuilder.layout.fontSize')}
+          </h3>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {[
-            { value: 'small', label: 'Small', description: 'More content' },
-            { value: 'medium', label: 'Medium', description: 'Balanced' },
-            { value: 'large', label: 'Large', description: 'Easy to read' },
+            { value: 'small', label: t('dashboard.resumeBuilder.layout.fontSizes.small'), description: t('dashboard.resumeBuilder.layout.fontSizes.smallDescription') },
+            { value: 'medium', label: t('dashboard.resumeBuilder.layout.fontSizes.medium'), description: t('dashboard.resumeBuilder.layout.fontSizes.mediumDescription') },
+            { value: 'large', label: t('dashboard.resumeBuilder.layout.fontSizes.large'), description: t('dashboard.resumeBuilder.layout.fontSizes.largeDescription') },
           ].map((size) => (
             <button
               key={size.value}
@@ -310,13 +328,15 @@ export function LayoutCustomization({
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-4">
           <Layout className="size-5 text-purple-500" />
-          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Section Spacing</h3>
+          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t('dashboard.resumeBuilder.layout.sectionSpacing')}
+          </h3>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {[
-            { value: 'compact', label: 'Compact', description: 'Tight spacing' },
-            { value: 'balanced', label: 'Balanced', description: 'Recommended' },
-            { value: 'spacious', label: 'Spacious', description: 'More breathing room' },
+            { value: 'compact', label: t('dashboard.resumeBuilder.layout.spacing.compact'), description: t('dashboard.resumeBuilder.layout.spacing.compactDescription') },
+            { value: 'balanced', label: t('dashboard.resumeBuilder.layout.spacing.balanced'), description: t('dashboard.resumeBuilder.layout.spacing.balancedDescription') },
+            { value: 'spacious', label: t('dashboard.resumeBuilder.layout.spacing.spacious'), description: t('dashboard.resumeBuilder.layout.spacing.spaciousDescription') },
           ].map((spacing) => (
             <button
               key={spacing.value}
@@ -344,7 +364,9 @@ export function LayoutCustomization({
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-4">
           <Eye className="size-5 text-purple-500" />
-          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Section Visibility</h3>
+          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t('dashboard.resumeBuilder.layout.sectionVisibility')}
+          </h3>
         </div>
         <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
           <div className="space-y-3">
@@ -392,11 +414,13 @@ export function LayoutCustomization({
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-4">
           <GripVertical className="size-5 text-purple-500" />
-          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Section Order</h3>
+          <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t('dashboard.resumeBuilder.layout.sectionOrder')}
+          </h3>
         </div>
         <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
           <p className={`text-sm mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Reorder sections by moving them up or down
+            {t('dashboard.resumeBuilder.layout.reorderSections')}
           </p>
           <div className="space-y-2">
             {resumeData.layout.sectionOrder.map((sectionId, index) => {
@@ -463,13 +487,13 @@ export function LayoutCustomization({
           className="bg-white/10 hover:bg-white/20 text-white border-0"
         >
           <ChevronLeft className="size-4 mr-2" />
-          Back
+          {t('dashboard.resumeBuilder.buttons.previous')}
         </Button>
         <Button
           onClick={nextStep}
           className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
         >
-          Continue
+          {t('dashboard.resumeBuilder.continue')}
           <ChevronRight className="size-4 ml-2" />
         </Button>
       </div>

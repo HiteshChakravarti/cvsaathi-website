@@ -288,6 +288,64 @@ const resources = {
       readyToTransform: 'Ready to transform your career?',
       alreadyHaveAccount: 'Already have an account?',
       
+      authPages: {
+        common: {
+          emailLabel: 'Email Address',
+          passwordLabel: 'Password',
+          confirmPasswordLabel: 'Confirm Password',
+          fullNameLabel: 'Full Name',
+          showPassword: 'Show password',
+          hidePassword: 'Hide password',
+          forgotPasswordLink: 'Forgot Password?',
+          noAccountPrompt: "Don't have an account?",
+          signUpLinkText: 'Sign Up',
+          haveAccountPrompt: 'Already have an account?',
+          signInLinkText: 'Sign In',
+          formError: 'Please fix the errors in the form',
+          invalidCredentials: 'Invalid email or password. Please try again.',
+          unexpectedError: 'An unexpected error occurred. Please try again.',
+          accountCreationFailed: 'Failed to create account. Please try again.',
+          passwordResetFailed: 'Failed to send reset email. Please try again.',
+          passwordResetSuccess: 'Password reset email sent! Check your inbox.',
+          invalidEmail: 'Please enter a valid email address',
+          passwordRequired: 'Password is required',
+          passwordMin: 'Password must be at least 8 characters',
+          nameMin: 'Name must be at least 2 characters',
+          passwordsMismatch: "Passwords don't match"
+        },
+        signIn: {
+          badge: 'Welcome Back',
+          title: 'Sign In',
+          description: 'Continue your career journey with CVSaathi',
+          submit: 'Sign In',
+          submitting: 'Signing In...',
+          successToast: 'Welcome back! Redirecting to dashboard...'
+        },
+        signUp: {
+          badge: 'Create Your Account',
+          title: 'Get Started Free',
+          description: 'Join thousands of professionals building their careers',
+          submit: 'Create Account',
+          submitting: 'Creating Account...',
+          successToast: 'Account created successfully! Redirecting to dashboard...',
+          trustNoCard: 'No credit card required',
+          trustTrial: '7-day free trial'
+        },
+        forgotPassword: {
+          badge: 'Reset Password',
+          title: 'Forgot Password?',
+          description: "No worries! Enter your email and we'll send you a reset link.",
+          submit: 'Send Reset Link',
+          submitting: 'Sending...',
+          backToSignIn: 'Back to Sign In',
+          successTitle: 'Check Your Email',
+          successDescription: "We've sent a password reset link to {{email}}. Please check your inbox and follow the instructions.",
+          resendButton: 'Send Another Email',
+          successButton: 'Back to Sign In',
+          toastSuccess: 'Password reset email sent! Check your inbox.'
+        }
+      },
+      
       // Resume Builder
       resumeBuilder: 'Resume Builder',
       template: 'Template',
@@ -1444,6 +1502,64 @@ const resources = {
       readyToTransform: 'अपना करियर बदलने के लिए तैयार हैं?',
       alreadyHaveAccount: 'पहले से खाता है?',
       
+      authPages: {
+        common: {
+          emailLabel: 'ईमेल पता',
+          passwordLabel: 'पासवर्ड',
+          confirmPasswordLabel: 'पासवर्ड की पुष्टि करें',
+          fullNameLabel: 'पूरा नाम',
+          showPassword: 'पासवर्ड दिखाएं',
+          hidePassword: 'पासवर्ड छुपाएं',
+          forgotPasswordLink: 'पासवर्ड भूल गए?',
+          noAccountPrompt: 'खाता नहीं है?',
+          signUpLinkText: 'साइन अप करें',
+          haveAccountPrompt: 'पहले से खाता है?',
+          signInLinkText: 'साइन इन करें',
+          formError: 'कृपया फॉर्म में त्रुटियों को ठीक करें',
+          invalidCredentials: 'अमान्य ईमेल या पासवर्ड। कृपया पुनः प्रयास करें।',
+          unexpectedError: 'एक अप्रत्याशित त्रुटि हुई। कृपया पुनः प्रयास करें।',
+          accountCreationFailed: 'खाता बनाने में विफल। कृपया पुनः प्रयास करें।',
+          passwordResetFailed: 'रीसेट ईमेल भेजने में विफल। कृपया पुनः प्रयास करें।',
+          passwordResetSuccess: 'पासवर्ड रीसेट ईमेल भेजा गया! अपना इनबॉक्स जांचें।',
+          invalidEmail: 'कृपया एक वैध ईमेल पता दर्ज करें',
+          passwordRequired: 'पासवर्ड आवश्यक है',
+          passwordMin: 'पासवर्ड कम से कम 8 वर्ण का होना चाहिए',
+          nameMin: 'नाम कम से कम 2 वर्ण का होना चाहिए',
+          passwordsMismatch: 'पासवर्ड मेल नहीं खा रहे हैं'
+        },
+        signIn: {
+          badge: 'वापस आने पर स्वागत है',
+          title: 'साइन इन',
+          description: 'CVSaathi के साथ अपनी करियर यात्रा जारी रखें',
+          submit: 'साइन इन',
+          submitting: 'साइन इन हो रहा है...',
+          successToast: 'वापस आने पर स्वागत है! डैशबोर्ड पर पुनर्निर्देशित कर रहे हैं...'
+        },
+        signUp: {
+          badge: 'अपना खाता बनाएं',
+          title: 'मुफ्त शुरू करें',
+          description: 'अपने करियर बना रहे हजारों पेशेवरों में शामिल हों',
+          submit: 'खाता बनाएं',
+          submitting: 'खाता बनाया जा रहा है...',
+          successToast: 'खाता सफलतापूर्वक बनाया गया! डैशबोर्ड पर पुनर्निर्देशित कर रहे हैं...',
+          trustNoCard: 'क्रेडिट कार्ड की आवश्यकता नहीं',
+          trustTrial: '7-दिन का मुफ्त परीक्षण'
+        },
+        forgotPassword: {
+          badge: 'पासवर्ड रीसेट करें',
+          title: 'पासवर्ड भूल गए?',
+          description: 'कोई चिंता नहीं! अपना ईमेल दर्ज करें और हम आपको एक रीसेट लिंक भेजेंगे।',
+          submit: 'रीसेट लिंक भेजें',
+          submitting: 'भेजा जा रहा है...',
+          backToSignIn: 'साइन इन पर वापस जाएं',
+          successTitle: 'अपना ईमेल जांचें',
+          successDescription: 'हमने {{email}} पर एक पासवर्ड रीसेट लिंक भेजा है। कृपया अपना इनबॉक्स जांचें और निर्देशों का पालन करें।',
+          resendButton: 'दूसरा ईमेल भेजें',
+          successButton: 'साइन इन पर वापस जाएं',
+          toastSuccess: 'पासवर्ड रीसेट ईमेल भेजा गया! अपना इनबॉक्स जांचें।'
+        }
+      },
+      
       // Resume Builder
       resumeBuilder: 'रिज्यूमे बिल्डर',
       template: 'टेम्प्लेट',
@@ -2462,6 +2578,64 @@ const resources = {
       atsOptimization: 'ATS अनुकूलन',
       readyToTransform: 'तुमचा करिअर बदलण्यासाठी तयार आहात?',
       alreadyHaveAccount: 'आधीच खाते आहे?',
+      
+      authPages: {
+        common: {
+          emailLabel: 'ईमेल पत्ता',
+          passwordLabel: 'पासवर्ड',
+          confirmPasswordLabel: 'पासवर्डची पुष्टी करा',
+          fullNameLabel: 'पूर्ण नाव',
+          showPassword: 'पासवर्ड दाखवा',
+          hidePassword: 'पासवर्ड लपवा',
+          forgotPasswordLink: 'पासवर्ड विसरलात?',
+          noAccountPrompt: 'खाते नाही?',
+          signUpLinkText: 'साइन अप करा',
+          haveAccountPrompt: 'आधीच खाते आहे?',
+          signInLinkText: 'साइन इन करा',
+          formError: 'कृपया फॉर्ममधील त्रुटी दुरुस्त करा',
+          invalidCredentials: 'अवैध ईमेल किंवा पासवर्ड. कृपया पुन्हा प्रयत्न करा.',
+          unexpectedError: 'अनपेक्षित त्रुटी आली. कृपया पुन्हा प्रयत्न करा.',
+          accountCreationFailed: 'खाते तयार करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.',
+          passwordResetFailed: 'रीसेट ईमेल पाठवण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.',
+          passwordResetSuccess: 'पासवर्ड रीसेट ईमेल पाठवला! तुमचा इनबॉक्स तपासा.',
+          invalidEmail: 'कृपया एक वैध ईमेल पत्ता प्रविष्ट करा',
+          passwordRequired: 'पासवर्ड आवश्यक आहे',
+          passwordMin: 'पासवर्ड किमान 8 वर्णांचा असावा',
+          nameMin: 'नाव किमान 2 वर्णांचे असावे',
+          passwordsMismatch: 'पासवर्ड जुळत नाहीत'
+        },
+        signIn: {
+          badge: 'परत आल्याबद्दल आभार',
+          title: 'साइन इन',
+          description: 'CVSaathi सह तुमची करिअर प्रवास सुरू ठेवा',
+          submit: 'साइन इन',
+          submitting: 'साइन इन होत आहे...',
+          successToast: 'परत आल्याबद्दल आभार! डॅशबोर्डवर पुनर्निर्देशित करत आहोत...'
+        },
+        signUp: {
+          badge: 'तुमचे खाते तयार करा',
+          title: 'मोफत सुरू करा',
+          description: 'त्यांचे करिअर तयार करणाऱ्या हजारो व्यावसायिकांमध्ये सामील व्हा',
+          submit: 'खाते तयार करा',
+          submitting: 'खाते तयार केले जात आहे...',
+          successToast: 'खाते यशस्वीरित्या तयार केले! डॅशबोर्डवर पुनर्निर्देशित करत आहोत...',
+          trustNoCard: 'क्रेडिट कार्ड आवश्यक नाही',
+          trustTrial: '7-दिवस मोफत चाचणी'
+        },
+        forgotPassword: {
+          badge: 'पासवर्ड रीसेट करा',
+          title: 'पासवर्ड विसरलात?',
+          description: 'काळजी करू नका! तुमचा ईमेल प्रविष्ट करा आणि आम्ही तुम्हाला रीसेट लिंक पाठवू.',
+          submit: 'रीसेट लिंक पाठवा',
+          submitting: 'पाठवत आहे...',
+          backToSignIn: 'साइन इनवर परत जा',
+          successTitle: 'तुमचा ईमेल तपासा',
+          successDescription: 'आम्ही {{email}} वर पासवर्ड रीसेट लिंक पाठवला आहे. कृपया तुमचा इनबॉक्स तपासा आणि सूचनांचे पालन करा.',
+          resendButton: 'दुसरा ईमेल पाठवा',
+          successButton: 'साइन इनवर परत जा',
+          toastSuccess: 'पासवर्ड रीसेट ईमेल पाठवला! तुमचा इनबॉक्स तपासा.'
+        }
+      },
       
       // Resume Builder
       resumeBuilder: 'रिझ्यूमे बिल्डर',
@@ -3744,6 +3918,1763 @@ resources.en.translation.profile = {
   plan: 'Plan'
 };
 
+// Landing Page translations for English
+resources.en.translation.landing = {
+  hero: {
+    badge: 'AI-Powered Career Growth Platform',
+    title: 'CVSaathi',
+    description: 'Craft your career story with AI — from a stunning, job-winning resume to personalized interview prep and real-time skill insights.',
+    getTemplate: 'Get Template',
+    seeServices: 'See Our Services'
+  },
+  navigation: {
+    whyChooseUs: 'Why Choose Us',
+    features: 'Features',
+    services: 'Services',
+    process: 'Process',
+    templates: 'Templates',
+    pricing: 'Pricing',
+    signIn: 'Sign In',
+    getStarted: 'Get Started Free'
+  },
+  features: {
+    resumeBuilder: {
+      title: 'Resume Builder',
+      description: 'Create beautiful, job-winning resumes in minutes. Choose from 50+ AI-crafted templates tailored for every profession, region, and experience level — designed to impress both global recruiters and ATS systems.'
+    },
+    atsOptimizer: {
+      title: 'ATS Optimizer',
+      description: 'Beat the bots and reach human eyes faster. Get instant ATS compatibility checks, keyword enhancements, and smart formatting suggestions to maximize your shortlisting chances.'
+    },
+    interviewPrep: {
+      title: 'Interview Prep Assistant',
+      description: 'Train with your personal AI interviewer. Practice role-specific mock sessions, receive instant feedback, and build confidence — across any domain, industry, or language.'
+    },
+    estel: {
+      title: 'AI Career Companion Estel',
+      description: 'Your 24×7 AI career companion that understands your journey. Estel powers all our features — from crafting perfect resumes to preparing for interviews, get expert-level advice and tailored growth suggestions — whenever you need it.'
+    },
+    skillGap: {
+      title: 'Skill Gap Analysis',
+      description: 'Know exactly what skills you need to grow. Compare your profile with top industry roles worldwide and get a personalized roadmap to upskill with AI-powered insights.'
+    },
+    allFeatures: 'All features in 1 tool',
+    allFeaturesDesc: 'Discover smart tools that simplify your job search, boost confidence, and help you grow — all in one powerful Platform.',
+    getStarted: 'Get Started',
+    seeServices: 'See Our Services'
+  },
+  estel: {
+    badge: 'AI Companion',
+    title: 'Meet {{name}} — Your AI Career Companion',
+    name: 'Estel',
+    subtitle1: 'More than an assistant',
+    subtitle1Desc: '— Estel is your personal guide to every stage of your professional journey.',
+    description1: 'Trained on thousands of real-world resumes, interviews, and career success patterns, Estel helps you craft job-winning profiles, analyze skill gaps, and prepare confidently for interviews — all through a single, intuitive experience.',
+    description2: 'While others juggle multiple tools for resumes, coaching, and learning, Estel brings everything together. She understands your goals, speaks your language, and offers personalized advice that evolves with you.',
+    description3: 'With Estel by your side, your career growth is no longer guesswork — it\'s guided by intelligence, empathy, and experience.',
+    tagline: 'Build smarter. Learn faster. Grow with Estel.',
+    cta: 'Start Chatting with Estel'
+  },
+  cta: {
+    badge: 'Start Your Success Story Today',
+    title: 'Ready to Build Your Dream Resume?',
+    description: 'Join 50,000+ job seekers who transformed their careers with our AI-powered resume builder. Get started in minutes, land interviews in days.',
+    createResume: 'Create Your Resume Free',
+    talkToSales: 'Talk to Sales',
+    noCreditCard: 'No credit card required • 7-day money-back guarantee'
+  },
+  finalCta: {
+    badge: 'Ready to Transform Your Career?',
+    title: 'Start building your dream resume today',
+    getStarted: 'Get Started Free',
+    viewPricing: 'View Pricing',
+    noCreditCard: 'No credit card required',
+    freeTrial: '7-day free trial',
+    cancelAnytime: 'Cancel anytime'
+  },
+  pricing: {
+    badge: 'Simple Pricing',
+    title: 'Choose your perfect plan',
+    description: 'Start free, upgrade anytime. No hidden fees, cancel anytime.',
+    freePlan: {
+      name: 'Free Plan',
+      description: 'Perfect for getting started',
+      cta: 'Current Plan'
+    },
+    starterPlan: {
+      name: 'Starter Plan',
+      description: 'Great for job seekers',
+      cta: 'Upgrade Now'
+    },
+    professionalPlan: {
+      name: 'Professional Plan',
+      description: 'For serious career growth',
+      cta: 'Select Plan',
+      popular: 'Most Popular'
+    }
+  },
+  footer: {
+    description: 'AI-Powered Career Growth Platform. Empowering professionals with intelligent career tools.',
+    madeInIndia: 'Made in India 🇮🇳',
+    stayUpdated: 'Stay updated with career tips',
+    newsletterDesc: 'Get weekly resume tips, job search strategies, and career advice delivered to your inbox.',
+    enterEmail: 'Enter your email',
+    subscribe: 'Subscribe',
+    copyright: '© 2024 CVSaathi. All rights reserved.'
+  },
+  whyChooseUs: {
+    badge: 'Why Us',
+    title: 'Why Choose Us',
+    description: 'Empowering every career dream with intelligent, human-first AI.',
+    benefits: {
+      aiUnderstands: {
+        title: 'AI That Understands You',
+        description: 'CV Saathi isn\'t just smart — it\'s personalized. Our multilingual AI tailors every resume, career suggestion, and interview tip to your city, your industry, and your goals.'
+      },
+      realTimeInsights: {
+        title: 'Real-Time Career Insights',
+        description: 'Track your growth instantly with live analytics and job-market signals — see which skills are trending and how your profile compares.'
+      },
+      aiDrivenGrowth: {
+        title: 'AI-Driven Growth',
+        description: 'Every click helps you move forward. Our intelligent system learns from your progress to recommend better opportunities, faster.'
+      }
+    }
+  },
+  infiniteScroll: {
+    fasterInnovation: 'Faster Innovation',
+    virtualAssistance: 'Virtual Assistance',
+    scalableSolutions: 'Scalable Solutions',
+    personalizedExperiences: 'Personalized Experiences',
+    costEffective: 'Cost Effective',
+    lightningFast: 'Lightning Fast',
+    securePrivate: 'Secure & Private',
+    precisionMatching: 'Precision Matching'
+  },
+  aiServices: {
+    badge: 'Services',
+    title: 'Our AI-Driven Services',
+    description: 'Leverage AI features that boost performance to your business.',
+    services: {
+      learningRecommendations: {
+        title: 'AI Learning Recommendations',
+        description: 'Grow faster with personalized learning paths. Our AI analyzes your career goals and skill-gap data, then connects you to the most relevant courses from Coursera, Udemy, and beyond — so you learn what truly matters.'
+      },
+      contentGeneration: {
+        title: 'AI Content Generation',
+        description: 'Build a powerful personal brand with precision. Generate professional resumes, bios, and statements of purpose crafted in your voice — optimized for tone, clarity, and global hiring standards.',
+        uiContinueWriting: 'Continue writing',
+        uiFixSpelling: 'Fix spelling',
+        uiExplainDetail: 'Explain in detail',
+        uiGenerate: 'Generate'
+      },
+      chatAssistants: {
+        title: 'AI-Powered Chat Assistants',
+        description: 'Meet your 24 × 7 career coach. From resume building to interview prep, our conversational AI delivers instant, human-like support in multiple languages — always available, always adapting to your needs.',
+        uiPlaceholder: 'Type a message'
+      },
+      multilingualTranslation: {
+        title: 'Multilingual AI Translation & Localization',
+        description: 'Break barriers and go global. Instantly translate resumes, cover letters, and feedback into 10 + languages — while keeping context, tone, and professional polish intact.'
+      }
+    }
+  },
+  howItWorks: {
+    badge: 'Process',
+    title: 'Four simple steps to success',
+    description: 'A transparent process of collaboration and feedback',
+    steps: {
+      step1: {
+        title: 'Upload or Start Fresh',
+        description: 'Import your existing resume or start with a blank template. Our AI will guide you through every step.'
+      },
+      step2: {
+        title: 'AI Enhancement',
+        description: 'Our AI analyzes your content, suggests improvements, and optimizes for ATS systems automatically.'
+      },
+      step3: {
+        title: 'Review & Customize',
+        description: 'Fine-tune your resume with our intuitive editor. Choose from premium templates and customize colors.'
+      },
+      step4: {
+        title: 'Download & Apply',
+        description: 'Export your ATS-optimized resume in multiple formats. Track applications and land interviews.'
+      }
+    },
+    ctaButton: 'Start Building Now - It\'s Free'
+  },
+  templates: {
+    badge: 'Templates',
+    title: 'Designer-crafted templates',
+    description: 'Pick from modern, classic, and visual templates built to pass ATS filters and impress recruiters',
+    templateTypes: {
+      techProfessional: {
+        title: 'Tech Professional',
+        description: 'Modern templates for developers, engineers, and tech professionals.',
+        tags: {
+          developer: 'Developer',
+          engineer: 'Engineer',
+          designer: 'Designer'
+        }
+      },
+      marketing: {
+        title: 'Marketing',
+        description: 'Eye-catching templates for marketers and creative professionals.',
+        tags: {
+          marketing: 'Marketing',
+          socialMedia: 'Social Media',
+          creative: 'Creative'
+        }
+      },
+      businessOperations: {
+        title: 'Business Operations',
+        description: 'Professional templates for business operations and management.',
+        tags: {
+          manager: 'Manager',
+          consultant: 'Consultant',
+          operations: 'Operations'
+        }
+      },
+      freshGraduate: {
+        title: 'Fresh Graduate',
+        description: 'Specially designed for students and recent graduates.',
+        tags: {
+          graduate: 'Graduate',
+          intern: 'Intern',
+          entryLevel: 'Entry-level'
+        }
+      },
+      executive: {
+        title: 'Executive',
+        description: 'Premium templates for senior executives and leadership roles.',
+        tags: {
+          director: 'Director',
+          vp: 'VP',
+          executive: 'Executive'
+        }
+      }
+    },
+    previewTemplate: 'Preview Template',
+    dragToRotate: 'Drag to rotate',
+    templatesCount: 'templates',
+    viewAllTemplates: 'View All Templates'
+  },
+  faq: {
+    badge: 'FAQ',
+    title: 'Frequently asked questions',
+    description: 'Everything you need to know about CVSaathi',
+    stillHaveQuestions: 'Still have questions?',
+    supportDescription: 'Our support team is here to help you succeed',
+    contactSupport: 'Contact Support',
+    questions: {
+      q1: 'What makes CVSaathi different from other resume builders?',
+      q2: 'Does CVSaathi only help with resumes?',
+      q3: 'How does the ATS optimization work?',
+      q4: 'Can I use CVSaathi for free?',
+      q5: 'Which languages does CVSaathi support? Is it good for Tier-2 cities?',
+      q6: 'What formats can I download my resume in?',
+      q7: 'Is my data secure and private?',
+      q8: 'What if I\'m not satisfied? Do you offer refunds or support?'
+    },
+    answers: {
+      a1: 'CVSaathi is not just a resume builder – it\'s an AI career companion built in India with a global mindset. We combine advanced AI (your assistant, Estel) with deep understanding of the Indian job market and international hiring standards. That means you get city-smart resumes and career guidance that work for Indian recruiters and ATS systems, while still looking polished and professional for global opportunities. We focus on real candidates from Tier-2 and emerging cities, using simple language, practical tips, and modern templates that match what both Indian and international hiring managers actually expect.',
+      a2: 'No. CVSaathi starts with a strong, ATS-ready resume but goes much deeper. Inside the app, Estel can:\n\n• Improve and rewrite your resume with AI\n• Run an ATS check on your profile\n• Help you prepare for interviews with mock Q&A\n• Analyze your skill gaps and suggest what to learn next\n• Guide you step-by-step in simple, clear language\n\nThink of it as a personal career guide in your pocket, not just a one-time resume tool.',
+      a3: 'Our AI checks your resume against key ATS best practices used by top Indian companies. We review:\n\n• Keywords vs the job description\n• Section structure and headings\n• Formatting, bullet style, and fonts\n• Clarity, impact, and role-relevant achievements\n\nYou get an easy-to-understand ATS score plus clear suggestions on what to fix so your resume has a better chance of passing automated screening and reaching a human recruiter.',
+      a4: 'Yes, you can start for free. The free plan is designed to help you create a strong, job-ready resume with:\n\n• 1 active resume\n• Essential templates\n• Basic AI suggestions\n• ATS score and PDF download\n\nWhen you\'re ready, you can upgrade to a paid plan for additional benefits like multiple resumes, premium templates, in-depth AI rewrites, interview prep with Estel, and more advanced career insights.',
+      a5: 'CVSaathi is built keeping Indian candidates in mind, especially from Tier-2 and emerging cities. We use simple, clear English and are rolling out support for multiple Indian languages so you can get guidance in the language you\'re most comfortable with. Our city-smart approach means we understand different salary ranges, job titles, and expectations across Indian cities – from metro roles to growing local markets.',
+      a6: 'You can download your resume in recruiter-friendly formats, including:\n\n• PDF – best for sharing and most ATS-friendly\n• DOCX – editable format for manual tweaks\n• Plain text/ATS-friendly text – ideal for pasting into online portals\n\nWe also provide a shareable link for quick sharing with recruiters or on WhatsApp and email.',
+      a7: 'Yes. Your data security is a top priority for us. We use strong encryption to protect your information, and we never sell your data to third parties. You control what you upload and can delete your resume and account data whenever you want. CVSaathi is built to align with Indian data protection norms, and we clearly explain how your data is used in our Privacy Policy.',
+      a8: 'We want CVSaathi to genuinely help your career. If you face issues with a paid plan, you can reach out to our support team and, where eligible, request a refund as per our Refund & Cancellation policy. Our support team is available to help you with billing questions, technical problems, or product doubts so you\'re never stuck on your own.'
+    }
+  }
+};
+
+resources.en.translation.dashboard = {
+  main: {
+    title: 'My Dashboard',
+    quickSearch: 'Quick Search',
+    keyboardShortcut: '⌘K'
+  },
+  sidebar: {
+    menu: {
+      dashboard: 'Dashboard',
+      aiCoach: 'AI Coach',
+      resumeBuilder: 'Resume Builder',
+      templates: 'Templates',
+      atsChecker: 'ATS Checker',
+      interviewPrep: 'Interview Prep',
+      skillGap: 'Skill Gap Analysis'
+    },
+    bottom: {
+      pricing: 'Pricing',
+      settings: 'Settings',
+      help: 'Help & Support'
+    }
+  },
+  resumeBuilder: {
+    title: 'Resume Builder',
+    backToDashboard: 'Back to Dashboard',
+    saving: 'Saving...',
+    lastSaved: 'Last saved {{time}}',
+    hidePreview: 'Hide Preview',
+    showPreview: 'Show Preview',
+    saveDraft: 'Save Draft',
+    estelWelcome: "Hi! I'm Estel, your AI resume coach. Let's build an amazing resume together! 🎉",
+    estelTip: "Estel's Tip",
+    estelTipHi: "एस्टेल की सलाह",
+    estelTipMr: "एस्टेलची टिप",
+    aiError: "😅 Oops! I had trouble generating that. Please try again or write it yourself.",
+    analyzingResume: "🔍 Analyzing your resume... This might take a moment!",
+    analysisComplete: "✨ Analysis complete! Check the detailed feedback below.",
+    analysisCompleteBasic: "✨ Analysis complete! Check the scores below.",
+    analysisError: "😅 Had trouble analyzing. Using basic ATS check instead.",
+    welcomeTitle: "Build Your Dream Resume in",
+    minutes: "Minutes",
+    welcomeDescription: "Let Estel guide you through creating a professional, ATS-optimized resume",
+    continueWorkingOn: "Continue Working On",
+    resume: "resume",
+    resumes: "resumes",
+    untitledResume: "Untitled Resume",
+    resumeLoaded: "Resume loaded! Continuing from {{step}} step",
+    loadFailed: "Failed to load resume",
+    startFromScratch: "Start from Scratch",
+    startFromScratchDescription: "Build your resume step-by-step with AI guidance",
+    importExisting: "Import Existing",
+    importExistingDescription: "Upload your current resume and enhance it",
+    aiQuickBuild: "AI Quick Build",
+    aiQuickBuildDescription: "Let Estel create a resume from your profile",
+    templateChoiceMessage: "Great choice! Let's pick a stunning template for your resume.",
+    uploadComingSoon: "Upload feature coming soon!",
+    uploadComingSoonMessage: "Upload feature is coming soon! For now, let's build from scratch.",
+    aiQuickBuildComingSoon: "AI Quick Build coming soon!",
+    aiQuickBuildComingSoonMessage: "AI Quick Build is coming soon! Let's start with templates.",
+    startFresh: "Start Fresh",
+    startFreshDescription: "Create a new resume from scratch",
+    loadExisting: "Load Existing",
+    loadExistingDescription: "Continue working on a saved resume",
+    steps: {
+      welcome: 'Welcome',
+      template: 'Template',
+      personal: 'Personal Info',
+      summary: 'Summary',
+      experience: 'Experience',
+      education: 'Education',
+      skills: 'Skills',
+      projects: 'Projects',
+      additional: 'Additional',
+      layout: 'Layout',
+      critique: 'AI Critique',
+      ats: 'ATS Check',
+      export: 'Export'
+    },
+    templates: {
+      modernPro: 'Modern Professional',
+      classic: 'Classic Executive',
+      creative: 'Creative Bold',
+      technical: 'Tech Specialist',
+      minimal: 'Minimal Elegant',
+      modernTwo: 'Modern Two-Column',
+      academic: 'Academic Scholar',
+      executive: 'Senior Executive'
+    },
+    personalInfo: {
+      title: 'Personal Information',
+      fullName: 'Full Name',
+      fullNamePlaceholder: 'John Doe',
+      email: 'Email',
+      emailPlaceholder: 'john.doe@email.com',
+      phone: 'Phone',
+      phonePlaceholder: '+1 (555) 123-4567',
+      location: 'Location',
+      locationPlaceholder: 'San Francisco, CA',
+      linkedin: 'LinkedIn Profile',
+      linkedinPlaceholder: 'linkedin.com/in/johndoe',
+      portfolio: 'Portfolio',
+      portfolioPlaceholder: 'johndoe.com',
+      github: 'GitHub',
+      githubPlaceholder: 'github.com/johndoe',
+      headline: 'Professional Headline',
+      headlinePlaceholder: 'Senior Software Engineer | Full-Stack Developer | Tech Enthusiast'
+    },
+    summary: {
+      title: 'Professional Summary',
+      description: 'A compelling summary hooks recruiters in 6 seconds',
+      placeholder: 'Write a compelling summary that highlights your key skills and experience...'
+    },
+    targetRolePlaceholder: 'Software Engineer',
+    yearsOfExperiencePlaceholder: '5+',
+    industryPlaceholder: 'Technology',
+    experience: {
+      title: 'Work Experience',
+      addExperience: 'Add Experience',
+      jobTitle: 'Job Title',
+      company: 'Company',
+      location: 'Location',
+      startDate: 'Start Date',
+      endDate: 'End Date',
+      current: 'Current',
+      description: 'Description',
+      descriptionPlaceholder: 'Describe your responsibilities and achievements...'
+    },
+    education: {
+      title: 'Education',
+      addEducation: 'Add Education',
+      degree: 'Degree',
+      school: 'School/University',
+      field: 'Field of Study',
+      graduationDate: 'Graduation Date',
+      gpa: 'GPA (Optional)'
+    },
+    skills: {
+      title: 'Skills',
+      technicalSkills: 'Technical Skills',
+      softSkills: 'Soft Skills',
+      addSkill: 'Add Skill',
+      skillPlaceholder: 'e.g., JavaScript, Python, Leadership'
+    },
+    projects: {
+      title: 'Projects',
+      addProject: 'Add Project',
+      projectName: 'Project Name',
+      description: 'Description',
+      technologies: 'Technologies Used',
+      link: 'Project Link'
+    },
+    buttons: {
+      next: 'Next',
+      previous: 'Previous',
+      save: 'Save',
+      cancel: 'Cancel',
+      delete: 'Delete',
+      edit: 'Edit',
+      add: 'Add',
+      export: 'Export Resume',
+      downloadPDF: 'Download PDF'
+    },
+    chooseTemplate: 'Choose Your Template',
+    selectTemplateDescription: 'Select a professional template that matches your industry',
+    continue: 'Continue',
+    tellUsAboutYourself: 'Tell us about yourself',
+    autoSaved: 'Resume auto-saved',
+    justNow: 'just now',
+    minutesAgo: '{{n}} minute(s) ago',
+    hoursAgo: '{{n}} hour(s) ago',
+    daysAgo: '{{n}} day(s) ago',
+    characters: 'characters',
+    invalidEmail: '⚠️ Invalid email format',
+    aiGenerate: 'AI Generate',
+    aiSummaryGenerator: '✨ AI Summary Generator',
+    targetRole: 'Target Role',
+    yearsOfExperience: 'Years of Experience',
+    industry: 'Industry',
+    generateSummaryWithAI: 'Generate Summary with AI',
+    yourProfessionalSummary: 'Your Professional Summary',
+    optimal: '✓ Optimal',
+    summaryPlaceholder: 'Write a compelling summary that highlights your key achievements and value proposition...',
+    tone: 'Tone',
+    professional: 'Professional',
+    creative: 'Creative',
+    technical: 'Technical',
+    workExperience: 'Work Experience',
+    addExperienceDescription: 'Add your professional experience with AI-powered assistance',
+    noExperienceAdded: 'No Experience Added Yet',
+    addFirstExperienceDescription: 'Add your first work experience to get started',
+    addFirstExperience: 'Add First Experience',
+    addExperienceMessage: "Great! Add your job details and I'll help you write impressive achievement bullets! 💼",
+    experienceNumber: 'Experience #{{n}}',
+    company: 'Company',
+    companyPlaceholder: 'Google',
+    jobTitle: 'Job Title',
+    jobTitlePlaceholder: 'Senior Software Engineer',
+    location: 'Location',
+    locationPlaceholder: 'San Francisco, CA',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    current: 'Current',
+    achievementsAndResponsibilities: 'Achievements & Responsibilities',
+    aiGenerateBullet: 'AI Generate Bullet',
+    bulletPlaceholder: 'Led team of 8 engineers to deliver critical project, resulting in 35% improvement...',
+    addBulletPoint: 'Add Bullet Point',
+    addAnotherExperience: 'Add Another Experience',
+    education: 'Education',
+    addEducationDescription: 'Add your educational background',
+    noEducationAdded: 'No Education Added Yet',
+    addFirstEducationDescription: 'Add your first degree or certification',
+    addFirstEducation: 'Add First Education',
+    addEducationMessage: "Education is your foundation! Let's add your degrees and achievements. 🎓",
+    educationNumber: 'Education #{{n}}',
+    institution: 'Institution',
+    institutionPlaceholder: 'Stanford University',
+    degree: 'Degree',
+    selectDegree: 'Select Degree',
+    fieldOfStudy: 'Field of Study',
+    fieldOfStudyPlaceholder: 'Computer Science',
+    graduationYear: 'Graduation Year',
+    graduationYearPlaceholder: '2024',
+    showGpa: 'Show GPA',
+    gpaPlaceholder: '3.8/4.0',
+    honorsAndAwards: 'Honors & Awards (optional)',
+    pressEnterToAdd: 'Press Enter to add',
+    addAnotherEducation: 'Add Another Education',
+    addEducationMessage2: "Adding another degree? Great! Education shows your foundation. 🎓",
+    skills: 'Skills',
+    showcaseYourSkills: 'Showcase your skills',
+    technicalSkills: '💻 Technical Skills',
+    softSkills: '🤝 Soft Skills',
+    typeAndPressEnter: 'Type and press Enter',
+    suggested: '💡 Suggested:',
+    projects: 'Projects',
+    showcaseYourBestWork: 'Showcase your best work',
+    projectNumber: 'Project #{{n}}',
+    projectName: 'Project Name',
+    date: 'Date',
+    description: 'Description',
+    addTech: 'Add tech (press Enter)',
+    addProject: 'Add Project',
+    additional: 'Additional',
+    addCertificationsLanguagesAwards: 'Add certifications, languages, awards',
+    certifications: 'Certifications',
+    languages: 'Languages',
+    awards: 'Awards',
+    pressEnter: 'Press Enter',
+    aiCritique: 'AI Critique',
+    getAIFeedback: 'Get AI feedback',
+    readyForAIAnalysis: 'Ready for AI Analysis?',
+    analyzing: 'Analyzing...',
+    analyzeResume: 'Analyze Resume',
+    excellent: 'Excellent!',
+    good: 'Good!',
+    content: 'Content',
+    formatting: 'Formatting',
+    impact: 'Impact',
+    length: 'Length',
+    detailedFeedback: '📝 Detailed Feedback',
+    reAnalyze: 'Re-analyze',
+    atsCheck: 'ATS Check',
+    checkATSCompatibility: 'Check ATS compatibility',
+    checkATS: 'Check ATS',
+    runATSCheck: 'Run ATS Check',
+    contact: 'Contact',
+    reCheck: 'Re-check',
+    updated: 'Updated!',
+    exportResume: 'Export Resume',
+    downloadAndShare: 'Download and share',
+    amazingWork: 'Amazing Work!',
+    yourResumeIsReady: 'Your resume is ready!',
+    downloadPDF: 'Download PDF',
+    downloadDOCX: 'Download DOCX',
+    copyLink: 'Copy Link',
+    emailResume: 'Email Resume',
+    linkCopied: 'Link copied!',
+    docxExportComingSoon: 'DOCX export coming soon',
+    emailSharingComingSoon: 'Email sharing coming soon',
+    livePreview: 'Live Preview',
+    expandPreview: 'Expand Preview',
+    minimizePreview: 'Minimize Preview',
+    templateDescriptions: {
+      modernPro: 'Clean and contemporary design',
+      classic: 'Traditional corporate style',
+      creative: 'Stand out with unique design',
+      technical: 'Perfect for developers',
+      minimal: 'Less is more approach',
+      modernTwo: 'Efficient space usage',
+      academic: 'For research positions',
+      executive: 'C-level professionals'
+    },
+    templateCategories: {
+      all: 'All',
+      modern: 'Modern',
+      classic: 'Classic',
+      creative: 'Creative',
+      technical: 'Technical',
+      executive: 'Executive'
+    },
+    popular: '⭐ Popular',
+    ats: 'ATS',
+    templateSelectedMessage: 'Excellent choice! The {{name}} template is {{description}}. It has a {{score}}% ATS compatibility score! 🎨',
+    aiThinking: "🤔 Hmm, let me think about this...",
+    aiSummarySuccess: "✨ Here's a professional summary I crafted for you! Feel free to edit it.",
+    aiHeadlineSuccess: "🎯 This headline will grab recruiters' attention!",
+    aiBulletSuccess: "💪 Added impact metrics to make this bullet powerful!",
+    aiProjectSuccess: "🚀 Made your project sound impressive!",
+    layout: {
+      title: 'Layout & Design',
+      description: "Customize your resume's appearance and structure",
+      accentColor: 'Accent Color',
+      customColor: 'Custom Color',
+      fontFamily: 'Font Family',
+      fontCategories: {
+        modernsans: 'Modern Sans',
+        serif: 'Serif',
+        boldsans: 'Bold Sans',
+        monospace: 'Monospace',
+        minimal: 'Minimal'
+      },
+      headerStyle: 'Header Style',
+      headerStyles: {
+        centered: 'Centered',
+        left: 'Left Aligned',
+        twoColumn: 'Two Column'
+      },
+      columnLayout: 'Column Layout',
+      columns: {
+        single: 'Single Column',
+        singleDescription: 'Traditional layout',
+        two: 'Two Columns',
+        twoDescription: 'Space efficient'
+      },
+      fontSize: 'Font Size',
+      fontSizes: {
+        small: 'Small',
+        smallDescription: 'More content',
+        medium: 'Medium',
+        mediumDescription: 'Balanced',
+        large: 'Large',
+        largeDescription: 'Easy to read'
+      },
+      sectionSpacing: 'Section Spacing',
+      spacing: {
+        compact: 'Compact',
+        compactDescription: 'Tight spacing',
+        balanced: 'Balanced',
+        balancedDescription: 'Recommended',
+        spacious: 'Spacious',
+        spaciousDescription: 'More breathing room'
+      },
+      sectionVisibility: 'Section Visibility',
+      sectionOrder: 'Section Order',
+      reorderSections: 'Reorder sections by moving them up or down',
+      sections: {
+        summary: 'Professional Summary',
+        experience: 'Experience',
+        education: 'Education',
+        skills: 'Skills',
+        projects: 'Projects',
+        certifications: 'Certifications',
+        languages: 'Languages',
+        awards: 'Awards'
+      }
+    }
+  },
+  atsChecker: {
+    title: 'ATS Checker',
+    uploadTitle: 'Upload Your Resume',
+    uploadDescription: 'Drag and drop your resume file here, or click to browse',
+    supportedFormats: 'Supported formats: PDF, DOCX, TXT',
+    analyzingTitle: 'Analyzing Your Resume...',
+    progress: {
+      formatting: 'Checking formatting...',
+      keywords: 'Analyzing keywords...',
+      structure: 'Reviewing structure...',
+      score: 'Calculating ATS score...'
+    },
+    results: {
+      overallScore: 'Overall ATS Score',
+      breakdown: {
+        title: 'Score Breakdown',
+        keywords: 'Keywords',
+        formatting: 'Formatting',
+        sections: 'Sections',
+        length: 'Length',
+        readability: 'Readability'
+      },
+      issues: {
+        title: 'Issues & Recommendations',
+        critical: 'Critical Issues ({{count}})',
+        warnings: 'Warnings ({{count}})',
+        passed: 'Passed Checks ({{count}})'
+      },
+      keywords: {
+        title: 'Keyword Analysis',
+        found: '✓ Found Keywords ({{count}})',
+        missing: '✗ Missing Keywords ({{count}})',
+        suggested: '💡 Suggested Keywords ({{count}})'
+      },
+      aiRecommendations: "Estel's AI Recommendations"
+    },
+    generatingRecommendations: 'Generating personalized recommendations...',
+    outOf100: 'out of 100',
+    status: 'Status',
+    excellent: '✓ Excellent',
+    good: '⚠ Good',
+    needsWork: '✗ Needs Work',
+    fileName: 'File Name',
+    fileSize: 'File Size',
+    analyzed: 'Analyzed',
+    optimizeWithAI: 'Optimize with AI',
+    fixNow: 'Fix Now',
+    review: 'Review',
+    buttons: {
+      upload: 'Upload Resume',
+      analyze: 'Analyze Resume',
+      download: 'Download Report',
+      tryAnother: 'Try Another Resume',
+      viewScans: 'View Previous Scans'
+    },
+    recentScans: 'Recent Scans',
+    backToDashboard: 'Back to Dashboard',
+    uploadDescription: 'Upload your resume and get instant feedback on how well it will perform with Applicant Tracking Systems',
+    dropResume: 'Drop your resume here',
+    clickToBrowse: 'or click to browse files',
+    maxFileSize: 'Maximum file size: 5MB',
+    analysisComplete: 'Analysis complete',
+    progressComplete: '{{percent}}% complete',
+    steps: {
+      formatAnalysis: 'Format Analysis',
+      keywordMatching: 'Keyword Matching',
+      sectionDetection: 'Section Detection',
+      atsCompatibility: 'ATS Compatibility'
+    },
+    messages: {
+      scanLoaded: 'Previous scan loaded!',
+      couldNotLoad: 'Could not load scan results',
+      loadFailed: 'Failed to load previous scan'
+    },
+    timeLabels: {
+      justNow: 'just now',
+      minutesAgo: '{{n}} minute(s) ago',
+      hoursAgo: '{{n}} hour(s) ago',
+      daysAgo: '{{n}} day(s) ago',
+      weeksAgo: '{{n}} week(s) ago',
+      monthsAgo: '{{n}} month(s) ago',
+      unknown: 'Unknown'
+    }
+  },
+  jobTracker: {
+    title: 'Job Application Tracker',
+    description: 'Track your job applications from start to finish',
+    viewAll: 'View All',
+    loading: 'Loading applications...',
+    noApplications: 'No applications',
+    addJob: 'Add Job',
+    addApplication: 'Add Application',
+    editApplication: 'Edit Application',
+    searchPlaceholder: 'Search applications...',
+    filter: 'Filter',
+    filterAll: 'All Statuses',
+    viewKanban: 'Kanban',
+    viewList: 'List',
+    edit: 'Edit',
+    delete: 'Delete',
+    cancel: 'Cancel',
+    create: 'Create',
+    update: 'Update',
+    saving: 'Saving...',
+    confirmDelete: 'Are you sure you want to delete this application?',
+    deleteSuccess: 'Application deleted successfully',
+    deleteFailed: 'Failed to delete application: {{error}}',
+    createSuccess: 'Application added successfully',
+    updateSuccess: 'Application updated successfully',
+    saveFailed: 'Failed to save application: {{error}}',
+    statusUpdated: 'Status updated successfully',
+    updateFailed: 'Failed to update application: {{error}}',
+    appliedOn: 'Applied on {{date}}',
+    nextInterview: 'Next interview: {{date}}',
+    viewJobPosting: 'View Job Posting',
+    columns: {
+      applied: 'Applied',
+      reviewing: 'Under Review',
+      interview: 'Interview',
+      offer: 'Offer Received'
+    },
+    status: {
+      applied: 'Applied',
+      screening: 'Under Review',
+      interview: 'Interview',
+      offer: 'Offer Received',
+      rejected: 'Rejected',
+      withdrawn: 'Withdrawn'
+    },
+    form: {
+      jobTitle: 'Job Title',
+      jobTitlePlaceholder: 'e.g., Software Engineer',
+      company: 'Company',
+      companyPlaceholder: 'e.g., Google',
+      status: 'Status',
+      applicationDate: 'Application Date',
+      location: 'Location',
+      locationPlaceholder: 'e.g., San Francisco, CA',
+      salary: 'Salary',
+      salaryPlaceholder: 'e.g., $100,000 - $150,000',
+      jobUrl: 'Job Posting URL',
+      jobUrlPlaceholder: 'https://company.com/job-posting',
+      nextInterviewDate: 'Next Interview Date',
+      notes: 'Notes',
+      notesPlaceholder: 'Add any additional notes or reminders...'
+    }
+  },
+  calendar: {
+    title: 'Calendar',
+    viewAll: 'View all',
+    upcoming: 'Upcoming',
+    pageTitle: 'Calendar',
+    pageDescription: 'Manage your interviews, deadlines, and events',
+    addEvent: 'Add Event',
+    editEvent: 'Edit Event',
+    today: 'Today',
+    more: 'more',
+    eventsOnDate: 'Events on {{date}}',
+    todaysEvents: 'Today\'s Events',
+    noEventsScheduled: 'No events scheduled',
+    upcomingEvents: 'Upcoming Events',
+    noUpcomingEvents: 'No upcoming events',
+    eventTitle: 'Event Title',
+    eventTitlePlaceholder: 'Enter event title',
+    date: 'Date',
+    time: 'Time',
+    eventType: 'Event Type',
+    company: 'Company',
+    companyPlaceholder: 'Company name (optional)',
+    location: 'Location',
+    locationPlaceholder: 'Location (optional)',
+    notes: 'Notes',
+    notesPlaceholder: 'Additional notes (optional)',
+    cancel: 'Cancel',
+    create: 'Create',
+    update: 'Update',
+    confirmDelete: 'Are you sure you want to delete this event?',
+    eventCreated: 'Event created successfully!',
+    eventUpdated: 'Event updated successfully!',
+    eventDeleted: 'Event deleted successfully!',
+    deleteFailed: 'Failed to delete event: {{error}}',
+    saveFailed: 'Failed to save event: {{error}}',
+    eventTypes: {
+      interview: 'Interview',
+      deadline: 'Deadline',
+      followup: 'Follow-up',
+      networking: 'Networking'
+    }
+  },
+  profile: {
+    title: 'My Profile',
+    backToDashboard: 'Back to Dashboard',
+    logout: 'Logout',
+    logoutFailed: 'Failed to logout. Please try again.',
+    shareProfile: 'Share Profile',
+    editProfile: 'Edit Profile',
+    updateSuccess: 'Profile updated successfully!',
+    updateFailed: 'Failed to update profile. Please try again.',
+    skillsUpdated: 'Skills updated successfully!',
+    skillsUpdateFailed: 'Failed to update skills. Please try again.',
+    educationUpdated: 'Education updated successfully!',
+    yourName: 'Your Name',
+    addHeadline: 'Add your job title or headline',
+    addLocation: 'Add location',
+    addWebsite: 'Add website',
+    yourPublicProfile: 'Your public profile',
+    aboutMe: 'About Me',
+    bioPlaceholder: 'Tell us about yourself, your experience, and career goals...',
+    clickToAddBio: 'Click to add your bio...',
+    save: 'Save',
+    cancel: 'Cancel',
+    connectLinkedIn: 'Connect Your LinkedIn',
+    linkedInDescription: 'Import your profile data and keep it synced',
+    connectLinkedInButton: 'Connect LinkedIn',
+    careerInformation: 'Career Information',
+    currentRole: 'Current Role',
+    targetRole: 'Target Role',
+    experienceLevel: 'Experience Level',
+    workPreference: 'Work Preference',
+    skillsAndExpertise: 'Skills & Expertise',
+    addSkill: 'Add Skill',
+    skillName: 'Skill name',
+    proficiency: 'Proficiency: {{level}}%',
+    level: 'Level: {{level}}%',
+    add: 'Add',
+    done: 'Done',
+    delete: 'Delete',
+    noSkillsYet: 'No skills added yet. Click "Add Skill" to get started!',
+    educationAndCertifications: 'Education & Certifications',
+    addEducation: 'Add Education',
+    degreePlaceholder: 'Degree/Certificate name',
+    institutionPlaceholder: 'Institution name',
+    yearPlaceholder: 'Year (e.g., 2015 - 2019 or 2020)',
+    noEducationYet: 'No education entries yet. Click "Add Education" to get started!',
+    resumeGallery: 'Resume Gallery',
+    createResume: 'Create Resume',
+    atsScore: 'ATS: {{score}}%',
+    downloads: '{{count}} downloads',
+    noResumesYet: 'No resumes yet. Create your first resume!',
+    interviewRecordings: 'Interview Recordings',
+    newInterview: 'New Interview',
+    interviewPractice: 'Interview Practice',
+    general: 'General',
+    score: 'Score: {{score}}%',
+    noInterviewsYet: 'No interview sessions yet. Start practicing!',
+    skillTestResults: 'Skill Test Results',
+    takeTest: 'Take Test',
+    topPercent: 'Top {{percent}}%',
+    scoreLabel: 'Score',
+    noSkillTestsYet: 'No skill gap analyses yet. Complete your first analysis to see results here!',
+    profileStrength: 'Profile Strength',
+    complete: 'Complete',
+    profilePhotoAdded: 'Profile photo added',
+    bioCompleted: 'Bio completed',
+    skillsAdded: 'Skills added ({{count}})',
+    addMoreProjects: 'Add 3 more projects',
+    uploadCertificate: 'Upload certificate',
+    connectLinkedInChecklist: 'Connect LinkedIn',
+    quickStats: 'Quick Stats',
+    resumes: 'Resumes',
+    aiSessions: 'AI Sessions',
+    interviews: 'Interviews',
+    profileComplete: 'Profile Complete',
+    achievements: 'Achievements',
+    recentActivity: 'Recent Activity',
+    updatedResume: 'Updated resume',
+    hoursAgo: '{{hours}} hours ago',
+    completedAICoaching: 'Completed AI coaching session',
+    practicedInterview: 'Practiced interview prep',
+    dayAgo: '{{days}} day ago',
+    daysAgo: '{{days}} days ago',
+    earnedBadge: 'Earned "{{badge}}" badge',
+    imageSizeError: 'Image size must be less than {{size}}MB',
+    profilePicUpdated: 'Profile picture updated!',
+    backgroundImageUpdated: 'Background image updated!',
+    profilePicRemoved: 'Profile picture removed!',
+    backgroundImageRemoved: 'Background image removed!',
+    profileUrlCopied: 'Profile URL copied to clipboard!',
+    shareOptionsComingSoon: 'Share options coming soon!',
+    linkedInIntegrationComingSoon: 'LinkedIn integration coming soon!',
+    untitledResume: 'Untitled Resume',
+    achievementsList: {
+      firstResume: {
+        name: 'First Resume',
+        description: 'Created your first resume'
+      },
+      aiExplorer: {
+        name: 'AI Explorer',
+        description: 'Completed 5 AI coaching sessions'
+      },
+      interviewMaster: {
+        name: 'Interview Master',
+        description: 'Scored 90%+ in interview prep'
+      },
+      skillChampion: {
+        name: 'Skill Champion',
+        description: 'Completed skill gap analysis'
+      },
+      profilePro: {
+        name: 'Profile Pro',
+        description: '100% profile completion'
+      },
+      atsExpert: {
+        name: 'ATS Expert',
+        description: 'Pass 10 ATS checks'
+      }
+    },
+    statusLabels: {
+      'actively-looking': '🟢 Actively Looking',
+      'open': '🟡 Open to Offers',
+      'not-looking': '🔴 Not Looking'
+    },
+    currentPlan: 'Current Plan',
+    planLabel: 'Plan'
+  },
+  features: {
+    aiCoach: {
+      title: 'AI Career Coach',
+      description: 'Get personalized career guidance powered by advanced AI. Receive expert advice on job search strategies, career transitions, and professional development tailored to your unique goals.',
+      author: 'AI Team'
+    },
+    resumeBuilder: {
+      title: 'Resume Builder',
+      description: 'Create stunning, ATS-optimized resumes with smart templates and AI-powered content suggestions tailored for your industry.',
+      author: 'CV Team'
+    },
+    atsChecker: {
+      title: 'ATS Checker',
+      description: 'Analyze your resume against Applicant Tracking Systems and get instant feedback with optimization suggestions.',
+      author: 'Tech Team'
+    },
+    interviewPrep: {
+      title: 'AI Interview Prep',
+      description: 'Practice with AI-powered mock interviews tailored to your target role and receive real-time feedback on your performance.',
+      author: 'Interview Pro'
+    },
+    skillGap: {
+      title: 'Skill Gap Analysis',
+      description: 'Identify missing skills for your dream role and get personalized learning paths to bridge the gap and advance your career.',
+      author: 'Skills Team'
+    }
+  },
+  analytics: {
+    overview: 'Analytics Overview',
+    resumesCreated: 'Resumes Created',
+    aiSessions: 'AI Sessions',
+    interviewsPrepped: 'Interviews Prepped',
+    applicationsSubmitted: 'Applications Submitted',
+    viewingDetails: 'Viewing {{metric}} details'
+  },
+  performance: {
+    title: 'Performance',
+    viewAll: 'View all',
+    resumesCreated: 'Resumes Created',
+    aiSessions: 'AI Sessions',
+    interviewPrep: 'Interview Prep',
+    profileComplete: 'Profile Complete',
+    total: '{{count}} total',
+    timeSpent: '{{hours}}h {{minutes}}m total',
+    completed: '{{count}} completed',
+    percentComplete: '{{percent}}% complete'
+  },
+    recentActivity: {
+      title: 'Recent Activity',
+      seeAll: 'See all',
+      noActivity: 'No recent activity',
+      error: 'Failed to load activities',
+      resumeUpdated: 'Updated {{name}}',
+      resumeUpdatedGeneric: 'Resume Updated',
+      aiSession: 'AI Session',
+      interviewPrep: 'Interview Prep',
+      atsCheck: 'ATS Check: {{fileName}}',
+      atsCheckGeneric: 'ATS Check',
+      skillGapAnalysis: 'Skill Gap: {{role}}',
+      skillGapAnalysisGeneric: 'Skill Gap Analysis'
+    },
+  help: {
+    title: 'Help & Support',
+    description: 'We are finishing up the help center experience. In the meantime, please reach out to support@cvsaathi.com for assistance.',
+    comingSoon: 'Help & support is coming soon.'
+  },
+  navigation: {
+    opening: 'Opening {{section}}'
+  },
+  commandPalette: {
+    goToDashboard: 'Go to Dashboard',
+    openAICoach: 'Open AI Career Coach',
+    createResume: 'Create New Resume',
+    checkATSScore: 'Check ATS Score',
+    startInterviewPrep: 'Start Interview Prep',
+    analyzeSkillGap: 'Analyze Skill Gap',
+    viewAnalytics: 'View Analytics',
+    openSettings: 'Open Settings',
+    navigation: 'Navigation',
+    features: 'Features',
+    placeholder: 'Type a command or search...',
+    noResults: 'No results found',
+    toNavigate: 'to navigate',
+    toSelect: 'to select'
+  },
+  templates: {
+    title: 'Templates Gallery',
+    description: 'Browse and download professional resume templates',
+    backToDashboard: 'Back to Dashboard',
+    searchPlaceholder: 'Search templates...',
+    categoryAll: 'All',
+    categoryEntryLevel: 'Entry-Level',
+    categoryProfessional: 'Professional',
+    templatesFound: '{{count}} template found',
+    templatesFoundPlural: '{{count}} templates found',
+    noTemplatesFound: 'No templates found',
+    noTemplatesDescription: 'Try adjusting your search or filter criteria',
+    preview: 'Preview',
+    download: 'Download',
+    downloading: 'Downloading {{name}}...',
+    downloadFailed: 'Failed to download template. Please try again.',
+    templateCategory: '{{category}} Template',
+    loading: 'Loading templates...',
+    loadFailed: 'Failed to load templates',
+    zoom: '{{percent}}%',
+    close: 'Close'
+  },
+  feedback: {
+    title: 'Feedback & Support',
+    description: 'Share your feedback, report bugs, or request features',
+    backToDashboard: 'Back to Dashboard',
+    selectType: 'What type of feedback is this?',
+    rating: 'Rating',
+    optional: 'Optional',
+    yourFeedback: 'Your Feedback',
+    messagePlaceholder: 'Tell us what you think, report a bug, or suggest a feature...',
+    helpText: 'Your feedback helps us improve CVSaathi for everyone.',
+    info: '💡 We read every piece of feedback and use it to improve the platform.',
+    submit: 'Submit Feedback',
+    submitting: 'Submitting...',
+    submitSuccess: 'Thank you for your feedback! We\'ll review it soon.',
+    submitFailed: 'Failed to submit feedback: {{error}}',
+    messageRequired: 'Please enter your feedback message',
+    ratingRequired: 'Please select a rating',
+    authRequired: 'Please sign in to submit feedback',
+    viewHistory: 'View History',
+    newFeedback: 'New Feedback',
+    history: 'Feedback History',
+    loading: 'Loading feedback...',
+    noFeedbackYet: 'No feedback submitted yet. Be the first to share your thoughts!',
+    confirmDelete: 'Are you sure you want to delete this feedback?',
+    delete: 'Delete',
+    deleteSuccess: 'Feedback deleted successfully',
+    deleteFailed: 'Failed to delete feedback: {{error}}',
+    updateSuccess: 'Feedback updated successfully',
+    updateFailed: 'Failed to update feedback: {{error}}',
+    quickFeedbackTitle: 'How was your experience?',
+    quickFeedbackContext: 'You just used {{feature}}. How was it?',
+    quickFeedbackDefault: 'Quick feedback: {{rating}} stars',
+    quickMessagePlaceholder: 'Any additional comments? (optional)',
+    howWasYourExperience: 'How was your experience?',
+    additionalComments: 'Additional Comments',
+    ratingSelected: '{{rating}} out of 5',
+    ratingLow: 'We\'re sorry to hear that. We\'ll work on improving this.',
+    ratingMedium: 'Thanks for the feedback. We\'ll keep improving!',
+    ratingHigh: 'Great to hear! Thanks for the positive feedback.',
+    skip: 'Skip',
+    adminResponse: 'Admin Response',
+    responseRequired: 'Response Required',
+    status: {
+      open: 'Open',
+      in_progress: 'In Progress',
+      resolved: 'Resolved',
+      closed: 'Closed'
+    },
+    priority: {
+      low: 'Low',
+      medium: 'Medium',
+      high: 'High',
+      urgent: 'Urgent'
+    },
+    types: {
+      general: {
+        label: 'General',
+        description: 'General feedback or comments'
+      },
+      bug: {
+        label: 'Bug Report',
+        description: 'Report a bug or issue'
+      },
+      feature: {
+        label: 'Feature Request',
+        description: 'Suggest a new feature'
+      },
+      support: {
+        label: 'Support',
+        description: 'Need help or support'
+      }
+    }
+  },
+  pricing: {
+    title: 'Pricing',
+    pageTitle: 'Choose Your Plan',
+    pageDescription: 'Unlock your career potential with CVSaathi',
+    billingCycle: {
+      monthly: 'Monthly',
+      annual: 'Annual',
+      saveUpTo: 'Save up to ₹{{amount}}'
+    },
+    plans: {
+      free: {
+        name: 'Free Plan',
+        description: 'Perfect for getting started',
+        cta: 'Current Plan',
+        features: {
+          aiCoaching: 'AI career coaching: 3 sessions/month',
+          resumeBuilder: 'Resume builder: 3 resumes with critique & ATS',
+          templates: 'Resume templates: 10 free templates',
+          pdfExport: 'PDF export: 3 PDFs with watermark',
+          interviewPrep: 'Interview prep: 2 complete sessions/month',
+          languages: 'Languages: All languages (EN/HI/MR)',
+          profileSetup: 'Basic profile setup: Available',
+          atsChecker: 'ATS checker: 1 analysis/month',
+          skillGap: 'Skill gap analysis: 1 analysis/month',
+          whatsapp: 'WhatsApp export: With watermark'
+        }
+      },
+      starter: {
+        name: 'Starter Plan',
+        description: 'Great for job seekers',
+        cta: 'Upgrade Now',
+        features: {
+          aiCoaching: 'AI career coaching: 15 sessions/month',
+          resumeBuilder: 'Resume builder: 10 resumes with critique & ATS',
+          templates: 'Resume templates: 15 templates',
+          pdfExport: 'PDF export: 10 PDFs without watermark',
+          interviewPrep: 'Interview prep: 15 complete sessions/month',
+          languages: 'Languages: All languages (EN/HI/MR)',
+          atsChecker: 'ATS checker: 5 analyses/month',
+          skillGap: 'Skill gap analysis: 8 analyses/month',
+          whatsapp: 'WhatsApp export: Clean export',
+          emailSupport: 'Email support: Available'
+        },
+        savingsAnnual: 'Save ₹198/year'
+      },
+      professional: {
+        name: 'Professional Plan',
+        description: 'For serious career growth',
+        cta: 'Select Plan',
+        badge: 'Most Popular',
+        features: {
+          aiCoaching: 'Unlimited AI career coaching',
+          resumeBuilder: 'Resume builder: Unlimited resumes with critique & ATS',
+          templates: 'All premium templates: Unlimited access',
+          interviewPrep: 'Unlimited interview prep',
+          atsChecker: 'Unlimited ATS checker + detailed reports',
+          skillGap: 'Unlimited skill gap analysis',
+          pdfExport: 'PDF export: Unlimited without watermark',
+          formatting: 'Advanced formatting: Available',
+          prioritySupport: 'Priority support: Available',
+          whatsapp: 'WhatsApp notifications: Available',
+          analytics: 'Advanced analytics: Available'
+        },
+        savingsAnnual: 'Save ₹398/year'
+      }
+    },
+    price: {
+      perMonth: '/month',
+      perYear: '/year',
+      free: 'Free'
+    },
+    buttons: {
+      processing: 'Processing...',
+      currentPlan: 'Current Plan'
+    },
+    whatsIncluded: 'What\'s included:',
+    comparePlans: 'Compare Plans',
+    comparisonTable: {
+      feature: 'Feature',
+      freePlan: 'Free Plan',
+      starterPlan: 'Starter Plan',
+      professionalPlan: 'Professional Plan',
+      features: {
+        aiCoaching: 'AI Career Coaching',
+        resumeBuilder: 'Resume Builder',
+        templates: 'Resume Templates',
+        pdfExport: 'PDF Export',
+        interviewPrep: 'Interview Prep',
+        atsChecker: 'ATS Checker',
+        skillGap: 'Skill Gap Analysis',
+        languages: 'Languages',
+        whatsapp: 'WhatsApp Export',
+        support: 'Support',
+        formatting: 'Advanced Formatting',
+        analytics: 'Advanced Analytics',
+        notifications: 'WhatsApp Notifications'
+      },
+      values: {
+        unlimited: 'Unlimited',
+        community: 'Community',
+        emailSupport: 'Email support',
+        prioritySupport: 'Priority support',
+        watermark: 'With watermark',
+        noWatermark: 'No watermark',
+        cleanExport: 'Clean export',
+        allLanguages: 'All (EN/HI/MR)',
+        available: '✓',
+        notAvailable: '—'
+      }
+    },
+    faq: {
+      title: 'Frequently Asked Questions',
+      questions: {
+        changePlans: {
+          q: 'Can I change plans anytime?',
+          a: 'Yes, you can upgrade or downgrade your plan at any time. Changes will be reflected immediately for upgrades, and at the end of your billing cycle for downgrades.'
+        },
+        paymentMethods: {
+          q: 'What payment methods do you accept?',
+          a: 'We accept all major credit/debit cards, UPI, net banking, and digital wallets through Razorpay.'
+        },
+        refundPolicy: {
+          q: 'Is there a refund policy?',
+          a: 'Yes, we offer a 7-day money-back guarantee if you\'re not satisfied with our service. Contact support for refund requests.'
+        },
+        annualDiscounts: {
+          q: 'Do you offer annual discounts?',
+          a: 'Yes! Annual plans save you 2 months of subscription fees. That\'s ₹198 off on Starter and ₹398 off on Professional plans.'
+        },
+        exceedLimits: {
+          q: 'What happens if I exceed my plan limits?',
+          a: 'You\'ll be notified when approaching your limits. You can upgrade to a higher plan anytime to continue using features.'
+        },
+        cancelSubscription: {
+          q: 'Can I cancel my subscription?',
+          a: 'Yes, you can cancel anytime from your account settings. Your subscription will remain active until the end of the current billing period.'
+        }
+      }
+    },
+    toasts: {
+      alreadyOnFreePlan: 'You are already on the Free plan',
+      signInRequired: 'Please sign in to subscribe',
+      paymentGatewayLoading: 'Payment gateway is loading. Please wait a moment.',
+      creatingOrder: 'Creating payment order...',
+      verifyingPayment: 'Verifying payment...',
+      paymentSuccess: 'Payment successful! Your subscription is now active.',
+      welcomeToPlan: 'Welcome to {{planName}}!',
+      paymentVerificationFailed: 'Payment verification failed',
+      contactSupportIfDeducted: 'Please contact support if payment was deducted.',
+      paymentCancelled: 'Payment cancelled',
+      paymentFailed: 'Payment failed',
+      tryAgainOrContactSupport: 'Please try again or contact support.',
+      failedToStartPayment: 'Failed to start payment',
+      tryAgainLater: 'Please try again later.',
+      failedToLoadGateway: 'Failed to load payment gateway. Please refresh the page.'
+    }
+  },
+  settings: {
+    title: 'Settings',
+    description: 'Manage your account settings and preferences',
+    saving: 'Saving...',
+    saveChanges: 'Save Changes',
+    savedSuccessfully: 'Settings saved successfully!',
+    saveFailed: 'Failed to save settings: {{error}}',
+    unknownError: 'Unknown error',
+    passwordMismatch: 'New passwords do not match',
+    passwordTooShort: 'Password must be at least 6 characters',
+    passwordUpdateFailed: 'Failed to update password: {{error}}',
+    passwordUpdated: 'Password updated successfully!',
+    themeChanged: 'Theme changed to {{mode}}',
+    profilePicUpdated: 'Profile picture updated!',
+    pleaseLogin: 'Please log in to save settings',
+    tabs: {
+      profile: 'Profile',
+      account: 'Account',
+      notifications: 'Notifications',
+      subscription: 'Subscription',
+      privacy: 'Privacy & Security',
+      integrations: 'Integrations',
+      advanced: 'Advanced'
+    },
+    profile: {
+      title: 'Profile Settings',
+      description: 'Update your personal information and profile picture',
+      profilePicture: 'Profile Picture',
+      uploadPhoto: 'Upload Photo',
+      remove: 'Remove',
+      profilePicStoredLocally: 'Profile picture is stored locally and not synced to the server',
+      personalInformation: 'Personal Information',
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      emailAddress: 'Email Address',
+      emailCannotBeChanged: 'Email cannot be changed here. Use account settings to update email.',
+      phoneNumber: 'Phone Number',
+      bio: 'Bio',
+      bioPlaceholder: 'Tell us about yourself...'
+    },
+    account: {
+      title: 'Account Settings',
+      description: 'Manage your account security and preferences',
+      changePassword: 'Change Password',
+      newPassword: 'New Password',
+      newPasswordPlaceholder: 'Leave empty to keep current password',
+      confirmNewPassword: 'Confirm New Password',
+      twoFactorAuth: 'Two-Factor Authentication',
+      twoFactorDescription: 'Add an extra layer of security to your account',
+      dangerZone: 'Danger Zone',
+      deleteAccount: 'Delete Account',
+      deleteAccountDescription: 'Permanently delete your account and all data',
+      delete: 'Delete'
+    },
+    notifications: {
+      title: 'Notification Preferences',
+      description: 'Choose how you want to be notified',
+      emailNotifications: 'Email Notifications',
+      emailNotificationsDescription: 'Receive email updates and notifications',
+      jobAlerts: 'Job Alerts',
+      jobAlertsDescription: 'Get notified about relevant job opportunities',
+      weeklyDigest: 'Weekly Digest',
+      weeklyDigestDescription: 'Receive a weekly summary of your activity',
+      pushNotifications: 'Push Notifications',
+      pushNotificationsDescription: 'Receive browser push notifications'
+    },
+    appearance: {
+      title: 'Appearance Settings',
+      description: 'Customize how CVSaathi looks for you',
+      theme: 'Theme',
+      light: 'Light',
+      dark: 'Dark',
+      auto: 'Auto',
+      language: 'Language',
+      englishUS: 'English (US)',
+      spanish: 'Spanish',
+      french: 'French',
+      german: 'German'
+    },
+    subscription: {
+      title: 'Subscription & Billing',
+      description: 'Manage your subscription and payment methods',
+      freePlan: 'Free Plan',
+      currentlyOnFreePlan: "You're currently on the free plan",
+      upgradeToPro: 'Upgrade to Pro'
+    },
+    privacy: {
+      title: 'Privacy & Security',
+      description: 'Control your data and privacy settings',
+      activityLog: 'Activity Log',
+      activityLogDescription: 'A clean timeline of recent logins, security changes and alerts.',
+      planned: 'Planned',
+      connectedDevices: 'Connected Devices',
+      connectedDevicesDescription: 'See devices currently signed in and revoke access with one click.',
+      activeSessions: 'Active Sessions',
+      activeSessionsDescription: 'Review where you\'re logged in and sign out remotely.',
+      loginHistory: 'Login History',
+      loginHistoryDescription: 'A chronological list of successful and failed sign‑in attempts.',
+      dataPrivacyControls: 'Data Privacy Controls',
+      allowAnalyticsTracking: 'Allow analytics tracking',
+      analyticsTrackingDescription: 'Help us improve by sharing usage analytics',
+      shareAnonymizedData: 'Share anonymized usage data',
+      shareAnonymizedDataDescription: 'Share anonymized data for research and improvement',
+      allowPersonalizedRecommendations: 'Allow personalized recommendations',
+      personalizedRecommendationsDescription: 'Get personalized career recommendations',
+      thirdPartyDataSharing: 'Third-party data sharing',
+      thirdPartyDataSharingDescription: 'Allow sharing data with trusted partners',
+      legalDocuments: 'Legal Documents',
+      privacyPolicy: 'Privacy Policy',
+      privacyPolicyDescription: 'How we protect and use your data',
+      termsOfService: 'Terms of Service',
+      termsOfServiceDescription: 'Legal terms and conditions',
+      exportYourData: 'Export Your Data',
+      exportDataDescription: 'Download a copy of all your data in JSON format',
+      export: 'Export',
+      dataExportStarted: "Data export started. You'll receive an email when ready.",
+      cookiePreferences: 'Cookie Preferences',
+      essentialCookies: 'Essential cookies',
+      performanceCookies: 'Performance cookies',
+      functionalCookies: 'Functional cookies',
+      marketingCookies: 'Marketing cookies',
+      requiredForBasicFunctionality: 'Required for basic functionality'
+    },
+    integrations: {
+      title: 'Integrations',
+      description: 'Connect with third-party services',
+      noIntegrationsAvailable: 'No integrations available yet'
+    },
+    preferences: {
+      title: 'Job Preferences',
+      description: 'Set your career goals and preferences',
+      jobSearchSettings: 'Job Search Settings',
+      desiredJobTitle: 'Desired Job Title',
+      preferredIndustry: 'Preferred Industry',
+      technology: 'Technology',
+      finance: 'Finance',
+      healthcare: 'Healthcare',
+      education: 'Education'
+    },
+    advanced: {
+      title: 'Advanced Settings',
+      description: 'Configure advanced options and system settings',
+      apiAccess: 'API Access',
+      apiKey: 'API Key',
+      databaseConnection: 'Database Connection',
+      hardDriveStorage: 'Hard Drive Storage',
+      refreshInterval: 'Refresh Interval',
+      systemLogs: 'System Logs',
+      viewSystemLogs: 'View system logs and error reports',
+      systemLogsDescription: 'For debugging and performance monitoring',
+      viewLogs: 'View Logs',
+      dataExport: 'Data Export',
+      exportData: 'Export Data',
+      sessionManagement: 'Session Management'
+    }
+  },
+  skillGap: {
+    title: 'Skill Gap Analysis',
+    backToDashboard: 'Back to Dashboard',
+    unknown: 'Unknown',
+    justNow: 'just now',
+    minutesAgo: '{{n}} minute(s) ago',
+    hoursAgo: '{{n}} hour(s) ago',
+    daysAgo: '{{n}} day(s) ago',
+    weeksAgo: '{{n}} week(s) ago',
+    monthsAgo: '{{n}} month(s) ago',
+    analysisLoaded: 'Previous analysis loaded!',
+    couldNotLoad: 'Could not load analysis results',
+    loadFailed: 'Failed to load previous analysis',
+    analysisFailed: 'Failed to analyze skills: {{error}}',
+    whoAreYou: 'Who Are',
+    you: 'You?',
+    helpUsUnderstand: 'Help us understand your journey to provide personalized insights',
+    steps: {
+      userType: 'Tell us about yourself',
+      profile: 'Complete your profile',
+      analyzing: 'Analyzing your skills...',
+      results: 'Your personalized analysis'
+    },
+    userTypes: {
+      fresher: {
+        title: 'Fresher',
+        description: 'Starting my career journey'
+      },
+      careerGrowth: {
+        title: 'Career Growth',
+        description: 'Advancing in current field'
+      },
+      careerSwitch: {
+        title: 'Career Switch',
+        description: 'Transitioning to new role'
+      },
+      explorer: {
+        title: 'Explorer',
+        description: 'Exploring opportunities'
+      },
+      skillAssessment: {
+        title: 'Skill Assessment',
+        description: 'Evaluate my current skills'
+      },
+      marketInsights: {
+        title: 'Market Insights',
+        description: 'Understand industry trends'
+      }
+    },
+    profile: {
+      title: 'Tell Us About',
+      subtitle: 'Share your details to get accurate skill gap analysis',
+      education: 'Education',
+      selectEducation: 'Select your education',
+      targetRole: 'Target Role',
+      targetRolePlaceholder: 'e.g., Business Analyst, Data Scientist',
+      industry: 'Industry',
+      selectIndustry: 'Select industry',
+      location: 'Preferred Location',
+      selectLocation: 'Select location',
+      addSkills: 'Current Skills',
+      skillsDescription: 'Add your current skills to get personalized gap analysis',
+      skillName: 'Skill Name',
+      skillLevel: 'Skill Level',
+      addSkill: 'Add Skill',
+      removeSkill: 'Remove',
+      startAnalysis: 'Start Analysis',
+      recentAnalyses: 'Recent Analyses',
+      loadingAnalyses: 'Loading recent analyses...',
+      noRecentAnalyses: 'No recent analyses yet. Complete your first analysis to see it here!',
+      unknownRole: 'Unknown Role'
+    },
+    yourself: 'Yourself',
+    beginner: 'Beginner',
+    expert: 'Expert',
+    analyzing: 'Analyzing Your Skills...',
+    scanningProfile: '🔍 Scanning your profile...',
+    comparingJobs: '📊 Comparing with 10,000+ job listings...',
+    identifyingGaps: '🎯 Identifying skill gaps...',
+    generatingRecommendations: '✨ Generating personalized recommendations...',
+    results: {
+      overallScore: 'Overall Match Score',
+      skillGaps: 'Skill Gaps',
+      recommendations: 'Learning Recommendations',
+      marketInsights: 'Market Insights',
+      topCompanies: 'Top Companies',
+      salaryRange: 'Salary Range',
+      timeline: 'Learning Timeline',
+      forRole: 'For Role',
+      outOf100: 'out of 100',
+      skillDistribution: 'Skill Distribution',
+      technical: 'Technical',
+      softSkills: 'Soft Skills',
+      domainKnowledge: 'Domain Knowledge',
+      downloadReport: 'Download Report',
+      salaryRangeTitle: '💰 Salary Range',
+      perAnnum: 'Per annum for this role',
+      skillGapsIdentified: '🎯 Skill Gaps Identified',
+      currentLevel: 'Current Level',
+      requiredLevel: 'Required Level',
+      learnNow: 'Learn Now',
+      addToPlan: 'Add to Plan',
+      skillComparisonRadar: '📊 Skill Comparison Radar',
+      yourSkills: 'Your Skills',
+      required: 'Required',
+      recommendedLearningPaths: '📚 Recommended Learning Paths',
+      priority: 'Priority',
+      enroll: 'Enroll',
+      marketDemandTrend: '📈 Market Demand Trend',
+      topCompaniesHiring: '🏢 Top Companies Hiring',
+      yourLearningRoadmap: '🎯 Your Learning Roadmap',
+      first30Days: '📅 First 30 Days',
+      next30Days: '📅 Next 30 Days (60 total)',
+      final30Days: '📅 Final 30 Days (90 total)'
+    },
+    analyzingSteps: {
+      profileAnalysis: 'Profile Analysis',
+      marketResearch: 'Market Research',
+      skillMatching: 'Skill Matching',
+      reportGeneration: 'Report Generation'
+    },
+    customIndustryPlaceholder: 'Enter your industry (e.g., Supply Chain, Operations, etc.)',
+    backToDropdown: '← Back to dropdown',
+    addedSkills: 'Added Skills ({{count}})',
+    complete: '{{percent}}% complete',
+    skillPlaceholder: 'Type a skill (e.g., Python, Leadership)',
+    unknownError: 'Unknown error'
+  },
+  interviewPrep: {
+    title: 'AI Interview Prep',
+    subtitle: 'Practice with AI-powered mock interviews',
+    backToDashboard: 'Back to Dashboard',
+    newInterview: 'New Interview',
+    history: 'History',
+    experienceLevel: 'Experience Level',
+    selectExperienceLevel: 'Select your experience level',
+    targetRole: 'Target Role',
+    targetRoleDescription: 'What position are you interviewing for? (e.g., Software Engineer, Product Manager, Data Scientist)',
+    targetRolePlaceholder: 'Enter your target role (e.g., Software Engineer, Product Manager)',
+    popularRoles: 'Popular roles:',
+    industry: 'Industry',
+    selectIndustry: 'Select industry',
+    startPractice: 'Start AI-Powered Interview',
+    starting: 'Starting AI Interview...',
+    interviewStarted: 'Interview started! Good luck! 🎤',
+    interviewCompleted: 'Interview completed',
+    startFailed: 'Failed to start interview: {{error}}',
+    recordingStarted: 'Recording started',
+    recordingStopped: 'Recording stopped',
+    microphoneDenied: 'Microphone access denied',
+    submitAnswer: 'Submit Answer',
+    nextQuestion: 'Next Question',
+    finishInterview: 'Finish Interview',
+    sessionSaved: 'Interview session saved!',
+    saveFailed: 'Failed to save session, but results are still available.',
+    freePlan: 'Free Plan',
+    premium: 'Premium',
+    unlimited: 'Unlimited',
+    today: 'today',
+    industryPlaceholder: 'Enter the industry (e.g., Technology, Healthcare, Finance)',
+    experienceLevels: {
+      fresher: {
+        label: 'Fresher (0-2 years)',
+        badge: 'Beginner'
+      },
+      junior: {
+        label: 'Junior (2-4 years)',
+        badge: 'Intermediate'
+      },
+      mid: {
+        label: 'Mid-level (4-7 years)',
+        badge: 'Advanced'
+      },
+      senior: {
+        label: 'Senior (7+ years)',
+        badge: 'Expert'
+      }
+    },
+    selectIndustry: 'Which industry is the company in? (e.g., Technology, Healthcare, Finance)',
+    popularIndustries: 'Popular industries:',
+    upgradeMessage: 'Free users: {{remaining}} questions remaining today. Upgrade to Premium for unlimited practice!',
+    upgradeLink: 'Upgrade to Premium',
+    dailyLimitReached: 'Daily limit reached! Upgrade to Premium for unlimited questions.',
+    preparingQuestion: 'AI is preparing the next question...',
+    questionOf: 'Question {{current}} of {{total}}',
+    complete: '{{percent}}% Complete',
+    yourAnswer: 'Your Answer',
+    answerPlaceholder: 'Type your answer here or record audio below...',
+    voiceRecording: 'Voice Recording',
+    startRecording: 'Start Recording',
+    stopRecording: 'Stop Recording',
+    play: 'Play',
+    pause: 'Pause',
+    recordingSaved: 'Recording saved',
+    recording: 'Recording...',
+    submittingAnswer: 'Submitting Answer...',
+    hint: 'Hint:',
+    questionsAnswered: '{{count}} question{{plural}} answered',
+    interviewComplete: 'Interview Complete!',
+    youAnswered: 'You answered {{count}} questions',
+    yourPerformance: 'Your Performance',
+    averageScore: 'Average Score',
+    completed: 'Completed',
+    minutes: 'Minutes',
+    interviewSummary: 'Interview Summary',
+    strengths: 'Strengths',
+    improvements: 'Areas for Improvement',
+    skillGapsIdentified: 'Skill Gaps Identified',
+    recommendedNextSteps: 'Recommended Next Steps',
+    detailedScores: 'Detailed Scores',
+    strong: 'Strong',
+    good: 'Good',
+    needsImprovement: 'Needs Improvement',
+    practiceAgain: 'Practice Again',
+    backToDashboard: 'Back to Dashboard',
+    startingNewSession: 'Starting new practice session!',
+    searchSessions: 'Search sessions...',
+    allRoles: 'All Roles',
+    allIndustries: 'All Industries',
+    minScore: 'Min Score',
+    noSessionsFound: 'No interview sessions found',
+    sessionDeleted: 'Session deleted',
+    sampleAnswerCopied: 'Sample answer copied!',
+    copyFailed: 'Failed to copy. Please copy manually.',
+    interviewSessionNotInitialized: 'Interview session not initialized',
+    sessionCreationFailed: 'Session creation failed, but proceeding with interview: {{error}}'
+  }
+};
+
+// Root-level aiCoach translations for English
+resources.en.translation.aiCoach = {
+  title: 'AI Career Coach',
+  backToDashboard: 'Back to Dashboard',
+  estelName: 'Estel',
+  estelTitle: 'AI Career Coach',
+  newChat: 'New Chat',
+  history: 'History',
+  newConversation: 'New Conversation',
+  noConversations: 'No conversations yet',
+  greeting: 'Hey, it\'s',
+  howCanIHelp: 'How can I help?',
+  sendMessage: 'Send a message...',
+  disclaimer: 'Estel helpers may make mistakes. Consider checking important information.',
+  conversationCreated: 'New conversation created!',
+  createFailed: 'Failed to create conversation: {{error}}',
+  messageSent: 'Message sent successfully!',
+  sendFailed: 'Failed to send message: {{error}}',
+  unknownError: 'Unknown error',
+  noResponseFromAI: 'No response from AI service. Please check your subscription status or try again later.',
+  quickPrompts: {
+    reviewResume: 'Review my resume',
+    careerGuidance: 'Career guidance advice',
+    optimizeLinkedIn: 'Optimize my LinkedIn profile',
+    interviewTips: 'Interview preparation tips',
+    careerPath: 'Plan my career path',
+    coverLetter: 'Cover letter help'
+  },
+  timeFormat: {
+    justNow: 'just now',
+    minAgo: '{{n}} minute{{plural}} ago',
+    hoursAgo: '{{n}} hour{{plural}} ago',
+    daysAgo: '{{n}} day{{plural}} ago'
+  },
+  limitReached: 'AI session limit reached. You have {{limit}} sessions remaining on your {{plan}} plan.',
+  lowUsage: 'Only {{remaining}} AI sessions remaining this month. Consider upgrading for unlimited access.',
+  sessionsRemaining: 'Sessions Remaining',
+  upgradePrompt: 'Upgrade for unlimited sessions',
+  upgrade: 'Upgrade'
+};
+
+// Root-level aiCoach translations for Hindi
+resources.hi.translation.aiCoach = {
+  title: 'AI करियर कोच',
+  backToDashboard: 'डैशबोर्ड पर वापस जाएं',
+  estelName: 'Estel',
+  estelTitle: 'AI करियर कोच',
+  newChat: 'नया चैट',
+  history: 'इतिहास',
+  newConversation: 'नया संवाद',
+  noConversations: 'अभी तक कोई संवाद नहीं',
+  greeting: 'अरे, यह',
+  howCanIHelp: 'मैं कैसे मदद कर सकता हूं?',
+  sendMessage: 'एक संदेश भेजें...',
+  disclaimer: 'Estel सहायक गलतियां कर सकते हैं। महत्वपूर्ण जानकारी की जांच करने पर विचार करें।',
+  conversationCreated: 'नया संवाद बनाया गया!',
+  createFailed: 'संवाद बनाने में विफल: {{error}}',
+  messageSent: 'संदेश सफलतापूर्वक भेजा गया!',
+  sendFailed: 'संदेश भेजने में विफल: {{error}}',
+  unknownError: 'अज्ञात त्रुटि',
+  noResponseFromAI: 'AI सेवा से कोई प्रतिक्रिया नहीं। कृपया अपनी सदस्यता स्थिति जांचें या बाद में पुनः प्रयास करें।',
+  quickPrompts: {
+    reviewResume: 'मेरे रिज्यूमे की समीक्षा करें',
+    careerGuidance: 'करियर मार्गदर्शन सलाह',
+    optimizeLinkedIn: 'मेरे LinkedIn प्रोफाइल को अनुकूलित करें',
+    interviewTips: 'इंटरव्यू तैयारी युक्तियां',
+    careerPath: 'मेरे करियर पथ की योजना बनाएं',
+    coverLetter: 'कवर लेटर सहायता'
+  },
+  timeFormat: {
+    justNow: 'अभी',
+    minAgo: '{{n}} मिनट पहले',
+    hoursAgo: '{{n}} घंटे पहले',
+    daysAgo: '{{n}} दिन पहले'
+  },
+  limitReached: 'AI सत्र सीमा पूरी हो गई। आपके {{plan}} प्लान पर {{limit}} सत्र शेष हैं।',
+  lowUsage: 'इस महीने केवल {{remaining}} AI सत्र शेष हैं। असीमित पहुंच के लिए अपग्रेड करने पर विचार करें।',
+  sessionsRemaining: 'शेष सत्र',
+  upgradePrompt: 'असीमित सत्रों के लिए अपग्रेड करें',
+  upgrade: 'अपग्रेड करें'
+};
+
 resources.hi.translation.profile = {
   // Profile Header
   user: 'उपयोगकर्ता',
@@ -3900,107 +5831,3073 @@ resources.hi.translation.profile = {
   plan: 'योजना'
 };
 
-resources.mr.translation.profile = {
-  // Profile Header
-  user: 'वापरकर्ता',
-  level: 'स्तर',
-  completeProfileMessage: 'वैयक्तिक करिअर मार्गदर्शन मिळवण्यासाठी तुमचे प्रोफाइल पूर्ण करा 🚀',
-  
-  // Stats Section
-  activitiesCompleted: 'पूर्ण केलेल्या क्रियाकलाप',
-  daysStreak: 'दिवसांची साखळी',
-  careerPoints: 'करिअर गुण',
-  
-  // Progress Section
-  yourProgress: 'तुमची प्रगती',
-  resumes: 'रिझ्यूमे',
-  applications: 'अर्ज',
-  interviews: 'मुलाखत',
-  timeSpent: 'वापरलेला वेळ',
-  
-  // About Me Section
-  aboutMe: 'माझ्याबद्दल',
-  edit: 'संपादित करा',
-  aboutMePlaceholder: 'वैयक्तिक करिअर मार्गदर्शन आणि शिफारसी मिळवण्यासाठी आम्हाला तुमच्याबद्दल सांगा।',
-  
-  // Skills Section
-  skills: 'कौशल्ये',
-  addSkillsMessage: 'चांगले नोकरी जुळणी मिळवण्यासाठी तुमची कौशल्ये जोडा',
-  profileComplete: 'प्रोफाइल {percentage}% पूर्ण',
-  
-  // Career Path Section
-  careerPath: 'करिअर मार्ग',
+// Landing Page translations for Hindi
+resources.hi.translation.landing = {
+    hero: {
+      badge: 'AI-संचालित करियर विकास प्लेटफॉर्म',
+      title: 'CVSaathi',
+      description: 'AI के साथ अपनी करियर कहानी बनाएं — एक शानदार, नौकरी जीतने वाले रिज्यूमे से लेकर व्यक्तिगत इंटरव्यू तैयारी और वास्तविक समय कौशल अंतर्दृष्टि तक।',
+      getTemplate: 'टेम्पलेट प्राप्त करें',
+      seeServices: 'हमारी सेवाएं देखें'
+    },
+    navigation: {
+      whyChooseUs: 'हमें क्यों चुनें',
+      features: 'विशेषताएं',
+      services: 'सेवाएं',
+      process: 'प्रक्रिया',
+      templates: 'टेम्पलेट',
+      pricing: 'मूल्य निर्धारण',
+      signIn: 'साइन इन',
+      getStarted: 'मुफ्त शुरू करें'
+    },
+    features: {
+      resumeBuilder: {
+        title: 'रिज्यूमे बिल्डर',
+        description: 'मिनटों में सुंदर, नौकरी जीतने वाले रिज्यूमे बनाएं। 50+ AI-निर्मित टेम्पलेट्स में से चुनें जो हर पेशे, क्षेत्र और अनुभव स्तर के लिए तैयार किए गए हैं — वैश्विक भर्तीकर्ताओं और ATS सिस्टम दोनों को प्रभावित करने के लिए डिज़ाइन किए गए।'
+      },
+      atsOptimizer: {
+        title: 'ATS ऑप्टिमाइज़र',
+        description: 'बॉट्स को हराएं और मानव आंखों तक तेजी से पहुंचें। तत्काल ATS अनुकूलता जांच, कीवर्ड वृद्धि, और स्मार्ट फॉर्मेटिंग सुझाव प्राप्त करें ताकि आपकी शॉर्टलिस्टिंग संभावनाएं अधिकतम हों।'
+      },
+      interviewPrep: {
+        title: 'इंटरव्यू तैयारी सहायक',
+        description: 'अपने व्यक्तिगत AI इंटरव्यूअर के साथ प्रशिक्षण लें। भूमिका-विशिष्ट मॉक सत्रों का अभ्यास करें, तत्काल फीडबैक प्राप्त करें, और आत्मविश्वास बनाएं — किसी भी डोमेन, उद्योग या भाषा में।'
+      },
+      estel: {
+        title: 'AI करियर साथी Estel',
+        description: 'आपका 24×7 AI करियर साथी जो आपकी यात्रा को समझता है। Estel हमारी सभी विशेषताओं को शक्ति देता है — सही रिज्यूमे बनाने से लेकर इंटरव्यू की तैयारी तक, विशेषज्ञ-स्तरीय सलाह और अनुकूलित विकास सुझाव प्राप्त करें — जब भी आपको जरूरत हो।'
+      },
+      skillGap: {
+        title: 'कौशल अंतर विश्लेषण',
+        description: 'जानें कि बढ़ने के लिए आपको किन कौशलों की आवश्यकता है। अपने प्रोफाइल की तुलना दुनिया भर के शीर्ष उद्योग भूमिकाओं से करें और AI-संचालित अंतर्दृष्टि के साथ अपस्किल करने के लिए एक व्यक्तिगत रोडमैप प्राप्त करें।'
+      },
+      allFeatures: '1 उपकरण में सभी विशेषताएं',
+      allFeaturesDesc: 'स्मार्ट उपकरण खोजें जो आपकी नौकरी खोज को सरल बनाते हैं, आत्मविश्वास बढ़ाते हैं, और आपको बढ़ने में मदद करते हैं — सभी एक शक्तिशाली प्लेटफॉर्म में।',
+      getStarted: 'शुरू करें',
+      seeServices: 'हमारी सेवाएं देखें'
+    },
+    estel: {
+      badge: 'AI साथी',
+      title: '{{name}} से मिलें — आपका AI करियर साथी',
+      name: 'Estel',
+      subtitle1: 'सहायक से अधिक',
+      subtitle1Desc: '— Estel आपके पेशेवर यात्रा के हर चरण में आपका व्यक्तिगत मार्गदर्शक है।',
+      description1: 'हजारों वास्तविक दुनिया के रिज्यूमे, इंटरव्यू और करियर सफलता पैटर्न पर प्रशिक्षित, Estel आपको नौकरी जीतने वाले प्रोफाइल बनाने, कौशल अंतर का विश्लेषण करने, और आत्मविश्वास के साथ इंटरव्यू की तैयारी करने में मदद करता है — सभी एक एकल, सहज अनुभव के माध्यम से।',
+      description2: 'जबकि अन्य रिज्यूमे, कोचिंग और सीखने के लिए कई उपकरणों से जूझते हैं, Estel सब कुछ एक साथ लाता है। वह आपके लक्ष्यों को समझती है, आपकी भाषा बोलती है, और व्यक्तिगत सलाह देती है जो आपके साथ विकसित होती है।',
+      description3: 'Estel के साथ, आपकी करियर वृद्धि अब अनुमान नहीं है — यह बुद्धिमत्ता, सहानुभूति और अनुभव द्वारा निर्देशित है।',
+      tagline: 'अधिक चतुराई से बनाएं। तेजी से सीखें। Estel के साथ बढ़ें।',
+      cta: 'Estel के साथ चैटिंग शुरू करें'
+    },
+    cta: {
+      badge: 'आज ही अपनी सफलता की कहानी शुरू करें',
+      title: 'अपना सपनों का रिज्यूमे बनाने के लिए तैयार हैं?',
+      description: '50,000+ नौकरी चाहने वालों में शामिल हों जिन्होंने हमारे AI-संचालित रिज्यूमे बिल्डर के साथ अपने करियर को बदल दिया। मिनटों में शुरू करें, दिनों में इंटरव्यू प्राप्त करें।',
+      createResume: 'अपना रिज्यूमे मुफ्त बनाएं',
+      talkToSales: 'सेल्स से बात करें',
+      noCreditCard: 'क्रेडिट कार्ड की आवश्यकता नहीं • 7-दिवसीय मनी-बैक गारंटी'
+    },
+    finalCta: {
+      badge: 'अपने करियर को बदलने के लिए तैयार हैं?',
+      title: 'आज ही अपना सपनों का रिज्यूमे बनाना शुरू करें',
+      getStarted: 'मुफ्त शुरू करें',
+      viewPricing: 'मूल्य निर्धारण देखें',
+      noCreditCard: 'क्रेडिट कार्ड की आवश्यकता नहीं',
+      freeTrial: '7-दिवसीय मुफ्त परीक्षण',
+      cancelAnytime: 'कभी भी रद्द करें'
+    },
+    pricing: {
+      badge: 'सरल मूल्य निर्धारण',
+      title: 'अपनी सही योजना चुनें',
+      description: 'मुफ्त शुरू करें, कभी भी अपग्रेड करें। कोई छुपी हुई फीस नहीं, कभी भी रद्द करें।',
+      freePlan: {
+        name: 'मुफ्त योजना',
+        description: 'शुरुआत के लिए परफेक्ट',
+        cta: 'वर्तमान योजना'
+      },
+      starterPlan: {
+        name: 'स्टार्टर योजना',
+        description: 'नौकरी चाहने वालों के लिए बढ़िया',
+        cta: 'अभी अपग्रेड करें'
+      },
+      professionalPlan: {
+        name: 'प्रोफेशनल योजना',
+        description: 'गंभीर करियर वृद्धि के लिए',
+        cta: 'योजना चुनें',
+        popular: 'सबसे लोकप्रिय'
+      }
+    },
+    footer: {
+      description: 'AI-संचालित करियर विकास प्लेटफॉर्म। बुद्धिमान करियर उपकरणों के साथ पेशेवरों को सशक्त बनाना।',
+      madeInIndia: 'भारत में निर्मित 🇮🇳',
+      stayUpdated: 'करियर टिप्स के साथ अपडेट रहें',
+      newsletterDesc: 'अपने इनबॉक्स में साप्ताहिक रिज्यूमे टिप्स, नौकरी खोज रणनीतियां और करियर सलाह प्राप्त करें।',
+      enterEmail: 'अपना ईमेल दर्ज करें',
+      subscribe: 'सदस्यता लें',
+      copyright: '© 2024 CVSaathi। सभी अधिकार सुरक्षित।'
+    },
+    whyChooseUs: {
+      badge: 'हमें क्यों चुनें',
+      title: 'हमें क्यों चुनें',
+      description: 'बुद्धिमान, मानव-प्रथम AI के साथ हर करियर सपने को सशक्त बनाना।',
+      benefits: {
+        aiUnderstands: {
+          title: 'AI जो आपको समझता है',
+          description: 'CV Saathi सिर्फ स्मार्ट नहीं है — यह व्यक्तिगत है। हमारा बहुभाषी AI हर रिज्यूमे, करियर सुझाव, और इंटरव्यू टिप को आपके शहर, आपके उद्योग, और आपके लक्ष्यों के अनुसार तैयार करता है।'
+        },
+        realTimeInsights: {
+          title: 'वास्तविक समय करियर अंतर्दृष्टि',
+          description: 'लाइव एनालिटिक्स और नौकरी-बाजार संकेतों के साथ अपनी वृद्धि को तुरंत ट्रैक करें — देखें कि कौन से कौशल ट्रेंडिंग हैं और आपका प्रोफाइल कैसे तुलना करता है।'
+        },
+        aiDrivenGrowth: {
+          title: 'AI-संचालित वृद्धि',
+          description: 'हर क्लिक आपको आगे बढ़ने में मदद करती है। हमारी बुद्धिमान प्रणाली आपकी प्रगति से सीखती है ताकि बेहतर अवसरों, तेजी से सुझाव दे सके।'
+        }
+      }
+    },
+    infiniteScroll: {
+      fasterInnovation: 'तेज़ नवाचार',
+      virtualAssistance: 'वर्चुअल सहायता',
+      scalableSolutions: 'स्केलेबल समाधान',
+      personalizedExperiences: 'व्यक्तिगत अनुभव',
+      costEffective: 'लागत प्रभावी',
+      lightningFast: 'बिजली की तरह तेज़',
+      securePrivate: 'सुरक्षित और निजी',
+      precisionMatching: 'सटीक मिलान'
+    },
+    aiServices: {
+      badge: 'सेवाएं',
+      title: 'हमारी AI-संचालित सेवाएं',
+      description: 'AI सुविधाओं का लाभ उठाएं जो आपके व्यवसाय के प्रदर्शन को बढ़ावा देती हैं।',
+      services: {
+        learningRecommendations: {
+          title: 'AI सीखने की सिफारिशें',
+          description: 'व्यक्तिगत सीखने के मार्गों के साथ तेजी से बढ़ें। हमारा AI आपके करियर लक्ष्यों और कौशल-अंतर डेटा का विश्लेषण करता है, फिर आपको Coursera, Udemy, और उससे आगे के सबसे प्रासंगिक पाठ्यक्रमों से जोड़ता है — ताकि आप वह सीखें जो वास्तव में मायने रखता है।'
+        },
+        contentGeneration: {
+          title: 'AI सामग्री निर्माण',
+          description: 'सटीकता के साथ एक शक्तिशाली व्यक्तिगत ब्रांड बनाएं। पेशेवर रिज्यूमे, बायो, और उद्देश्य के बयान उत्पन्न करें जो आपकी आवाज़ में तैयार किए गए हों — टोन, स्पष्टता, और वैश्विक भर्ती मानकों के लिए अनुकूलित।',
+          uiContinueWriting: 'लिखना जारी रखें',
+          uiFixSpelling: 'वर्तनी ठीक करें',
+          uiExplainDetail: 'विस्तार से समझाएं',
+          uiGenerate: 'उत्पन्न करें'
+        },
+        chatAssistants: {
+          title: 'AI-संचालित चैट सहायक',
+          description: 'अपने 24 × 7 करियर कोच से मिलें। रिज्यूमे बनाने से लेकर इंटरव्यू तैयारी तक, हमारा वार्तालाप AI कई भाषाओं में तत्काल, मानव-जैसा समर्थन प्रदान करता है — हमेशा उपलब्ध, हमेशा आपकी जरूरतों के अनुकूल।',
+          uiPlaceholder: 'एक संदेश टाइप करें'
+        },
+        multilingualTranslation: {
+          title: 'बहुभाषी AI अनुवाद और स्थानीयकरण',
+          description: 'बाधाओं को तोड़ें और वैश्विक जाएं। रिज्यूमे, कवर लेटर्स, और फीडबैक को 10+ भाषाओं में तुरंत अनुवाद करें — संदर्भ, टोन, और पेशेवर पॉलिश को बरकरार रखते हुए।'
+        }
+      }
+    },
+    howItWorks: {
+      badge: 'प्रक्रिया',
+      title: 'सफलता के लिए चार सरल कदम',
+      description: 'सहयोग और प्रतिक्रिया की एक पारदर्शी प्रक्रिया',
+      steps: {
+        step1: {
+          title: 'अपलोड करें या नए सिरे से शुरू करें',
+          description: 'अपने मौजूदा रिज्यूमे को आयात करें या एक खाली टेम्पलेट के साथ शुरू करें। हमारा AI आपको हर कदम पर मार्गदर्शन करेगा।'
+        },
+        step2: {
+          title: 'AI वृद्धि',
+          description: 'हमारा AI आपकी सामग्री का विश्लेषण करता है, सुधार सुझाता है, और स्वचालित रूप से ATS सिस्टम के लिए अनुकूलित करता है।'
+        },
+        step3: {
+          title: 'समीक्षा और अनुकूलन',
+          description: 'हमारे सहज संपादक के साथ अपने रिज्यूमे को ठीक करें। प्रीमियम टेम्पलेट्स में से चुनें और रंगों को अनुकूलित करें।'
+        },
+        step4: {
+          title: 'डाउनलोड करें और आवेदन करें',
+          description: 'अपने ATS-अनुकूलित रिज्यूमे को कई प्रारूपों में निर्यात करें। आवेदनों को ट्रैक करें और इंटरव्यू प्राप्त करें।'
+        }
+      },
+      ctaButton: 'अभी बनाना शुरू करें - यह मुफ्त है'
+    },
+    templates: {
+      badge: 'टेम्पलेट',
+      title: 'डिज़ाइनर-निर्मित टेम्पलेट',
+      description: 'आधुनिक, क्लासिक, और दृश्य टेम्पलेट्स में से चुनें जो ATS फ़िल्टर पास करने और भर्तीकर्ताओं को प्रभावित करने के लिए बनाए गए हैं',
+      templateTypes: {
+        techProfessional: {
+          title: 'टेक पेशेवर',
+          description: 'डेवलपर्स, इंजीनियरों, और टेक पेशेवरों के लिए आधुनिक टेम्पलेट।',
+          tags: {
+            developer: 'डेवलपर',
+            engineer: 'इंजीनियर',
+            designer: 'डिज़ाइनर'
+          }
+        },
+        marketing: {
+          title: 'मार्केटिंग',
+          description: 'मार्केटर्स और रचनात्मक पेशेवरों के लिए आकर्षक टेम्पलेट।',
+          tags: {
+            marketing: 'मार्केटिंग',
+            socialMedia: 'सोशल मीडिया',
+            creative: 'रचनात्मक'
+          }
+        },
+        businessOperations: {
+          title: 'व्यापार संचालन',
+          description: 'व्यापार संचालन और प्रबंधन के लिए पेशेवर टेम्पलेट।',
+          tags: {
+            manager: 'मैनेजर',
+            consultant: 'सलाहकार',
+            operations: 'संचालन'
+          }
+        },
+        freshGraduate: {
+          title: 'ताजा स्नातक',
+          description: 'छात्रों और हाल के स्नातकों के लिए विशेष रूप से डिज़ाइन किया गया।',
+          tags: {
+            graduate: 'स्नातक',
+            intern: 'इंटर्न',
+            entryLevel: 'प्रवेश स्तर'
+          }
+        },
+        executive: {
+          title: 'कार्यकारी',
+          description: 'वरिष्ठ कार्यकारियों और नेतृत्व भूमिकाओं के लिए प्रीमियम टेम्पलेट।',
+          tags: {
+            director: 'निर्देशक',
+            vp: 'VP',
+            executive: 'कार्यकारी'
+          }
+        }
+      },
+      previewTemplate: 'टेम्पलेट पूर्वावलोकन',
+      dragToRotate: 'घुमाने के लिए खींचें',
+      templatesCount: 'टेम्पलेट',
+      viewAllTemplates: 'सभी टेम्पलेट देखें'
+    },
+    faq: {
+      badge: 'FAQ',
+      title: 'अक्सर पूछे जाने वाले प्रश्न',
+      description: 'CVSaathi के बारे में आपको जो कुछ जानना चाहिए',
+      stillHaveQuestions: 'अभी भी प्रश्न हैं?',
+      supportDescription: 'हमारी सहायता टीम आपकी सफलता में मदद करने के लिए यहां है',
+      contactSupport: 'सहायता से संपर्क करें',
+      questions: {
+        q1: 'CVSaathi अन्य रिज्यूमे बिल्डरों से कैसे अलग है?',
+        q2: 'क्या CVSaathi केवल रिज्यूमे में मदद करता है?',
+        q3: 'ATS अनुकूलन कैसे काम करता है?',
+        q4: 'क्या मैं CVSaathi को मुफ्त में उपयोग कर सकता हूं?',
+        q5: 'CVSaathi कौन सी भाषाओं का समर्थन करता है? क्या यह Tier-2 शहरों के लिए अच्छा है?',
+        q6: 'मैं अपने रिज्यूमे को किन प्रारूपों में डाउनलोड कर सकता हूं?',
+        q7: 'क्या मेरा डेटा सुरक्षित और निजी है?',
+        q8: 'अगर मैं संतुष्ट नहीं हूं तो क्या होगा? क्या आप रिफंड या सहायता प्रदान करते हैं?'
+      },
+      answers: {
+        a1: 'CVSaathi सिर्फ एक रिज्यूमे बिल्डर नहीं है – यह भारत में निर्मित एक वैश्विक मानसिकता के साथ AI करियर साथी है। हम उन्नत AI (आपका सहायक, Estel) को भारतीय नौकरी बाजार और अंतर्राष्ट्रीय भर्ती मानकों की गहरी समझ के साथ जोड़ते हैं। इसका मतलब है कि आपको शहर-स्मार्ट रिज्यूमे और करियर मार्गदर्शन मिलता है जो भारतीय भर्तीकर्ताओं और ATS सिस्टम के लिए काम करता है, जबकि वैश्विक अवसरों के लिए अभी भी पॉलिश और पेशेवर दिखता है। हम Tier-2 और उभरते शहरों के वास्तविक उम्मीदवारों पर ध्यान केंद्रित करते हैं, सरल भाषा, व्यावहारिक सुझाव, और आधुनिक टेम्पलेट का उपयोग करते हैं जो भारतीय और अंतर्राष्ट्रीय दोनों भर्ती प्रबंधकों द्वारा वास्तव में अपेक्षित हैं।',
+        a2: 'नहीं। CVSaathi एक मजबूत, ATS-तैयार रिज्यूमे के साथ शुरू होता है लेकिन बहुत गहराई तक जाता है। ऐप के अंदर, Estel कर सकता है:\n\n• AI के साथ अपने रिज्यूमे में सुधार और पुनर्लेखन करें\n• अपने प्रोफाइल पर ATS जांच चलाएं\n• मॉक Q&A के साथ इंटरव्यू की तैयारी में आपकी मदद करें\n• अपने कौशल अंतर का विश्लेषण करें और सुझाव दें कि आगे क्या सीखना है\n• सरल, स्पष्ट भाषा में आपको चरण-दर-चरण मार्गदर्शन करें\n\nइसे अपनी जेब में एक व्यक्तिगत करियर गाइड के रूप में सोचें, न कि सिर्फ एक बार का रिज्यूमे उपकरण।',
+        a3: 'हमारा AI आपके रिज्यूमे की शीर्ष भारतीय कंपनियों द्वारा उपयोग किए जाने वाले प्रमुख ATS सर्वोत्तम प्रथाओं के खिलाफ जांच करता है। हम समीक्षा करते हैं:\n\n• नौकरी विवरण बनाम कीवर्ड\n• अनुभाग संरचना और शीर्षक\n• फॉर्मेटिंग, बुलेट शैली, और फॉन्ट\n• स्पष्टता, प्रभाव, और भूमिका-प्रासंगिक उपलब्धियां\n\nआपको एक समझने में आसान ATS स्कोर मिलता है साथ ही क्या ठीक करना है इस पर स्पष्ट सुझाव मिलते हैं ताकि आपके रिज्यूमे के स्वचालित स्क्रीनिंग पास करने और एक मानव भर्तीकर्ता तक पहुंचने की बेहतर संभावना हो।',
+        a4: 'हां, आप मुफ्त में शुरू कर सकते हैं। मुफ्त योजना एक मजबूत, नौकरी-तैयार रिज्यूमे बनाने में आपकी मदद करने के लिए डिज़ाइन की गई है:\n\n• 1 सक्रिय रिज्यूमे\n• आवश्यक टेम्पलेट\n• बुनियादी AI सुझाव\n• ATS स्कोर और PDF डाउनलोड\n\nजब आप तैयार हों, तो आप अतिरिक्त लाभों के लिए एक भुगतान योजना में अपग्रेड कर सकते हैं जैसे कई रिज्यूमे, प्रीमियम टेम्पलेट, गहन AI पुनर्लेखन, Estel के साथ इंटरव्यू तैयारी, और अधिक उन्नत करियर अंतर्दृष्टि।',
+        a5: 'CVSaathi भारतीय उम्मीदवारों को ध्यान में रखकर बनाया गया है, विशेष रूप से Tier-2 और उभरते शहरों से। हम सरल, स्पष्ट अंग्रेजी का उपयोग करते हैं और कई भारतीय भाषाओं के लिए समर्थन शुरू कर रहे हैं ताकि आप उस भाषा में मार्गदर्शन प्राप्त कर सकें जिसमें आप सबसे अधिक सहज हैं। हमारा शहर-स्मार्ट दृष्टिकोण का मतलब है कि हम भारतीय शहरों में अलग-अलग वेतन सीमा, नौकरी के शीर्षक, और अपेक्षाओं को समझते हैं – मेट्रो भूमिकाओं से लेकर बढ़ते स्थानीय बाजारों तक।',
+        a6: 'आप अपने रिज्यूमे को भर्तीकर्ता-अनुकूल प्रारूपों में डाउनलोड कर सकते हैं, जिसमें शामिल हैं:\n\n• PDF – साझा करने के लिए सबसे अच्छा और सबसे ATS-अनुकूल\n• DOCX – मैनुअल ट्वीक्स के लिए संपादन योग्य प्रारूप\n• सादा पाठ/ATS-अनुकूल पाठ – ऑनलाइन पोर्टल में पेस्ट करने के लिए आदर्श\n\nहम भर्तीकर्ताओं या WhatsApp और ईमेल पर त्वरित साझाकरण के लिए एक साझा करने योग्य लिंक भी प्रदान करते हैं।',
+        a7: 'हां। आपकी डेटा सुरक्षा हमारे लिए सर्वोच्च प्राथमिकता है। हम आपकी जानकारी की सुरक्षा के लिए मजबूत एन्क्रिप्शन का उपयोग करते हैं, और हम कभी भी आपके डेटा को तीसरे पक्ष को नहीं बेचते हैं। आप नियंत्रित करते हैं कि आप क्या अपलोड करते हैं और जब भी चाहें अपने रिज्यूमे और खाता डेटा को हटा सकते हैं। CVSaathi भारतीय डेटा संरक्षण मानदंडों के अनुरूप बनाया गया है, और हम स्पष्ट रूप से बताते हैं कि आपके डेटा का उपयोग हमारी गोपनीयता नीति में कैसे किया जाता है।',
+        a8: 'हम चाहते हैं कि CVSaathi वास्तव में आपके करियर में मदद करे। यदि आपको भुगतान योजना के साथ समस्याओं का सामना करना पड़ता है, तो आप हमारी सहायता टीम से संपर्क कर सकते हैं और, जहां पात्र हो, हमारी रिफंड और रद्दीकरण नीति के अनुसार रिफंड का अनुरोध कर सकते हैं। हमारी सहायता टीम बिलिंग प्रश्नों, तकनीकी समस्याओं, या उत्पाद संदेहों में आपकी मदद करने के लिए उपलब्ध है ताकि आप कभी भी अकेले न फंसे।'
+      }
+    }
+  };
+
+resources.hi.translation.dashboard = {
+  main: {
+    title: 'मेरा डैशबोर्ड',
+    quickSearch: 'त्वरित खोज',
+    keyboardShortcut: '⌘K'
+  },
+  sidebar: {
+    menu: {
+      dashboard: 'डैशबोर्ड',
+      aiCoach: 'AI कोच',
+      resumeBuilder: 'रिज्यूमे बिल्डर',
+      templates: 'टेम्पलेट',
+      atsChecker: 'ATS चेकर',
+      interviewPrep: 'इंटरव्यू तैयारी',
+      skillGap: 'कौशल अंतर विश्लेषण'
+    },
+    bottom: {
+      pricing: 'मूल्य निर्धारण',
+      feedback: 'फीडबैक',
+      settings: 'सेटिंग्स',
+      help: 'सहायता और समर्थन'
+    }
+  },
+  resumeBuilder: {
+    title: 'रिज्यूमे बिल्डर',
+    welcomeTitle: 'मिनटों में अपना सपनों का रिज्यूमे बनाएं',
+    minutes: 'मिनटों में',
+    welcomeDescription: 'एस्टेल आपको एक पेशेवर, ATS-अनुकूलित रिज्यूमे बनाने में मार्गदर्शन करेगा',
+    startFromScratch: 'शुरुआत से शुरू करें',
+    startFromScratchDescription: 'AI मार्गदर्शन के साथ चरण-दर-चरण अपना रिज्यूमे बनाएं',
+    importExisting: 'मौजूदा आयात करें',
+    importExistingDescription: 'अपना वर्तमान रिज्यूमे अपलोड करें और इसे बेहतर बनाएं',
+    aiQuickBuild: 'AI क्विक बिल्ड',
+    aiQuickBuildDescription: 'एस्टेल को आपकी प्रोफ़ाइल से रिज्यूमे बनाने दें',
+    continueWorkingOn: 'जारी रखें',
+    resume: 'रिज्यूमे',
+    resumes: 'रिज्यूमे',
+    untitledResume: 'अनामित रिज्यूमे',
+    chooseTemplate: 'अपना टेम्प्लेट चुनें',
+    selectTemplateDescription: 'अपने उद्योग से मेल खाने वाला एक पेशेवर टेम्प्लेट चुनें',
+    templateChoiceMessage: 'बढ़िया विकल्प! आइए आपके रिज्यूमे के लिए एक शानदार टेम्प्लेट चुनें।',
+    templateCategories: {
+      all: 'सभी',
+      modern: 'आधुनिक',
+      classic: 'क्लासिक',
+      creative: 'रचनात्मक',
+      technical: 'तकनीकी',
+      executive: 'कार्यकारी'
+    },
+    popular: '⭐ लोकप्रिय',
+    ats: 'ATS',
+    estelTip: "एस्टेल की सलाह",
+    templateSelectedMessage: 'बेहतरीन विकल्प! {{name}} टेम्प्लेट {{description}} है। इसमें {{score}}% ATS अनुकूलता स्कोर है! 🎨',
+    skills: 'कौशल',
+    showcaseYourSkills: 'अपने कौशल दिखाएं',
+    technicalSkills: '💻 तकनीकी कौशल',
+    softSkills: '🤝 सॉफ्ट कौशल',
+    typeAndPressEnter: 'टाइप करें और Enter दबाएं',
+    suggested: '💡 सुझाव:',
+    projects: 'प्रोजेक्ट',
+    showcaseYourBestWork: 'अपना सर्वश्रेष्ठ कार्य दिखाएं',
+    projectNumber: 'प्रोजेक्ट #{{n}}',
+    projectName: 'प्रोजेक्ट का नाम',
+    date: 'तारीख',
+    description: 'विवरण',
+    addTech: 'टेक जोड़ें (Enter दबाएं)',
+    addProject: 'प्रोजेक्ट जोड़ें',
+    additional: 'अतिरिक्त',
+    addCertificationsLanguagesAwards: 'प्रमाणपत्र, भाषाएं, पुरस्कार जोड़ें',
+    certifications: 'प्रमाणपत्र',
+    languages: 'भाषाएं',
+    awards: 'पुरस्कार',
+    pressEnter: 'Enter दबाएं',
+    aiCritique: 'AI समीक्षा',
+    getAIFeedback: 'AI फीडबैक प्राप्त करें',
+    readyForAIAnalysis: 'AI विश्लेषण के लिए तैयार?',
+    analyzing: 'विश्लेषण कर रहे हैं...',
+    analyzeResume: 'रिज्यूमे का विश्लेषण करें',
+    excellent: 'उत्कृष्ट!',
+    good: 'अच्छा!',
+    content: 'सामग्री',
+    formatting: 'फॉर्मेटिंग',
+    impact: 'प्रभाव',
+    length: 'लंबाई',
+    detailedFeedback: '📝 विस्तृत फीडबैक',
+    reAnalyze: 'पुन: विश्लेषण करें',
+    atsCheck: 'ATS जांच',
+    checkATSCompatibility: 'ATS अनुकूलता जांचें',
+    checkATS: 'ATS जांचें',
+    runATSCheck: 'ATS जांच चलाएं',
+    contact: 'संपर्क',
+    reCheck: 'पुन: जांचें',
+    updated: 'अपडेट किया गया!',
+    exportResume: 'रिज्यूमे निर्यात करें',
+    downloadAndShare: 'डाउनलोड करें और साझा करें',
+    amazingWork: 'अद्भुत काम!',
+    yourResumeIsReady: 'आपका रिज्यूमे तैयार है!',
+    downloadPDF: 'PDF डाउनलोड करें',
+    downloadDOCX: 'DOCX डाउनलोड करें',
+    copyLink: 'लिंक कॉपी करें',
+    emailResume: 'रिज्यूमे ईमेल करें',
+    linkCopied: 'लिंक कॉपी किया गया!',
+    docxExportComingSoon: 'DOCX निर्यात जल्द ही आ रहा है',
+    emailSharingComingSoon: 'ईमेल साझाकरण जल्द ही आ रहा है',
+    livePreview: 'लाइव पूर्वावलोकन',
+    expandPreview: 'पूर्वावलोकन विस्तृत करें',
+    minimizePreview: 'पूर्वावलोकन कम करें',
+    backToDashboard: 'डैशबोर्ड पर वापस जाएं',
+    tellUsAboutYourself: 'अपने बारे में बताएं',
+    characters: 'अक्षर',
+    invalidEmail: '⚠️ अमान्य ईमेल प्रारूप',
+    aiGenerate: 'AI जेनरेट करें',
+    personalInfo: {
+      title: 'व्यक्तिगत जानकारी',
+      fullName: 'पूरा नाम',
+      fullNamePlaceholder: 'राम कुमार',
+      email: 'ईमेल',
+      emailPlaceholder: 'ram.kumar@email.com',
+      phone: 'फोन',
+      phonePlaceholder: '+91 98765 43210',
+      location: 'स्थान',
+      locationPlaceholder: 'मुंबई, महाराष्ट्र',
+      linkedin: 'LinkedIn प्रोफाइल',
+      linkedinPlaceholder: 'linkedin.com/in/ramkumar',
+      portfolio: 'पोर्टफोलियो',
+      portfolioPlaceholder: 'ramkumar.com',
+      github: 'GitHub',
+      githubPlaceholder: 'github.com/ramkumar',
+      headline: 'पेशेवर हेडलाइन',
+      headlinePlaceholder: 'सीनियर सॉफ्टवेयर इंजीनियर | फुल-स्टैक डेवलपर | टेक उत्साही'
+    },
+    summary: {
+      title: 'पेशेवर सारांश',
+      description: 'एक प्रभावशाली सारांश 6 सेकंड में भर्तीकर्ताओं को आकर्षित करता है',
+      placeholder: 'एक प्रभावशाली सारांश लिखें जो आपके प्रमुख कौशल और अनुभव को उजागर करे...'
+    },
+    aiSummaryGenerator: '✨ AI सारांश जेनरेटर',
+    targetRole: 'लक्ष्य भूमिका',
+    targetRolePlaceholder: 'सॉफ्टवेयर इंजीनियर',
+    yearsOfExperience: 'अनुभव के वर्ष',
+    yearsOfExperiencePlaceholder: '5+',
+    industry: 'उद्योग',
+    industryPlaceholder: 'प्रौद्योगिकी',
+    generateSummaryWithAI: 'AI के साथ सारांश जेनरेट करें',
+    yourProfessionalSummary: 'आपका पेशेवर सारांश',
+    optimal: '✓ इष्टतम',
+    summaryPlaceholder: 'एक प्रभावशाली सारांश लिखें जो आपके प्रमुख उपलब्धियों और मूल्य प्रस्ताव को उजागर करे...',
+    tone: 'टोन',
+    professional: 'पेशेवर',
+    creative: 'रचनात्मक',
+    technical: 'तकनीकी',
+    workExperience: 'कार्य अनुभव',
+    addExperienceDescription: 'AI-सहायता के साथ अपना पेशेवर अनुभव जोड़ें',
+    noExperienceAdded: 'अभी तक कोई अनुभव नहीं जोड़ा गया',
+    addFirstExperienceDescription: 'शुरू करने के लिए अपना पहला कार्य अनुभव जोड़ें',
+    addFirstExperience: 'पहला अनुभव जोड़ें',
+    addExperienceMessage: 'बढ़िया! अपनी नौकरी की जानकारी जोड़ें और मैं आपको प्रभावशाली उपलब्धि बुलेट लिखने में मदद करूंगा! 💼',
+    experienceNumber: 'अनुभव #{{n}}',
+    company: 'कंपनी',
+    companyPlaceholder: 'Google',
+    jobTitle: 'नौकरी का शीर्षक',
+    jobTitlePlaceholder: 'सीनियर सॉफ्टवेयर इंजीनियर',
+    location: 'स्थान',
+    locationPlaceholder: 'मुंबई, महाराष्ट्र',
+    startDate: 'शुरुआती तारीख',
+    endDate: 'अंतिम तारीख',
+    current: 'वर्तमान',
+    achievementsAndResponsibilities: 'उपलब्धियां और जिम्मेदारियां',
+    aiGenerateBullet: 'AI बुलेट जेनरेट करें',
+    bulletPlaceholder: '8 इंजीनियरों की टीम का नेतृत्व किया, महत्वपूर्ण परियोजना वितरित की, जिसके परिणामस्वरूप 35% सुधार हुआ...',
+    addBulletPoint: 'बुलेट पॉइंट जोड़ें',
+    addAnotherExperience: 'एक और अनुभव जोड़ें',
+    education: 'शिक्षा',
+    addEducationDescription: 'अपनी शैक्षिक पृष्ठभूमि जोड़ें',
+    noEducationAdded: 'अभी तक कोई शिक्षा नहीं जोड़ी गई',
+    addFirstEducationDescription: 'शुरू करने के लिए अपनी पहली डिग्री या प्रमाणपत्र जोड़ें',
+    addFirstEducation: 'पहली शिक्षा जोड़ें',
+    addEducationMessage: 'शिक्षा आपकी नींव है! आइए आपकी डिग्री और उपलब्धियां जोड़ें। 🎓',
+    educationNumber: 'शिक्षा #{{n}}',
+    institution: 'संस्थान',
+    institutionPlaceholder: 'स्टैनफोर्ड यूनिवर्सिटी',
+    degree: 'डिग्री',
+    selectDegree: 'डिग्री चुनें',
+    fieldOfStudy: 'अध्ययन का क्षेत्र',
+    fieldOfStudyPlaceholder: 'कंप्यूटर साइंस',
+    graduationYear: 'स्नातक वर्ष',
+    graduationYearPlaceholder: '2024',
+    showGpa: 'GPA दिखाएं',
+    gpaPlaceholder: '3.8/4.0',
+    honorsAndAwards: 'सम्मान और पुरस्कार (वैकल्पिक)',
+    pressEnterToAdd: 'जोड़ने के लिए Enter दबाएं',
+    addAnotherEducation: 'एक और शिक्षा जोड़ें',
+    addEducationMessage2: 'एक और डिग्री जोड़ रहे हैं? बढ़िया! शिक्षा आपकी नींव दिखाती है। 🎓',
+    layout: {
+      title: 'लेआउट और डिज़ाइन',
+      description: 'अपने रिज्यूमे की उपस्थिति और संरचना को अनुकूलित करें',
+      accentColor: 'एक्सेंट रंग',
+      customColor: 'कस्टम रंग',
+      fontFamily: 'फॉन्ट फैमिली',
+      fontCategories: {
+        modernsans: 'आधुनिक सैन्स',
+        serif: 'सेरिफ',
+        boldsans: 'बोल्ड सैन्स',
+        monospace: 'मोनोस्पेस',
+        minimal: 'मिनिमल'
+      },
+      headerStyle: 'हेडर स्टाइल',
+      headerStyles: {
+        centered: 'केंद्रित',
+        left: 'बाएं संरेखित',
+        twoColumn: 'दो कॉलम'
+      },
+      columnLayout: 'कॉलम लेआउट',
+      columns: {
+        single: 'सिंगल कॉलम',
+        singleDescription: 'पारंपरिक लेआउट',
+        two: 'दो कॉलम',
+        twoDescription: 'स्पेस कुशल'
+      },
+      fontSize: 'फॉन्ट साइज़',
+      fontSizes: {
+        small: 'छोटा',
+        smallDescription: 'अधिक सामग्री',
+        medium: 'मध्यम',
+        mediumDescription: 'संतुलित',
+        large: 'बड़ा',
+        largeDescription: 'पढ़ने में आसान'
+      },
+      sectionSpacing: 'सेक्शन स्पेसिंग',
+      spacing: {
+        compact: 'कॉम्पैक्ट',
+        compactDescription: 'तंग स्पेसिंग',
+        balanced: 'संतुलित',
+        balancedDescription: 'अनुशंसित',
+        spacious: 'व्यापक',
+        spaciousDescription: 'अधिक सांस लेने की जगह'
+      },
+      sectionVisibility: 'सेक्शन दृश्यता',
+      sectionOrder: 'सेक्शन क्रम',
+      reorderSections: 'सेक्शन को ऊपर या नीचे ले जाकर उन्हें पुन: व्यवस्थित करें',
+      sections: {
+        summary: 'पेशेवर सारांश',
+        experience: 'अनुभव',
+        education: 'शिक्षा',
+        skills: 'कौशल',
+        projects: 'प्रोजेक्ट',
+        certifications: 'प्रमाणपत्र',
+        languages: 'भाषाएं',
+        awards: 'पुरस्कार'
+      }
+    },
+    steps: {
+      welcome: 'स्वागत',
+      template: 'टेम्पलेट',
+      personal: 'व्यक्तिगत जानकारी',
+      summary: 'सारांश',
+      experience: 'अनुभव',
+      education: 'शिक्षा',
+      skills: 'कौशल',
+      projects: 'प्रोजेक्ट',
+      additional: 'अतिरिक्त',
+      layout: 'लेआउट',
+      critique: 'AI समीक्षा',
+      ats: 'ATS जांच',
+      export: 'निर्यात'
+    }
+  },
+  atsChecker: {
+    title: 'ATS चेकर',
+    uploadTitle: 'अपना रिज्यूमे अपलोड करें',
+    uploadDescription: 'अपनी रिज्यूमे फ़ाइल को यहाँ खींचें और छोड़ें, या ब्राउज़ करने के लिए क्लिक करें',
+    supportedFormats: 'समर्थित प्रारूप: PDF, DOCX, TXT',
+    analyzingTitle: 'आपके रिज्यूमे का विश्लेषण कर रहे हैं...',
+    progress: {
+      formatting: 'फॉर्मेटिंग जांच रहे हैं...',
+      keywords: 'कीवर्ड का विश्लेषण कर रहे हैं...',
+      structure: 'संरचना की समीक्षा कर रहे हैं...',
+      score: 'ATS स्कोर की गणना कर रहे हैं...'
+    },
+    results: {
+      overallScore: 'समग्र ATS स्कोर',
+      breakdown: {
+        keywords: 'कीवर्ड',
+        formatting: 'फॉर्मेटिंग',
+        sections: 'अनुभाग',
+        length: 'लंबाई',
+        readability: 'पठनीयता'
+      },
+      issues: {
+        critical: 'गंभीर समस्याएं',
+        warnings: 'चेतावनियां',
+        passed: 'पास की गई जांचें'
+      },
+      keywords: {
+        found: 'मिले कीवर्ड',
+        missing: 'गुम कीवर्ड',
+        suggested: 'सुझाव दिए गए कीवर्ड'
+      },
+      aiRecommendations: 'AI सुझाव'
+    },
+    buttons: {
+      upload: 'रिज्यूमे अपलोड करें',
+      analyze: 'रिज्यूमे का विश्लेषण करें',
+      download: 'रिपोर्ट डाउनलोड करें',
+      tryAnother: 'दूसरा रिज्यूमे आज़माएं',
+      viewScans: 'पिछली स्कैन देखें'
+    },
+    recentScans: 'हाल की स्कैन',
+    timeLabels: {
+      justNow: 'अभी अभी',
+      minutesAgo: '{{n}} मिनट पहले',
+      hoursAgo: '{{n}} घंटे पहले',
+      daysAgo: '{{n}} दिन पहले',
+      weeksAgo: '{{n}} सप्ताह पहले',
+      monthsAgo: '{{n}} महीने पहले',
+      unknown: 'अज्ञात'
+    }
+  },
+  interviewPrep: {
+    title: 'AI इंटरव्यू तैयारी',
+    subtitle: 'AI-संचालित मॉक इंटरव्यू के साथ अभ्यास करें',
+    backToDashboard: 'डैशबोर्ड पर वापस जाएं',
+    newInterview: 'नया इंटरव्यू',
+    history: 'इतिहास',
+    experienceLevel: 'अनुभव स्तर',
+    selectExperienceLevel: 'अपना अनुभव स्तर चुनें',
+    targetRole: 'लक्ष्य भूमिका',
+    targetRoleDescription: 'आप किस पद के लिए इंटरव्यू दे रहे हैं? (जैसे, सॉफ्टवेयर इंजीनियर, प्रोडक्ट मैनेजर, डेटा साइंटिस्ट)',
+    targetRolePlaceholder: 'अपनी लक्ष्य भूमिका दर्ज करें (जैसे, सॉफ्टवेयर इंजीनियर, प्रोडक्ट मैनेजर)',
+    popularRoles: 'लोकप्रिय भूमिकाएं:',
+    industry: 'उद्योग',
+    selectIndustry: 'उद्योग चुनें',
+    industryPlaceholder: 'उद्योग दर्ज करें (जैसे, प्रौद्योगिकी, स्वास्थ्य सेवा, वित्त)',
+    popularIndustries: 'लोकप्रिय उद्योग:',
+    startPractice: 'AI-संचालित इंटरव्यू शुरू करें',
+    starting: 'AI इंटरव्यू शुरू कर रहे हैं...',
+    interviewStarted: 'इंटरव्यू शुरू हो गया! शुभकामनाएं! 🎤',
+    interviewCompleted: 'इंटरव्यू पूर्ण हो गया',
+    startFailed: 'इंटरव्यू शुरू करने में विफल: {{error}}',
+    recordingStarted: 'रिकॉर्डिंग शुरू हो गई',
+    recordingStopped: 'रिकॉर्डिंग बंद हो गई',
+    microphoneDenied: 'माइक्रोफोन एक्सेस अस्वीकृत',
+    submitAnswer: 'उत्तर सबमिट करें',
+    nextQuestion: 'अगला प्रश्न',
+    finishInterview: 'इंटरव्यू समाप्त करें',
+    sessionSaved: 'इंटरव्यू सत्र सहेजा गया!',
+    saveFailed: 'सत्र सहेजने में विफल, लेकिन परिणाम अभी भी उपलब्ध हैं।',
+    freePlan: 'मुफ्त योजना',
+    premium: 'प्रीमियम',
+    unlimited: 'असीमित',
+    today: 'आज',
+    upgradeMessage: 'मुफ्त उपयोगकर्ता: आज {{remaining}} प्रश्न शेष हैं। असीमित अभ्यास के लिए प्रीमियम में अपग्रेड करें!',
+    upgradeLink: 'प्रीमियम में अपग्रेड करें',
+    dailyLimitReached: 'दैनिक सीमा पहुंच गई! असीमित प्रश्नों के लिए प्रीमियम में अपग्रेड करें।',
+    preparingQuestion: 'AI अगला प्रश्न तैयार कर रहा है...',
+    questionOf: 'प्रश्न {{current}} / {{total}}',
+    complete: '{{percent}}% पूर्ण',
+    yourAnswer: 'आपका उत्तर',
+    answerPlaceholder: 'यहां अपना उत्तर टाइप करें या नीचे ऑडियो रिकॉर्ड करें...',
+    voiceRecording: 'वॉइस रिकॉर्डिंग',
+    startRecording: 'रिकॉर्डिंग शुरू करें',
+    stopRecording: 'रिकॉर्डिंग बंद करें',
+    play: 'चलाएं',
+    pause: 'रोकें',
+    recordingSaved: 'रिकॉर्डिंग सहेजी गई',
+    recording: 'रिकॉर्डिंग...',
+    submittingAnswer: 'उत्तर सबमिट कर रहे हैं...',
+    hint: 'संकेत:',
+    questionsAnswered: '{{count}} प्रश्न{{plural}} उत्तर दिए गए',
+    interviewComplete: 'इंटरव्यू पूर्ण!',
+    youAnswered: 'आपने {{count}} प्रश्नों के उत्तर दिए',
+    yourPerformance: 'आपका प्रदर्शन',
+    averageScore: 'औसत स्कोर',
+    completed: 'पूर्ण',
+    minutes: 'मिनट',
+    interviewSummary: 'इंटरव्यू सारांश',
+    strengths: 'मजबूतियां',
+    improvements: 'सुधार के क्षेत्र',
+    skillGapsIdentified: 'कौशल अंतर पहचाने गए',
+    recommendedNextSteps: 'अनुशंसित अगले कदम',
+    detailedScores: 'विस्तृत स्कोर',
+    strong: 'मजबूत',
+    good: 'अच्छा',
+    needsImprovement: 'सुधार की आवश्यकता',
+    practiceAgain: 'फिर से अभ्यास करें',
+    startingNewSession: 'नया अभ्यास सत्र शुरू कर रहे हैं!',
+    searchSessions: 'सत्र खोजें...',
+    allRoles: 'सभी भूमिकाएं',
+    allIndustries: 'सभी उद्योग',
+    minScore: 'न्यूनतम स्कोर',
+    noSessionsFound: 'कोई इंटरव्यू सत्र नहीं मिला',
+    sessionDeleted: 'सत्र हटा दिया गया',
+    sampleAnswerCopied: 'नमूना उत्तर कॉपी किया गया!',
+    copyFailed: 'कॉपी करने में विफल। कृपया मैन्युअल रूप से कॉपी करें।',
+    interviewSessionNotInitialized: 'इंटरव्यू सत्र प्रारंभ नहीं किया गया',
+    sessionCreationFailed: 'सत्र निर्माण विफल, लेकिन इंटरव्यू जारी रख रहे हैं: {{error}}',
+    experienceLevels: {
+      fresher: {
+        label: 'फ्रेशर (0-2 वर्ष)',
+        badge: 'शुरुआती'
+      },
+      junior: {
+        label: 'जूनियर (2-4 वर्ष)',
+        badge: 'मध्यम'
+      },
+      mid: {
+        label: 'मिड-लेवल (4-7 वर्ष)',
+        badge: 'उन्नत'
+      },
+      senior: {
+        label: 'सीनियर (7+ वर्ष)',
+        badge: 'विशेषज्ञ'
+      }
+    }
+  },
+  skillGap: {
+    title: 'कौशल अंतर विश्लेषण',
+    backToDashboard: 'डैशबोर्ड पर वापस जाएं',
+    unknown: 'अज्ञात',
+    justNow: 'अभी अभी',
+    minutesAgo: '{{n}} मिनट पहले',
+    hoursAgo: '{{n}} घंटे पहले',
+    daysAgo: '{{n}} दिन पहले',
+    weeksAgo: '{{n}} सप्ताह पहले',
+    monthsAgo: '{{n}} महीने पहले',
+    analysisLoaded: 'पिछला विश्लेषण लोड हो गया!',
+    couldNotLoad: 'विश्लेषण परिणाम लोड नहीं कर सके',
+    loadFailed: 'पिछला विश्लेषण लोड करने में विफल',
+    analysisFailed: 'कौशल का विश्लेषण करने में विफल: {{error}}',
+    whoAreYou: 'आप कौन हैं',
+    you: '?',
+    helpUsUnderstand: 'व्यक्तिगत अंतर्दृष्टि प्रदान करने के लिए हमें अपनी यात्रा समझने में मदद करें',
+    steps: {
+      userType: 'अपने बारे में बताएं',
+      profile: 'अपना प्रोफाइल पूरा करें',
+      analyzing: 'आपके कौशल का विश्लेषण कर रहे हैं...',
+      results: 'आपका व्यक्तिगत विश्लेषण'
+    },
+    userTypes: {
+      fresher: {
+        title: 'फ्रेशर',
+        description: 'अपनी करियर यात्रा शुरू कर रहा हूं'
+      },
+      careerGrowth: {
+        title: 'करियर विकास',
+        description: 'वर्तमान क्षेत्र में आगे बढ़ रहा हूं'
+      },
+      careerSwitch: {
+        title: 'करियर स्विच',
+        description: 'नई भूमिका में संक्रमण कर रहा हूं'
+      },
+      explorer: {
+        title: 'एक्सप्लोरर',
+        description: 'अवसरों की खोज कर रहा हूं'
+      },
+      skillAssessment: {
+        title: 'कौशल मूल्यांकन',
+        description: 'अपने वर्तमान कौशल का मूल्यांकन करना'
+      },
+      marketInsights: {
+        title: 'बाजार अंतर्दृष्टि',
+        description: 'उद्योग के रुझानों को समझना'
+      }
+    },
+    profile: {
+      title: 'अपने बारे में बताएं',
+      subtitle: 'सटीक कौशल अंतर विश्लेषण प्राप्त करने के लिए अपनी जानकारी साझा करें',
+      education: 'शिक्षा',
+      selectEducation: 'अपनी शिक्षा चुनें',
+      targetRole: 'लक्ष्य भूमिका',
+      targetRolePlaceholder: 'जैसे, बिजनेस एनालिस्ट, डेटा साइंटिस्ट',
+      industry: 'उद्योग',
+      selectIndustry: 'उद्योग चुनें',
+      location: 'पसंदीदा स्थान',
+      selectLocation: 'स्थान चुनें',
+      addSkills: 'वर्तमान कौशल',
+      skillsDescription: 'व्यक्तिगत अंतर विश्लेषण प्राप्त करने के लिए अपने वर्तमान कौशल जोड़ें',
+      skillName: 'कौशल नाम',
+      skillLevel: 'कौशल स्तर',
+      addSkill: 'कौशल जोड़ें',
+      removeSkill: 'हटाएं',
+      startAnalysis: 'विश्लेषण शुरू करें',
+      recentAnalyses: 'हाल के विश्लेषण',
+      loadingAnalyses: 'हाल के विश्लेषण लोड हो रहे हैं...',
+      noRecentAnalyses: 'अभी तक कोई हाल का विश्लेषण नहीं। इसे यहां देखने के लिए अपना पहला विश्लेषण पूरा करें!',
+      unknownRole: 'अज्ञात भूमिका'
+    },
+    yourself: 'आप',
+    beginner: 'शुरुआती',
+    expert: 'विशेषज्ञ',
+    analyzing: 'आपके कौशल का विश्लेषण कर रहे हैं...',
+    scanningProfile: '🔍 आपके प्रोफाइल को स्कैन कर रहे हैं...',
+    comparingJobs: '📊 10,000+ नौकरी सूचियों के साथ तुलना कर रहे हैं...',
+    identifyingGaps: '🎯 कौशल अंतर की पहचान कर रहे हैं...',
+    generatingRecommendations: '✨ व्यक्तिगत सिफारिशें तैयार कर रहे हैं...',
+    results: {
+      overallScore: 'समग्र मैच स्कोर',
+      skillGaps: 'कौशल अंतर',
+      recommendations: 'शिक्षण सिफारिशें',
+      marketInsights: 'बाजार अंतर्दृष्टि',
+      topCompanies: 'शीर्ष कंपनियां',
+      salaryRange: 'वेतन सीमा',
+      timeline: 'शिक्षण समयरेखा',
+      forRole: 'भूमिका के लिए',
+      outOf100: '100 में से',
+      skillDistribution: 'कौशल वितरण',
+      technical: 'तकनीकी',
+      softSkills: 'सॉफ्ट स्किल्स',
+      domainKnowledge: 'डोमेन ज्ञान',
+      downloadReport: 'रिपोर्ट डाउनलोड करें',
+      salaryRangeTitle: '💰 वेतन सीमा',
+      perAnnum: 'इस भूमिका के लिए प्रति वर्ष',
+      skillGapsIdentified: '🎯 पहचाने गए कौशल अंतर',
+      currentLevel: 'वर्तमान स्तर',
+      requiredLevel: 'आवश्यक स्तर',
+      learnNow: 'अभी सीखें',
+      addToPlan: 'योजना में जोड़ें',
+      skillComparisonRadar: '📊 कौशल तुलना रडार',
+      yourSkills: 'आपके कौशल',
+      required: 'आवश्यक',
+      recommendedLearningPaths: '📚 अनुशंसित शिक्षण पथ',
+      priority: 'प्राथमिकता',
+      enroll: 'नामांकन करें',
+      marketDemandTrend: '📈 बाजार मांग रुझान',
+      topCompaniesHiring: '🏢 काम पर रखने वाली शीर्ष कंपनियां',
+      yourLearningRoadmap: '🎯 आपका शिक्षण रोडमैप',
+      first30Days: '📅 पहले 30 दिन',
+      next30Days: '📅 अगले 30 दिन (कुल 60)',
+      final30Days: '📅 अंतिम 30 दिन (कुल 90)'
+    },
+    analyzingSteps: {
+      profileAnalysis: 'प्रोफाइल विश्लेषण',
+      marketResearch: 'बाजार अनुसंधान',
+      skillMatching: 'कौशल मिलान',
+      reportGeneration: 'रिपोर्ट जनरेशन'
+    },
+    customIndustryPlaceholder: 'अपना उद्योग दर्ज करें (जैसे, सप्लाई चेन, ऑपरेशन्स, आदि)',
+    backToDropdown: '← ड्रॉपडाउन पर वापस जाएं',
+    addedSkills: 'जोड़े गए कौशल ({{count}})',
+    complete: '{{percent}}% पूर्ण',
+    skillPlaceholder: 'एक कौशल टाइप करें (जैसे, Python, Leadership)',
+    unknownError: 'अज्ञात त्रुटि'
+  },
+  jobTracker: {
+    title: 'नौकरी आवेदन ट्रैकर',
+    description: 'शुरुआत से अंत तक अपने नौकरी आवेदनों को ट्रैक करें',
+    viewAll: 'सभी देखें',
+    loading: 'आवेदन लोड हो रहे हैं...',
+    noApplications: 'कोई आवेदन नहीं',
+    addJob: 'नौकरी जोड़ें',
+    addApplication: 'आवेदन जोड़ें',
+    editApplication: 'आवेदन संपादित करें',
+    searchPlaceholder: 'आवेदन खोजें...',
+    filter: 'फ़िल्टर',
+    filterAll: 'सभी स्थिति',
+    viewKanban: 'कानबान',
+    viewList: 'सूची',
+    edit: 'संपादित करें',
+    delete: 'हटाएं',
+    cancel: 'रद्द करें',
+    create: 'बनाएं',
+    update: 'अपडेट करें',
+    saving: 'सहेजा जा रहा है...',
+    confirmDelete: 'क्या आप वाकई इस आवेदन को हटाना चाहते हैं?',
+    deleteSuccess: 'आवेदन सफलतापूर्वक हटा दिया गया',
+    deleteFailed: 'आवेदन हटाने में विफल: {{error}}',
+    createSuccess: 'आवेदन सफलतापूर्वक जोड़ा गया',
+    updateSuccess: 'आवेदन सफलतापूर्वक अपडेट किया गया',
+    saveFailed: 'आवेदन सहेजने में विफल: {{error}}',
+    statusUpdated: 'स्थिति सफलतापूर्वक अपडेट की गई',
+    updateFailed: 'आवेदन अपडेट करने में विफल: {{error}}',
+    appliedOn: '{{date}} को आवेदन किया',
+    nextInterview: 'अगला इंटरव्यू: {{date}}',
+    viewJobPosting: 'नौकरी पोस्टिंग देखें',
+    columns: {
+      applied: 'आवेदन किया',
+      reviewing: 'समीक्षा के अधीन',
+      interview: 'इंटरव्यू',
+      offer: 'ऑफ़र प्राप्त'
+    },
+    status: {
+      applied: 'आवेदन किया',
+      screening: 'समीक्षा के अधीन',
+      interview: 'इंटरव्यू',
+      offer: 'ऑफ़र प्राप्त',
+      rejected: 'अस्वीकृत',
+      withdrawn: 'वापस लिया गया'
+    },
+    form: {
+      jobTitle: 'नौकरी का शीर्षक',
+      jobTitlePlaceholder: 'उदाहरण: सॉफ्टवेयर इंजीनियर',
+      company: 'कंपनी',
+      companyPlaceholder: 'उदाहरण: Google',
+      status: 'स्थिति',
+      applicationDate: 'आवेदन की तारीख',
+      location: 'स्थान',
+      locationPlaceholder: 'उदाहरण: सैन फ्रांसिस्को, CA',
+      salary: 'वेतन',
+      salaryPlaceholder: 'उदाहरण: ₹10,00,000 - ₹15,00,000',
+      jobUrl: 'नौकरी पोस्टिंग URL',
+      jobUrlPlaceholder: 'https://company.com/job-posting',
+      nextInterviewDate: 'अगली इंटरव्यू की तारीख',
+      notes: 'नोट्स',
+      notesPlaceholder: 'कोई अतिरिक्त नोट्स या अनुस्मारक जोड़ें...'
+    }
+  },
+  calendar: {
+    title: 'कैलेंडर',
+    viewAll: 'सभी देखें',
+    upcoming: 'आगामी',
+    pageTitle: 'कैलेंडर',
+    pageDescription: 'अपने इंटरव्यू, समय सीमा और कार्यक्रम प्रबंधित करें',
+    addEvent: 'इवेंट जोड़ें',
+    editEvent: 'इवेंट संपादित करें',
+    today: 'आज',
+    more: 'और',
+    eventsOnDate: '{{date}} को इवेंट',
+    todaysEvents: 'आज के इवेंट',
+    noEventsScheduled: 'कोई इवेंट निर्धारित नहीं',
+    upcomingEvents: 'आगामी इवेंट',
+    noUpcomingEvents: 'कोई आगामी इवेंट नहीं',
+    eventTitle: 'इवेंट शीर्षक',
+    eventTitlePlaceholder: 'इवेंट शीर्षक दर्ज करें',
+    date: 'तारीख',
+    time: 'समय',
+    eventType: 'इवेंट प्रकार',
+    company: 'कंपनी',
+    companyPlaceholder: 'कंपनी का नाम (वैकल्पिक)',
+    location: 'स्थान',
+    locationPlaceholder: 'स्थान (वैकल्पिक)',
+    notes: 'नोट्स',
+    notesPlaceholder: 'अतिरिक्त नोट्स (वैकल्पिक)',
+    cancel: 'रद्द करें',
+    create: 'बनाएं',
+    update: 'अपडेट करें',
+    confirmDelete: 'क्या आप वाकई इस इवेंट को हटाना चाहते हैं?',
+    eventCreated: 'इवेंट सफलतापूर्वक बनाया गया!',
+    eventUpdated: 'इवेंट सफलतापूर्वक अपडेट किया गया!',
+    eventDeleted: 'इवेंट सफलतापूर्वक हटाया गया!',
+    deleteFailed: 'इवेंट हटाने में विफल: {{error}}',
+    saveFailed: 'इवेंट सहेजने में विफल: {{error}}',
+    eventTypes: {
+      interview: 'इंटरव्यू',
+      deadline: 'समय सीमा',
+      followup: 'फॉलो-अप',
+      networking: 'नेटवर्किंग'
+    }
+  },
+  profile: {
+    title: 'मेरी प्रोफाइल',
+    backToDashboard: 'डैशबोर्ड पर वापस जाएं',
+    logout: 'लॉगआउट',
+    logoutFailed: 'लॉगआउट करने में विफल। कृपया पुनः प्रयास करें।',
+    shareProfile: 'प्रोफाइल साझा करें',
+    editProfile: 'प्रोफाइल संपादित करें',
+    updateSuccess: 'प्रोफाइल सफलतापूर्वक अपडेट हो गई!',
+    updateFailed: 'प्रोफाइल अपडेट करने में विफल। कृपया पुनः प्रयास करें।',
+    skillsUpdated: 'कौशल सफलतापूर्वक अपडेट हो गए!',
+    skillsUpdateFailed: 'कौशल अपडेट करने में विफल। कृपया पुनः प्रयास करें।',
+    educationUpdated: 'शिक्षा सफलतापूर्वक अपडेट हो गई!',
+    yourName: 'आपका नाम',
+    addHeadline: 'अपनी नौकरी का शीर्षक या हेडलाइन जोड़ें',
+    addLocation: 'स्थान जोड़ें',
+    addWebsite: 'वेबसाइट जोड़ें',
+    yourPublicProfile: 'आपकी सार्वजनिक प्रोफाइल',
+    aboutMe: 'मेरे बारे में',
+    bioPlaceholder: 'अपने बारे में, अपने अनुभव और करियर लक्ष्यों के बारे में बताएं...',
+    clickToAddBio: 'अपनी जीवनी जोड़ने के लिए क्लिक करें...',
+    save: 'सहेजें',
+    cancel: 'रद्द करें',
+    connectLinkedIn: 'अपना LinkedIn कनेक्ट करें',
+    linkedInDescription: 'अपने प्रोफाइल डेटा को आयात करें और इसे सिंक रखें',
+    connectLinkedInButton: 'LinkedIn कनेक्ट करें',
+    careerInformation: 'करियर जानकारी',
+    currentRole: 'वर्तमान भूमिका',
+    targetRole: 'लक्ष्य भूमिका',
+    experienceLevel: 'अनुभव स्तर',
+    workPreference: 'काम की प्राथमिकता',
+    skillsAndExpertise: 'कौशल और विशेषज्ञता',
+    addSkill: 'कौशल जोड़ें',
+    skillName: 'कौशल का नाम',
+    proficiency: 'दक्षता: {{level}}%',
+    level: 'स्तर: {{level}}%',
+    add: 'जोड़ें',
+    done: 'पूर्ण',
+    delete: 'हटाएं',
+    noSkillsYet: 'अभी तक कोई कौशल नहीं जोड़े गए। शुरू करने के लिए "कौशल जोड़ें" पर क्लिक करें!',
+    educationAndCertifications: 'शिक्षा और प्रमाणपत्र',
+    addEducation: 'शिक्षा जोड़ें',
+    degreePlaceholder: 'डिग्री/प्रमाणपत्र का नाम',
+    institutionPlaceholder: 'संस्थान का नाम',
+    yearPlaceholder: 'वर्ष (उदा., 2015 - 2019 या 2020)',
+    noEducationYet: 'अभी तक कोई शिक्षा प्रविष्टि नहीं। शुरू करने के लिए "शिक्षा जोड़ें" पर क्लिक करें!',
+    resumeGallery: 'रिज्यूमे गैलरी',
+    createResume: 'रिज्यूमे बनाएं',
+    atsScore: 'ATS: {{score}}%',
+    downloads: '{{count}} डाउनलोड',
+    noResumesYet: 'अभी तक कोई रिज्यूमे नहीं। अपना पहला रिज्यूमे बनाएं!',
+    interviewRecordings: 'इंटरव्यू रिकॉर्डिंग',
+    newInterview: 'नया इंटरव्यू',
+    interviewPractice: 'इंटरव्यू अभ्यास',
+    general: 'सामान्य',
+    score: 'स्कोर: {{score}}%',
+    noInterviewsYet: 'अभी तक कोई इंटरव्यू सत्र नहीं। अभ्यास शुरू करें!',
+    skillTestResults: 'कौशल परीक्षा परिणाम',
+    takeTest: 'परीक्षा दें',
+    topPercent: 'शीर्ष {{percent}}%',
+    scoreLabel: 'स्कोर',
+    noSkillTestsYet: 'अभी तक कोई कौशल अंतर विश्लेषण नहीं। परिणाम देखने के लिए अपना पहला विश्लेषण पूरा करें!',
+    profileStrength: 'प्रोफाइल शक्ति',
+    complete: 'पूर्ण',
+    profilePhotoAdded: 'प्रोफाइल फोटो जोड़ा गया',
+    bioCompleted: 'जीवनी पूर्ण',
+    skillsAdded: 'कौशल जोड़े गए ({{count}})',
+    addMoreProjects: '3 और प्रोजेक्ट जोड़ें',
+    uploadCertificate: 'प्रमाणपत्र अपलोड करें',
+    connectLinkedInChecklist: 'LinkedIn कनेक्ट करें',
+    quickStats: 'त्वरित आंकड़े',
+    resumes: 'रिज्यूमे',
+    aiSessions: 'AI सत्र',
+    interviews: 'इंटरव्यू',
+    profileComplete: 'प्रोफाइल पूर्ण',
+    achievements: 'उपलब्धियां',
+    recentActivity: 'हाल की गतिविधि',
+    updatedResume: 'रिज्यूमे अपडेट किया',
+    hoursAgo: '{{hours}} घंटे पहले',
+    completedAICoaching: 'AI कोचिंग सत्र पूर्ण किया',
+    practicedInterview: 'इंटरव्यू तैयारी का अभ्यास किया',
+    dayAgo: '{{days}} दिन पहले',
+    daysAgo: '{{days}} दिन पहले',
+    earnedBadge: '"{{badge}}" बैज अर्जित किया',
+    imageSizeError: 'छवि का आकार {{size}}MB से कम होना चाहिए',
+    profilePicUpdated: 'प्रोफाइल चित्र अपडेट हो गया!',
+    backgroundImageUpdated: 'पृष्ठभूमि छवि अपडेट हो गई!',
+    profilePicRemoved: 'प्रोफाइल चित्र हटा दिया गया!',
+    backgroundImageRemoved: 'पृष्ठभूमि छवि हटा दी गई!',
+    profileUrlCopied: 'प्रोफाइल URL क्लिपबोर्ड पर कॉपी हो गया!',
+    shareOptionsComingSoon: 'साझाकरण विकल्प जल्द ही आ रहे हैं!',
+    linkedInIntegrationComingSoon: 'LinkedIn एकीकरण जल्द ही आ रहा है!',
+    untitledResume: 'अनामित रिज्यूमे',
+    achievementsList: {
+      firstResume: {
+        name: 'पहला रिज्यूमे',
+        description: 'अपना पहला रिज्यूमे बनाया'
+      },
+      aiExplorer: {
+        name: 'AI एक्सप्लोरर',
+        description: '5 AI कोचिंग सत्र पूर्ण किए'
+      },
+      interviewMaster: {
+        name: 'इंटरव्यू मास्टर',
+        description: 'इंटरव्यू तैयारी में 90%+ स्कोर किया'
+      },
+      skillChampion: {
+        name: 'कौशल चैंपियन',
+        description: 'कौशल अंतर विश्लेषण पूर्ण किया'
+      },
+      profilePro: {
+        name: 'प्रोफाइल प्रो',
+        description: '100% प्रोफाइल पूर्णता'
+      },
+      atsExpert: {
+        name: 'ATS विशेषज्ञ',
+        description: '10 ATS चेक पास किए'
+      }
+    },
+    statusLabels: {
+      'actively-looking': '🟢 सक्रिय रूप से खोज रहे हैं',
+      'open': '🟡 ऑफर के लिए खुले',
+      'not-looking': '🔴 खोज नहीं कर रहे'
+    },
+    currentPlan: 'वर्तमान योजना',
+    planLabel: 'योजना'
+  },
+  features: {
+    aiCoach: {
+      title: 'AI करियर कोच',
+      description: 'उन्नत AI द्वारा संचालित व्यक्तिगत करियर मार्गदर्शन प्राप्त करें। नौकरी खोज रणनीतियों, करियर संक्रमणों, और आपके अद्वितीय लक्ष्यों के अनुरूप पेशेवर विकास पर विशेषज्ञ सलाह प्राप्त करें।',
+      author: 'AI टीम'
+    },
+    resumeBuilder: {
+      title: 'रिज्यूमे बिल्डर',
+      description: 'अपने उद्योग के लिए तैयार स्मार्ट टेम्पलेट्स और AI-संचालित सामग्री सुझावों के साथ शानदार, ATS-अनुकूलित रिज्यूमे बनाएं।',
+      author: 'CV टीम'
+    },
+    atsChecker: {
+      title: 'ATS चेकर',
+      description: 'आवेदक ट्रैकिंग सिस्टम के खिलाफ अपने रिज्यूमे का विश्लेषण करें और अनुकूलन सुझावों के साथ तत्काल फीडबैक प्राप्त करें।',
+      author: 'टेक टीम'
+    },
+    interviewPrep: {
+      title: 'AI इंटरव्यू तैयारी',
+      description: 'अपने लक्ष्य भूमिका के अनुरूप AI-संचालित मॉक इंटरव्यू के साथ अभ्यास करें और अपने प्रदर्शन पर वास्तविक समय फीडबैक प्राप्त करें।',
+      author: 'इंटरव्यू प्रो'
+    },
+    skillGap: {
+      title: 'कौशल अंतर विश्लेषण',
+      description: 'अपने सपनों की भूमिका के लिए गायब कौशल की पहचान करें और अंतर को पाटने और अपने करियर को आगे बढ़ाने के लिए व्यक्तिगत शिक्षण पथ प्राप्त करें।',
+      author: 'कौशल टीम'
+    }
+  },
+  analytics: {
+    overview: 'विश्लेषण अवलोकन',
+    resumesCreated: 'बनाए गए रिज्यूमे',
+    aiSessions: 'AI सत्र',
+    interviewsPrepped: 'तैयार किए गए इंटरव्यू',
+    applicationsSubmitted: 'जमा किए गए आवेदन',
+    viewingDetails: '{{metric}} विवरण देख रहे हैं'
+  },
+  performance: {
+    title: 'प्रदर्शन',
+    viewAll: 'सभी देखें',
+    resumesCreated: 'बनाए गए रिज्यूमे',
+    aiSessions: 'AI सत्र',
+    interviewPrep: 'इंटरव्यू तैयारी',
+    profileComplete: 'प्रोफाइल पूर्ण',
+    total: 'कुल {{count}}',
+    timeSpent: 'कुल {{hours}}h {{minutes}}m',
+    completed: '{{count}} पूर्ण',
+    percentComplete: '{{percent}}% पूर्ण'
+  },
+    recentActivity: {
+      title: 'हाल की गतिविधि',
+      seeAll: 'सभी देखें',
+      noActivity: 'कोई हाल की गतिविधि नहीं',
+      error: 'गतिविधियां लोड करने में विफल',
+      resumeUpdated: '{{name}} अपडेट किया गया',
+      resumeUpdatedGeneric: 'रिज्यूमे अपडेट किया गया',
+      aiSession: 'AI सत्र',
+      interviewPrep: 'इंटरव्यू तैयारी',
+      atsCheck: 'ATS जांच: {{fileName}}',
+      atsCheckGeneric: 'ATS जांच',
+      skillGapAnalysis: 'कौशल अंतर: {{role}}',
+      skillGapAnalysisGeneric: 'कौशल अंतर विश्लेषण'
+    },
+  help: {
+    title: 'सहायता और समर्थन',
+    description: 'हम सहायता केंद्र अनुभव को समाप्त कर रहे हैं। इस बीच, कृपया सहायता के लिए support@cvsaathi.com से संपर्क करें।',
+    comingSoon: 'सहायता और समर्थन जल्द आ रहा है।'
+  },
+  navigation: {
+    opening: '{{section}} खोल रहे हैं'
+  },
+  settings: {
+      title: 'सेटिंग्स',
+      description: 'अपनी खाता सेटिंग्स और प्राथमिकताएं प्रबंधित करें',
+      saving: 'सहेजा जा रहा है...',
+      saveChanges: 'परिवर्तन सहेजें',
+      savedSuccessfully: 'सेटिंग्स सफलतापूर्वक सहेजी गईं!',
+      saveFailed: 'सेटिंग्स सहेजने में विफल: {{error}}',
+      unknownError: 'अज्ञात त्रुटि',
+      passwordMismatch: 'नए पासवर्ड मेल नहीं खाते',
+      passwordTooShort: 'पासवर्ड कम से कम 6 वर्ण का होना चाहिए',
+      passwordUpdateFailed: 'पासवर्ड अपडेट करने में विफल: {{error}}',
+      passwordUpdated: 'पासवर्ड सफलतापूर्वक अपडेट हो गया!',
+      themeChanged: 'थीम {{mode}} में बदल गई',
+      profilePicUpdated: 'प्रोफाइल चित्र अपडेट हो गया!',
+      pleaseLogin: 'सेटिंग्स सहेजने के लिए कृपया लॉग इन करें',
+      tabs: {
+        profile: 'प्रोफाइल',
+        account: 'खाता',
+        notifications: 'सूचनाएं',
   subscription: 'सदस्यता',
-  editProfile: 'प्रोफाइल संपादित करा',
-  notifications: 'सूचना',
+        privacy: 'गोपनीयता और सुरक्षा',
+        integrations: 'एकीकरण',
+        advanced: 'उन्नत'
+      },
+      profile: {
+        title: 'प्रोफाइल सेटिंग्स',
+        description: 'अपनी व्यक्तिगत जानकारी और प्रोफाइल चित्र अपडेट करें',
+        profilePicture: 'प्रोफाइल चित्र',
+        uploadPhoto: 'फोटो अपलोड करें',
+        remove: 'हटाएं',
+        profilePicStoredLocally: 'प्रोफाइल चित्र स्थानीय रूप से संग्रहीत है और सर्वर पर सिंक नहीं होता',
+        personalInformation: 'व्यक्तिगत जानकारी',
+        firstName: 'पहला नाम',
+        lastName: 'अंतिम नाम',
+        emailAddress: 'ईमेल पता',
+        emailCannotBeChanged: 'ईमेल यहां नहीं बदला जा सकता। ईमेल अपडेट करने के लिए खाता सेटिंग्स का उपयोग करें।',
+        phoneNumber: 'फोन नंबर',
+        bio: 'बायो',
+        bioPlaceholder: 'अपने बारे में बताएं...'
+      },
+      account: {
+        title: 'खाता सेटिंग्स',
+        description: 'अपनी खाता सुरक्षा और प्राथमिकताएं प्रबंधित करें',
+        changePassword: 'पासवर्ड बदलें',
+        newPassword: 'नया पासवर्ड',
+        newPasswordPlaceholder: 'वर्तमान पासवर्ड रखने के लिए खाली छोड़ें',
+        confirmNewPassword: 'नया पासवर्ड पुष्टि करें',
+        twoFactorAuth: 'दो-कारक प्रमाणीकरण',
+        twoFactorDescription: 'अपने खाते में एक अतिरिक्त सुरक्षा परत जोड़ें',
+        dangerZone: 'खतरा क्षेत्र',
+        deleteAccount: 'खाता हटाएं',
+        deleteAccountDescription: 'अपने खाते और सभी डेटा को स्थायी रूप से हटाएं',
+        delete: 'हटाएं'
+      },
+      notifications: {
+        title: 'सूचना प्राथमिकताएं',
+        description: 'चुनें कि आप कैसे सूचित होना चाहते हैं',
+        emailNotifications: 'ईमेल सूचनाएं',
+        emailNotificationsDescription: 'ईमेल अपडेट और सूचनाएं प्राप्त करें',
+        jobAlerts: 'नौकरी अलर्ट',
+        jobAlertsDescription: 'प्रासंगिक नौकरी के अवसरों के बारे में सूचित हो',
+        weeklyDigest: 'साप्ताहिक सारांश',
+        weeklyDigestDescription: 'अपनी गतिविधि का साप्ताहिक सारांश प्राप्त करें',
+        pushNotifications: 'पुश सूचनाएं',
+        pushNotificationsDescription: 'ब्राउज़र पुश सूचनाएं प्राप्त करें'
+      },
+      appearance: {
+        title: 'उपस्थिति सेटिंग्स',
+        description: 'CVSaathi को आपके लिए कैसा दिखना चाहिए, इसे अनुकूलित करें',
+        theme: 'थीम',
+        light: 'लाइट',
+        dark: 'डार्क',
+        auto: 'ऑटो',
   language: 'भाषा',
-  privacySecurity: 'गोपनीयता आणि सुरक्षा',
-  logout: 'लॉगआउट',
-  
-  // Edit Form
-  personalInformation: 'वैयक्तिक माहिती',
-  firstName: 'पहिले नाव',
-  firstNamePlaceholder: 'पहिले नाव प्रविष्ट करा',
-  lastName: 'आडनाव',
-  lastNamePlaceholder: 'आडनाव प्रविष्ट करा',
-  bio: 'जीवनचरित्र',
-  bioPlaceholder: 'आम्हाला तुमच्याबद्दल सांगा',
-  skillsCommaSeparated: 'कौशल्ये (स्वल्पविरामाने विभक्त)',
-  skillsPlaceholder: 'उदा., Python, Java, React',
-  languagePreference: 'भाषा प्राधान्य',
-  cancel: 'रद्द करा',
-  saveChanges: 'बदल जतन करा',
-  
-  // Alerts and Messages
-  permissionNeeded: 'परवानगी आवश्यक',
-  grantPhotoLibraryPermission: 'छवी निवडण्यासाठी कृपया फोटो लायब्ररी परवानगी द्या।',
-  grantCameraPermission: 'फोटो घेण्यासाठी कृपया कॅमेरा परवानगी द्या।',
-  error: 'त्रुटी',
-  failedToPickImage: 'छवी निवडण्यात अयशस्वी',
-  failedToTakePhoto: 'फोटो घेण्यात अयशस्वी',
-  deletePhoto: 'फोटो हटवा',
-  confirmDeletePhoto: 'तुम्हाला खरोखर तुमचे प्रोफाइल फोटो हटवायचे आहे?',
-  profilePhoto: 'प्रोफाइल फोटो',
-  chooseOption: 'एक पर्याय निवडा',
-  takePhoto: 'फोटो घ्या',
-  chooseFromLibrary: 'लायब्ररीतून निवडा',
-  delete: 'हटवा',
-  
-  // Plan Status
-  currentPlan: 'सध्याची योजना',
-  activeSubscription: 'सक्रिय सदस्यता',
-  freePlan: 'मोफत योजना',
-  nextBilling: 'पुढील बिलिंग',
-  upgradePrompt: 'प्रीमियम सुविधा अनलॉक करा आणि तुमच्या करिअर वाढीला गती द्या!',
-  upgradeToPremium: 'प्रीमियममध्ये अपग्रेड करा',
-  manageSubscription: 'सदस्यता व्यवस्थापित करा',
-  premium: 'प्रीमियम',
-  
-  // Video Resume Studio
-  translationFailed: 'स्क्रिप्ट भाषांतर करण्यात अयशस्वी। कृपया पुन्हा प्रयत्न करा।',
-  aiTranslationFailed: 'AI स्क्रिप्ट भाषांतर करण्यात अयशस्वी। कृपया पुन्हा प्रयत्न करा।',
-  userNotAuthenticated: 'वापरकर्ता प्रमाणित नाही',
-  translating: 'भाषांतर होत आहे...',
-  videoResumeLimit: 'व्हिडिओ रिझ्यूमे मर्यादा',
-  unlimited: 'अमर्यादित',
-  minimumTime: 'किमान वेळ',
-  recording: 'रेकॉर्डिंग',
-  hindi: 'हिंदी',
-  marathi: 'मराठी',
-  listen: 'ऐका',
-  download: 'डाउनलोड',
-  delete: 'हटवा',
-  hindiLanguage: 'हिंदी',
-  marathiLanguage: 'मराठी',
-  maximumDuration: 'कमाल कालावधी',
-  plan: 'योजना'
+        englishUS: 'अंग्रेजी (US)',
+        spanish: 'स्पेनिश',
+        french: 'फ्रेंच',
+        german: 'जर्मन'
+      },
+      subscription: {
+        title: 'सदस्यता और बिलिंग',
+        description: 'अपनी सदस्यता और भुगतान विधियों को प्रबंधित करें',
+        freePlan: 'मुफ्त योजना',
+        currentlyOnFreePlan: 'आप वर्तमान में मुफ्त योजना पर हैं',
+        upgradeToPro: 'प्रो में अपग्रेड करें'
+      },
+      privacy: {
+        title: 'गोपनीयता और सुरक्षा',
+        description: 'अपने डेटा और गोपनीयता सेटिंग्स को नियंत्रित करें',
+        activityLog: 'गतिविधि लॉग',
+        activityLogDescription: 'हाल के लॉगिन, सुरक्षा परिवर्तनों और अलर्ट की एक साफ समयरेखा।',
+        planned: 'नियोजित',
+        connectedDevices: 'कनेक्टेड उपकरण',
+        connectedDevicesDescription: 'वर्तमान में साइन इन किए गए उपकरण देखें और एक क्लिक से पहुंच रद्द करें।',
+        activeSessions: 'सक्रिय सत्र',
+        activeSessionsDescription: 'समीक्षा करें कि आप कहां लॉग इन हैं और दूरस्थ रूप से साइन आउट करें।',
+        loginHistory: 'लॉगिन इतिहास',
+        loginHistoryDescription: 'सफल और असफल साइन-इन प्रयासों की एक कालानुक्रमिक सूची।',
+        dataPrivacyControls: 'डेटा गोपनीयता नियंत्रण',
+        allowAnalyticsTracking: 'एनालिटिक्स ट्रैकिंग की अनुमति दें',
+        analyticsTrackingDescription: 'उपयोग एनालिटिक्स साझा करके हमें सुधारने में मदद करें',
+        shareAnonymizedData: 'अनामीकृत उपयोग डेटा साझा करें',
+        shareAnonymizedDataDescription: 'अनुसंधान और सुधार के लिए अनामीकृत डेटा साझा करें',
+        allowPersonalizedRecommendations: 'व्यक्तिगत सिफारिशों की अनुमति दें',
+        personalizedRecommendationsDescription: 'व्यक्तिगत करियर सिफारिशें प्राप्त करें',
+        thirdPartyDataSharing: 'तीसरे पक्ष का डेटा साझाकरण',
+        thirdPartyDataSharingDescription: 'विश्वसनीय भागीदारों के साथ डेटा साझा करने की अनुमति दें',
+        legalDocuments: 'कानूनी दस्तावेज',
+        privacyPolicy: 'गोपनीयता नीति',
+        privacyPolicyDescription: 'हम आपके डेटा की सुरक्षा और उपयोग कैसे करते हैं',
+        termsOfService: 'सेवा की शर्तें',
+        termsOfServiceDescription: 'कानूनी शर्तें और शर्तें',
+        exportYourData: 'अपना डेटा निर्यात करें',
+        exportDataDescription: 'JSON प्रारूप में अपने सभी डेटा की एक प्रति डाउनलोड करें',
+        export: 'निर्यात',
+        dataExportStarted: 'डेटा निर्यात शुरू हो गया। तैयार होने पर आपको एक ईमेल प्राप्त होगा।',
+        cookiePreferences: 'कुकी प्राथमिकताएं',
+        essentialCookies: 'आवश्यक कुकीज़',
+        performanceCookies: 'प्रदर्शन कुकीज़',
+        functionalCookies: 'कार्यात्मक कुकीज़',
+        marketingCookies: 'मार्केटिंग कुकीज़',
+        requiredForBasicFunctionality: 'बुनियादी कार्यक्षमता के लिए आवश्यक'
+      },
+      integrations: {
+        title: 'एकीकरण',
+        description: 'तीसरे पक्ष की सेवाओं के साथ कनेक्ट करें',
+        noIntegrationsAvailable: 'अभी तक कोई एकीकरण उपलब्ध नहीं है'
+      },
+      preferences: {
+        title: 'नौकरी प्राथमिकताएं',
+        description: 'अपने करियर लक्ष्य और प्राथमिकताएं सेट करें',
+        jobSearchSettings: 'नौकरी खोज सेटिंग्स',
+        desiredJobTitle: 'वांछित नौकरी शीर्षक',
+        preferredIndustry: 'पसंदीदा उद्योग',
+        technology: 'प्रौद्योगिकी',
+        finance: 'वित्त',
+        healthcare: 'स्वास्थ्य सेवा',
+        education: 'शिक्षा'
+      },
+      advanced: {
+        title: 'उन्नत सेटिंग्स',
+        description: 'उन्नत विकल्प और सिस्टम सेटिंग्स कॉन्फ़िगर करें',
+        apiAccess: 'API एक्सेस',
+        apiKey: 'API कुंजी',
+        databaseConnection: 'डेटाबेस कनेक्शन',
+        hardDriveStorage: 'हार्ड ड्राइव स्टोरेज',
+        refreshInterval: 'रिफ्रेश अंतराल',
+        systemLogs: 'सिस्टम लॉग',
+        viewSystemLogs: 'सिस्टम लॉग और त्रुटि रिपोर्ट देखें',
+        systemLogsDescription: 'डिबगिंग और प्रदर्शन निगरानी के लिए',
+        viewLogs: 'लॉग देखें',
+        dataExport: 'डेटा निर्यात',
+        exportData: 'डेटा निर्यात करें',
+        sessionManagement: 'सत्र प्रबंधन'
+      }
+    },
+  commandPalette: {
+    goToDashboard: 'डैशबोर्ड पर जाएं',
+    openAICoach: 'AI करियर कोच खोलें',
+    createResume: 'नया रिज्यूमे बनाएं',
+    checkATSScore: 'ATS स्कोर जांचें',
+    startInterviewPrep: 'इंटरव्यू तैयारी शुरू करें',
+    analyzeSkillGap: 'कौशल अंतर विश्लेषण करें',
+    viewAnalytics: 'विश्लेषण देखें',
+    openSettings: 'सेटिंग्स खोलें',
+    navigation: 'नेविगेशन',
+    features: 'विशेषताएं',
+    placeholder: 'एक कमांड टाइप करें या खोजें...',
+    noResults: 'कोई परिणाम नहीं मिला',
+    toNavigate: 'नेविगेट करने के लिए',
+    toSelect: 'चुनने के लिए'
+  },
+  aiCoach: {
+    title: 'AI कोच'
+  },
+  templates: {
+    title: 'टेम्पलेट गैलरी',
+    description: 'पेशेवर रिज्यूमे टेम्पलेट ब्राउज़ करें और डाउनलोड करें',
+    backToDashboard: 'डैशबोर्ड पर वापस जाएं',
+    searchPlaceholder: 'टेम्पलेट खोजें...',
+    categoryAll: 'सभी',
+    categoryEntryLevel: 'एंट्री-लेवल',
+    categoryProfessional: 'पेशेवर',
+    templatesFound: '{{count}} टेम्पलेट मिला',
+    templatesFoundPlural: '{{count}} टेम्पलेट मिले',
+    noTemplatesFound: 'कोई टेम्पलेट नहीं मिला',
+    noTemplatesDescription: 'अपने खोज या फ़िल्टर मानदंड को समायोजित करने का प्रयास करें',
+    preview: 'पूर्वावलोकन',
+    download: 'डाउनलोड',
+    downloading: '{{name}} डाउनलोड हो रहा है...',
+    downloadFailed: 'टेम्पलेट डाउनलोड करने में विफल। कृपया पुनः प्रयास करें।',
+    templateCategory: '{{category}} टेम्पलेट',
+    loading: 'टेम्पलेट लोड हो रहे हैं...',
+    loadFailed: 'टेम्पलेट लोड करने में विफल',
+    zoom: '{{percent}}%',
+    close: 'बंद करें'
+  },
+  feedback: {
+    title: 'फीडबैक और सहायता',
+    description: 'अपना फीडबैक साझा करें, बग रिपोर्ट करें, या सुविधाएं अनुरोध करें',
+    backToDashboard: 'डैशबोर्ड पर वापस जाएं',
+    selectType: 'यह किस प्रकार का फीडबैक है?',
+    rating: 'रेटिंग',
+    optional: 'वैकल्पिक',
+    yourFeedback: 'आपका फीडबैक',
+    messagePlaceholder: 'हमें बताएं कि आप क्या सोचते हैं, बग रिपोर्ट करें, या सुविधा सुझाएं...',
+    helpText: 'आपका फीडबैक हमें सभी के लिए CVSaathi को बेहतर बनाने में मदद करता है।',
+    info: '💡 हम हर फीडबैक पढ़ते हैं और इसका उपयोग प्लेटफॉर्म को बेहतर बनाने के लिए करते हैं।',
+    submit: 'फीडबैक सबमिट करें',
+    submitting: 'सबमिट हो रहा है...',
+    submitSuccess: 'आपके फीडबैक के लिए धन्यवाद! हम जल्द ही इसकी समीक्षा करेंगे।',
+    submitFailed: 'फीडबैक सबमिट करने में विफल: {{error}}',
+    messageRequired: 'कृपया अपना फीडबैक संदेश दर्ज करें',
+    ratingRequired: 'कृपया एक रेटिंग चुनें',
+    authRequired: 'फीडबैक सबमिट करने के लिए कृपया साइन इन करें',
+    viewHistory: 'इतिहास देखें',
+    newFeedback: 'नया फीडबैक',
+    history: 'फीडबैक इतिहास',
+    loading: 'फीडबैक लोड हो रहा है...',
+    noFeedbackYet: 'अभी तक कोई फीडबैक सबमिट नहीं किया गया। अपने विचार साझा करने वाले पहले व्यक्ति बनें!',
+    confirmDelete: 'क्या आप वाकई इस फीडबैक को हटाना चाहते हैं?',
+    delete: 'हटाएं',
+    deleteSuccess: 'फीडबैक सफलतापूर्वक हटा दिया गया',
+    deleteFailed: 'फीडबैक हटाने में विफल: {{error}}',
+    updateSuccess: 'फीडबैक सफलतापूर्वक अपडेट हो गया',
+    updateFailed: 'फीडबैक अपडेट करने में विफल: {{error}}',
+    quickFeedbackTitle: 'आपका अनुभव कैसा था?',
+    quickFeedbackContext: 'आपने अभी {{feature}} का उपयोग किया। यह कैसा था?',
+    quickFeedbackDefault: 'त्वरित फीडबैक: {{rating}} सितारे',
+    quickMessagePlaceholder: 'कोई अतिरिक्त टिप्पणी? (वैकल्पिक)',
+    howWasYourExperience: 'आपका अनुभव कैसा था?',
+    additionalComments: 'अतिरिक्त टिप्पणियां',
+    ratingSelected: '5 में से {{rating}}',
+    ratingLow: 'हमें खेद है कि आपको यह पसंद नहीं आया। हम इसे बेहतर बनाने पर काम करेंगे।',
+    ratingMedium: 'फीडबैक के लिए धन्यवाद। हम सुधार करते रहेंगे!',
+    ratingHigh: 'यह सुनकर अच्छा लगा! सकारात्मक फीडबैक के लिए धन्यवाद।',
+    skip: 'छोड़ें',
+    adminResponse: 'एडमिन प्रतिक्रिया',
+    responseRequired: 'प्रतिक्रिया आवश्यक',
+    status: {
+      open: 'खुला',
+      in_progress: 'प्रगति में',
+      resolved: 'हल हो गया',
+      closed: 'बंद'
+    },
+    priority: {
+      low: 'कम',
+      medium: 'मध्यम',
+      high: 'उच्च',
+      urgent: 'जरूरी'
+    },
+    types: {
+      general: {
+        label: 'सामान्य',
+        description: 'सामान्य फीडबैक या टिप्पणियां'
+      },
+      bug: {
+        label: 'बग रिपोर्ट',
+        description: 'बग या समस्या रिपोर्ट करें'
+      },
+      feature: {
+        label: 'सुविधा अनुरोध',
+        description: 'एक नई सुविधा सुझाएं'
+      },
+      support: {
+        label: 'सहायता',
+        description: 'मदद या सहायता चाहिए'
+      }
+    }
+  },
+  pricing: {
+    title: 'मूल्य निर्धारण',
+    pageTitle: 'अपनी योजना चुनें',
+    pageDescription: 'CVSaathi के साथ अपनी करियर क्षमता को अनलॉक करें',
+    billingCycle: {
+      monthly: 'मासिक',
+      annual: 'वार्षिक',
+      saveUpTo: '₹{{amount}} तक बचाएं'
+    },
+    plans: {
+      free: {
+        name: 'मुफ्त योजना',
+        description: 'शुरुआत के लिए परफेक्ट',
+        cta: 'वर्तमान योजना',
+        features: {
+          aiCoaching: 'AI करियर कोचिंग: 3 सत्र/महीना',
+          resumeBuilder: 'रिज्यूमे बिल्डर: 3 रिज्यूमे समीक्षा और ATS के साथ',
+          templates: 'रिज्यूमे टेम्पलेट: 10 मुफ्त टेम्पलेट',
+          pdfExport: 'PDF निर्यात: 3 PDF वॉटरमार्क के साथ',
+          interviewPrep: 'इंटरव्यू तैयारी: 2 पूर्ण सत्र/महीना',
+          languages: 'भाषाएं: सभी भाषाएं (EN/HI/MR)',
+          profileSetup: 'बुनियादी प्रोफाइल सेटअप: उपलब्ध',
+          atsChecker: 'ATS चेकर: 1 विश्लेषण/महीना',
+          skillGap: 'कौशल अंतर विश्लेषण: 1 विश्लेषण/महीना',
+          whatsapp: 'WhatsApp निर्यात: वॉटरमार्क के साथ'
+        }
+      },
+      starter: {
+        name: 'स्टार्टर योजना',
+        description: 'नौकरी चाहने वालों के लिए बेहतरीन',
+        cta: 'अभी अपग्रेड करें',
+        features: {
+          aiCoaching: 'AI करियर कोचिंग: 15 सत्र/महीना',
+          resumeBuilder: 'रिज्यूमे बिल्डर: 10 रिज्यूमे समीक्षा और ATS के साथ',
+          templates: 'रिज्यूमे टेम्पलेट: 15 टेम्पलेट',
+          pdfExport: 'PDF निर्यात: 10 PDF बिना वॉटरमार्क के',
+          interviewPrep: 'इंटरव्यू तैयारी: 15 पूर्ण सत्र/महीना',
+          languages: 'भाषाएं: सभी भाषाएं (EN/HI/MR)',
+          atsChecker: 'ATS चेकर: 5 विश्लेषण/महीना',
+          skillGap: 'कौशल अंतर विश्लेषण: 8 विश्लेषण/महीना',
+          whatsapp: 'WhatsApp निर्यात: साफ निर्यात',
+          emailSupport: 'ईमेल सहायता: उपलब्ध'
+        },
+        savingsAnnual: '₹198/वर्ष बचाएं'
+      },
+      professional: {
+        name: 'प्रोफेशनल योजना',
+        description: 'गंभीर करियर वृद्धि के लिए',
+        cta: 'योजना चुनें',
+        badge: 'सबसे लोकप्रिय',
+        features: {
+          aiCoaching: 'असीमित AI करियर कोचिंग',
+          resumeBuilder: 'रिज्यूमे बिल्डर: असीमित रिज्यूमे समीक्षा और ATS के साथ',
+          templates: 'सभी प्रीमियम टेम्पलेट: असीमित पहुंच',
+          interviewPrep: 'असीमित इंटरव्यू तैयारी',
+          atsChecker: 'असीमित ATS चेकर + विस्तृत रिपोर्ट',
+          skillGap: 'असीमित कौशल अंतर विश्लेषण',
+          pdfExport: 'PDF निर्यात: असीमित बिना वॉटरमार्क के',
+          formatting: 'उन्नत फॉर्मेटिंग: उपलब्ध',
+          prioritySupport: 'प्राथमिकता सहायता: उपलब्ध',
+          whatsapp: 'WhatsApp सूचनाएं: उपलब्ध',
+          analytics: 'उन्नत विश्लेषण: उपलब्ध'
+        },
+        savingsAnnual: '₹398/वर्ष बचाएं'
+      }
+    },
+    price: {
+      perMonth: '/महीना',
+      perYear: '/वर्ष',
+      free: 'मुफ्त'
+    },
+    buttons: {
+      processing: 'प्रसंस्करण...',
+      currentPlan: 'वर्तमान योजना'
+    },
+    whatsIncluded: 'क्या शामिल है:',
+    comparePlans: 'योजनाओं की तुलना करें',
+    comparisonTable: {
+      feature: 'विशेषता',
+      freePlan: 'मुफ्त योजना',
+      starterPlan: 'स्टार्टर योजना',
+      professionalPlan: 'प्रोफेशनल योजना',
+      features: {
+        aiCoaching: 'AI करियर कोचिंग',
+        resumeBuilder: 'रिज्यूमे बिल्डर',
+        templates: 'रिज्यूमे टेम्पलेट',
+        pdfExport: 'PDF निर्यात',
+        interviewPrep: 'इंटरव्यू तैयारी',
+        atsChecker: 'ATS चेकर',
+        skillGap: 'कौशल अंतर विश्लेषण',
+        languages: 'भाषाएं',
+        whatsapp: 'WhatsApp निर्यात',
+        support: 'सहायता',
+        formatting: 'उन्नत फॉर्मेटिंग',
+        analytics: 'उन्नत विश्लेषण',
+        notifications: 'WhatsApp सूचनाएं'
+      },
+      values: {
+        unlimited: 'असीमित',
+        community: 'कम्युनिटी',
+        emailSupport: 'ईमेल सहायता',
+        prioritySupport: 'प्राथमिकता सहायता',
+        watermark: 'वॉटरमार्क के साथ',
+        noWatermark: 'बिना वॉटरमार्क',
+        cleanExport: 'साफ निर्यात',
+        allLanguages: 'सभी (EN/HI/MR)',
+        available: '✓',
+        notAvailable: '—'
+      }
+    },
+    faq: {
+      title: 'अक्सर पूछे जाने वाले प्रश्न',
+      questions: {
+        changePlans: {
+          q: 'क्या मैं कभी भी योजना बदल सकता हूं?',
+          a: 'हां, आप कभी भी अपनी योजना को अपग्रेड या डाउनग्रेड कर सकते हैं। अपग्रेड के लिए परिवर्तन तुरंत प्रतिबिंबित होंगे, और डाउनग्रेड के लिए आपके बिलिंग चक्र के अंत में।'
+        },
+        paymentMethods: {
+          q: 'आप कौन सी भुगतान विधियां स्वीकार करते हैं?',
+          a: 'हम Razorpay के माध्यम से सभी प्रमुख क्रेडिट/डेबिट कार्ड, UPI, नेट बैंकिंग, और डिजिटल वॉलेट स्वीकार करते हैं।'
+        },
+        refundPolicy: {
+          q: 'क्या रिफंड नीति है?',
+          a: 'हां, यदि आप हमारी सेवा से संतुष्ट नहीं हैं तो हम 7-दिवसीय मनी-बैक गारंटी प्रदान करते हैं। रिफंड अनुरोधों के लिए सहायता से संपर्क करें।'
+        },
+        annualDiscounts: {
+          q: 'क्या आप वार्षिक छूट प्रदान करते हैं?',
+          a: 'हां! वार्षिक योजनाएं आपको 2 महीने की सदस्यता शुल्क बचाती हैं। यह स्टार्टर पर ₹198 और प्रोफेशनल योजनाओं पर ₹398 की बचत है।'
+        },
+        exceedLimits: {
+          q: 'अगर मैं अपनी योजना सीमा से अधिक हो जाऊं तो क्या होगा?',
+          a: 'जब आप अपनी सीमाओं के करीब पहुंचेंगे तो आपको सूचित किया जाएगा। आप कभी भी सुविधाओं का उपयोग जारी रखने के लिए उच्च योजना में अपग्रेड कर सकते हैं।'
+        },
+        cancelSubscription: {
+          q: 'क्या मैं अपनी सदस्यता रद्द कर सकता हूं?',
+          a: 'हां, आप अपने खाता सेटिंग्स से कभी भी रद्द कर सकते हैं। आपकी सदस्यता वर्तमान बिलिंग अवधि के अंत तक सक्रिय रहेगी।'
+        }
+      }
+    },
+    toasts: {
+      alreadyOnFreePlan: 'आप पहले से ही मुफ्त योजना पर हैं',
+      signInRequired: 'सदस्यता के लिए कृपया साइन इन करें',
+      paymentGatewayLoading: 'भुगतान गेटवे लोड हो रहा है। कृपया एक क्षण प्रतीक्षा करें।',
+      creatingOrder: 'भुगतान ऑर्डर बनाया जा रहा है...',
+      verifyingPayment: 'भुगतान सत्यापित किया जा रहा है...',
+      paymentSuccess: 'भुगतान सफल! आपकी सदस्यता अब सक्रिय है।',
+      welcomeToPlan: '{{planName}} में आपका स्वागत है!',
+      paymentVerificationFailed: 'भुगतान सत्यापन विफल',
+      contactSupportIfDeducted: 'यदि भुगतान कटौती की गई है तो कृपया सहायता से संपर्क करें।',
+      paymentCancelled: 'भुगतान रद्द',
+      paymentFailed: 'भुगतान विफल',
+      tryAgainOrContactSupport: 'कृपया पुनः प्रयास करें या सहायता से संपर्क करें।',
+      failedToStartPayment: 'भुगतान शुरू करने में विफल',
+      tryAgainLater: 'कृपया बाद में पुनः प्रयास करें।',
+      failedToLoadGateway: 'भुगतान गेटवे लोड करने में विफल। कृपया पृष्ठ को रीफ्रेश करें।'
+    }
+  }
 };
+
+// Landing Page translations for Marathi
+resources.mr.translation.landing = {
+  hero: {
+      badge: 'AI-चालित करिअर विकास प्लॅटफॉर्म',
+      title: 'CVSaathi',
+      description: 'AI सह तुमची करिअर कथा तयार करा — एक आकर्षक, नोकरी जिंकणारे रिझ्यूमे पासून वैयक्तिक मुलाखत तयारी आणि वास्तविक-वेळ कौशल्य अंतर्दृष्टी पर्यंत।',
+      getTemplate: 'टेम्पलेट मिळवा',
+      seeServices: 'आमच्या सेवा पहा'
+    },
+    navigation: {
+      whyChooseUs: 'आम्हाला का निवडा',
+      features: 'वैशिष्ट्ये',
+      services: 'सेवा',
+      process: 'प्रक्रिया',
+      templates: 'टेम्पलेट',
+      pricing: 'किंमत',
+      signIn: 'साइन इन',
+      getStarted: 'मोफत सुरू करा'
+    },
+    features: {
+      resumeBuilder: {
+        title: 'रिझ्यूमे बिल्डर',
+        description: 'मिनिटांमध्ये सुंदर, नोकरी जिंकणारे रिझ्यूमे तयार करा। 50+ AI-निर्मित टेम्पलेटमधून निवडा जे प्रत्येक व्यवसाय, प्रदेश आणि अनुभव स्तरासाठी तयार केलेले आहेत — जागतिक भरती करणाऱ्या आणि ATS प्रणाली दोन्हीना प्रभावित करण्यासाठी डिझाइन केलेले।'
+      },
+      atsOptimizer: {
+        title: 'ATS ऑप्टिमाइझर',
+        description: 'बॉट्सला हरवा आणि मानवी डोळ्यांपर्यंत वेगाने पोहोचा। त्वरित ATS सुसंगतता तपासणी, कीवर्ड वाढ आणि स्मार्ट फॉर्मेटिंग सुझाव मिळवा जेणेकरून तुमच्या शॉर्टलिस्टिंग संधी जास्तीत जास्त होतील।'
+      },
+      interviewPrep: {
+        title: 'मुलाखत तयारी सहाय्यक',
+        description: 'तुमच्या वैयक्तिक AI मुलाखत घेणाऱ्यासह प्रशिक्षण घ्या। भूमिका-विशिष्ट मॉक सत्रांचा सराव करा, त्वरित अभिप्राय मिळवा, आणि आत्मविश्वास निर्माण करा — कोणत्याही डोमेन, उद्योग किंवा भाषेत।'
+      },
+      estel: {
+        title: 'AI करिअर साथी Estel',
+        description: 'तुमचा 24×7 AI करिअर साथी जो तुमच्या प्रवासाला समजतो। Estel आमच्या सर्व वैशिष्ट्यांना शक्ती देते — परिपूर्ण रिझ्यूमे तयार करण्यापासून मुलाखतीची तयारी करण्यापर्यंत, तज्ञ-स्तरीय सल्ला आणि सानुकूलित वाढ सुझाव मिळवा — जेव्हा तुम्हाला आवश्यक असेल।'
+      },
+      skillGap: {
+        title: 'कौशल्य अंतर विश्लेषण',
+        description: 'वाढीसाठी तुम्हाला कोणत्या कौशल्यांची आवश्यकता आहे हे जाणून घ्या। जगभरातील शीर्ष उद्योग भूमिकांशी तुमच्या प्रोफाइलची तुलना करा आणि AI-चालित अंतर्दृष्टीसह अपस्किल करण्यासाठी वैयक्तिक रोडमॅप मिळवा।'
+      },
+      allFeatures: '1 साधनात सर्व वैशिष्ट्ये',
+      allFeaturesDesc: 'स्मार्ट साधने शोधा जी तुमच्या नोकरी शोधाला सोपी करतात, आत्मविश्वास वाढवतात, आणि तुम्हाला वाढण्यात मदत करतात — सर्व एक शक्तिशाली प्लॅटफॉर्ममध्ये।',
+      getStarted: 'सुरू करा',
+      seeServices: 'आमच्या सेवा पहा'
+    },
+    estel: {
+      badge: 'AI साथी',
+      title: '{{name}} ला भेट द्या — तुमचा AI करिअर साथी',
+      name: 'Estel',
+      subtitle1: 'सहाय्यकापेक्षा अधिक',
+      subtitle1Desc: '— Estel तुमच्या व्यावसायिक प्रवासाच्या प्रत्येक टप्प्यात तुमचा वैयक्तिक मार्गदर्शक आहे।',
+      description1: 'हजारो वास्तविक जगातील रिझ्यूमे, मुलाखती आणि करिअर यश पॅटर्नवर प्रशिक्षित, Estel तुम्हाला नोकरी जिंकणारे प्रोफाइल तयार करण्यात, कौशल्य अंतराचे विश्लेषण करण्यात, आणि आत्मविश्वासाने मुलाखतीची तयारी करण्यात मदत करते — सर्व एक एकल, सहज अनुभवाद्वारे।',
+      description2: 'जेव्हा इतर रिझ्यूमे, कोचिंग आणि शिकण्यासाठी अनेक साधनांसह झुंज देतात, Estel सर्व काही एकत्र आणते। ती तुमची उद्दिष्टे समजते, तुमची भाषा बोलते, आणि वैयक्तिक सल्ला देते जो तुमच्याबरोबर विकसित होतो।',
+      description3: 'Estel बरोबर, तुमची करिअर वाढ आता अंदाज नाही — हे बुद्धिमत्ता, सहानुभूती आणि अनुभवाद्वारे मार्गदर्शित केले जाते।',
+      tagline: 'अधिक हुशारीने तयार करा। वेगाने शिका। Estel बरोबर वाढा।',
+      cta: 'Estel बरोबर चॅटिंग सुरू करा'
+    },
+    cta: {
+      badge: 'आजच तुमची यशाची कथा सुरू करा',
+      title: 'तुमचे स्वप्नांचे रिझ्यूमे तयार करण्यासाठी तयार आहात?',
+      description: '50,000+ नोकरी शोधणाऱ्यांमध्ये सामील व्हा ज्यांनी आमच्या AI-चालित रिझ्यूमे बिल्डरसह त्यांचे करिअर बदलले। मिनिटांमध्ये सुरू करा, दिवसांमध्ये मुलाखती मिळवा।',
+      createResume: 'तुमचे रिझ्यूमे मोफत तयार करा',
+      talkToSales: 'विक्रीशी बोला',
+      noCreditCard: 'क्रेडिट कार्ड आवश्यक नाही • 7-दिवसीय पैसे परत गॅरंटी'
+    },
+    finalCta: {
+      badge: 'तुमचे करिअर बदलण्यासाठी तयार आहात?',
+      title: 'आजच तुमचे स्वप्नांचे रिझ्यूमे तयार करणे सुरू करा',
+      getStarted: 'मोफत सुरू करा',
+      viewPricing: 'किंमत पहा',
+      noCreditCard: 'क्रेडिट कार्ड आवश्यक नाही',
+      freeTrial: '7-दिवसीय मोफत चाचणी',
+      cancelAnytime: 'कधीही रद्द करा'
+    },
+    pricing: {
+      badge: 'सोपी किंमत',
+      title: 'तुमची परिपूर्ण योजना निवडा',
+      description: 'मोफत सुरू करा, कधीही अपग्रेड करा। लपलेली फी नाही, कधीही रद्द करा।',
+      freePlan: {
+        name: 'मोफत योजना',
+        description: 'सुरू करण्यासाठी परिपूर्ण',
+        cta: 'सध्याची योजना'
+      },
+      starterPlan: {
+        name: 'स्टार्टर योजना',
+        description: 'नोकरी शोधणाऱ्यांसाठी छान',
+        cta: 'आता अपग्रेड करा'
+      },
+      professionalPlan: {
+        name: 'प्रोफेशनल योजना',
+        description: 'गंभीर करिअर वाढीसाठी',
+        cta: 'योजना निवडा',
+        popular: 'सर्वात लोकप्रिय'
+      }
+    },
+    footer: {
+      description: 'AI-चालित करिअर विकास प्लॅटफॉर्म। बुद्धिमान करिअर साधनांसह व्यावसायिकांना सशक्त करणे।',
+      madeInIndia: 'भारतात बनवले 🇮🇳',
+      stayUpdated: 'करिअर टिप्ससह अद्ययावत रहा',
+      newsletterDesc: 'तुमच्या इनबॉक्समध्ये साप्ताहिक रिझ्यूमे टिप्स, नोकरी शोध रणनीती आणि करिअर सल्ला मिळवा।',
+      enterEmail: 'तुमचा ईमेल प्रविष्ट करा',
+      subscribe: 'सदस्यता घ्या',
+      copyright: '© 2024 CVSaathi। सर्व हक्क सुरक्षित।'
+    },
+    whyChooseUs: {
+      badge: 'आम्हाला का निवडा',
+      title: 'आम्हाला का निवडा',
+      description: 'बुद्धिमान, मानव-प्रथम AI सह प्रत्येक करिअर स्वप्नाला सशक्त करणे।',
+      benefits: {
+        aiUnderstands: {
+          title: 'AI जो तुम्हाला समजते',
+          description: 'CV Saathi फक्त स्मार्ट नाही — ते वैयक्तिक आहे। आमचा बहुभाषी AI प्रत्येक रिझ्यूमे, करिअर सुझाव, आणि मुलाखत टिप तुमच्या शहर, तुमच्या उद्योग, आणि तुमच्या उद्दिष्टांनुसार तयार करते।'
+        },
+        realTimeInsights: {
+          title: 'वास्तविक-वेळ करिअर अंतर्दृष्टी',
+          description: 'लाइव्ह विश्लेषण आणि नोकरी-बाजार संकेतांसह तुमच्या वाढीचा त्वरित मागोवा घ्या — कोणती कौशल्ये ट्रेंडिंग आहेत आणि तुमचे प्रोफाइल कसे तुलना करते ते पहा।'
+        },
+        aiDrivenGrowth: {
+          title: 'AI-चालित वाढ',
+          description: 'प्रत्येक क्लिक तुम्हाला पुढे जाण्यात मदत करते। आमची बुद्धिमान प्रणाली तुमच्या प्रगतीतून शिकते जेणेकरून चांगल्या संधी, वेगाने शिफारस करू शकेल।'
+        }
+      }
+    },
+    infiniteScroll: {
+      fasterInnovation: 'वेगाने नवाचार',
+      virtualAssistance: 'व्हर्च्युअल सहाय्य',
+      scalableSolutions: 'स्केलेबल उपाय',
+      personalizedExperiences: 'वैयक्तिक अनुभव',
+      costEffective: 'खर्च प्रभावी',
+      lightningFast: 'विजेच्या वेगाने',
+      securePrivate: 'सुरक्षित आणि खाजगी',
+      precisionMatching: 'अचूक जुळणी'
+    },
+    aiServices: {
+      badge: 'सेवा',
+      title: 'आमच्या AI-चालित सेवा',
+      description: 'AI वैशिष्ट्यांचा फायदा घ्या जे तुमच्या व्यवसायाच्या कामगिरीला चालना देतात।',
+      services: {
+        learningRecommendations: {
+          title: 'AI शिकण्याच्या शिफारसी',
+          description: 'वैयक्तिक शिकण्याच्या मार्गांसह वेगाने वाढा। आमचा AI तुमच्या करिअर उद्दिष्टे आणि कौशल्य-अंतर डेटाचे विश्लेषण करते, नंतर तुम्हाला Coursera, Udemy, आणि त्यापलीकडेच्या सर्वात प्रासंगिक अभ्यासक्रमांशी जोडते — जेणेकरून तुम्ही जे खरोखर महत्त्वाचे आहे ते शिकाल।'
+        },
+        contentGeneration: {
+          title: 'AI सामग्री निर्माण',
+          description: 'अचूकतेसह एक शक्तिशाली वैयक्तिक ब्रँड तयार करा। व्यावसायिक रिझ्यूमे, बायो, आणि उद्देशाचे विधान उत्पन्न करा जे तुमच्या आवाजात तयार केलेले आहेत — टोन, स्पष्टता, आणि जागतिक भरती मानकांसाठी अनुकूलित।',
+          uiContinueWriting: 'लिहिणे सुरू ठेवा',
+          uiFixSpelling: 'शब्दलेखन दुरुस्त करा',
+          uiExplainDetail: 'तपशीलवार स्पष्ट करा',
+          uiGenerate: 'उत्पन्न करा'
+        },
+        chatAssistants: {
+          title: 'AI-चालित चॅट सहाय्यक',
+          description: 'तुमच्या 24 × 7 करिअर कोचला भेट द्या। रिझ्यूमे तयार करण्यापासून मुलाखत तयारीपर्यंत, आमचा संभाषण AI अनेक भाषांमध्ये त्वरित, मानव-सारखे समर्थन प्रदान करते — नेहमी उपलब्ध, नेहमी तुमच्या गरजांना अनुकूल।',
+          uiPlaceholder: 'एक संदेश टाइप करा'
+        },
+        multilingualTranslation: {
+          title: 'बहुभाषी AI अनुवाद आणि स्थानिकीकरण',
+          description: 'अडथळे तोडा आणि जागतिक जा। रिझ्यूमे, कव्हर लेटर्स, आणि अभिप्राय 10+ भाषांमध्ये त्वरित अनुवाद करा — संदर्भ, टोन, आणि व्यावसायिक पॉलिश अक्षुण्ण ठेवताना।'
+        }
+      }
+    },
+    howItWorks: {
+      badge: 'प्रक्रिया',
+      title: 'यशासाठी चार सोपे पाऊल',
+      description: 'सहकार्य आणि अभिप्रायाची एक पारदर्शक प्रक्रिया',
+      steps: {
+        step1: {
+          title: 'अपलोड करा किंवा नवीन सुरू करा',
+          description: 'तुमचे विद्यमान रिझ्यूमे आयात करा किंवा रिकाम्या टेम्पलेटसह सुरू करा। आमचा AI तुम्हाला प्रत्येक पाऊलात मार्गदर्शन करेल।'
+        },
+        step2: {
+          title: 'AI वाढ',
+          description: 'आमचा AI तुमच्या सामग्रीचे विश्लेषण करते, सुधारणा सुचवते, आणि स्वयंचलितपणे ATS प्रणालींसाठी अनुकूलित करते।'
+        },
+        step3: {
+          title: 'पुनरावलोकन आणि सानुकूलन',
+          description: 'आमच्या सहज संपादकासह तुमचे रिझ्यूमे ठीक करा। प्रीमियम टेम्पलेटमधून निवडा आणि रंग सानुकूलित करा।'
+        },
+        step4: {
+          title: 'डाउनलोड करा आणि अर्ज करा',
+          description: 'तुमचे ATS-अनुकूलित रिझ्यूमे अनेक स्वरूपात निर्यात करा। अर्ज ट्रॅक करा आणि मुलाखती मिळवा।'
+        }
+      },
+      ctaButton: 'आता बनवणे सुरू करा - ते मोफत आहे'
+    },
+    templates: {
+      badge: 'टेम्पलेट',
+      title: 'डिझाइनर-निर्मित टेम्पलेट',
+      description: 'आधुनिक, क्लासिक, आणि दृश्य टेम्पलेटमधून निवडा जे ATS फिल्टर पास करण्यासाठी आणि भरती करणाऱ्यांना प्रभावित करण्यासाठी बनवलेले आहेत',
+      templateTypes: {
+        techProfessional: {
+          title: 'टेक व्यावसायिक',
+          description: 'डेव्हलपर्स, अभियंते, आणि टेक व्यावसायिकांसाठी आधुनिक टेम्पलेट।',
+          tags: {
+            developer: 'डेव्हलपर',
+            engineer: 'अभियंता',
+            designer: 'डिझाइनर'
+          }
+        },
+        marketing: {
+          title: 'मार्केटिंग',
+          description: 'मार्केटर्स आणि सर्जनशील व्यावसायिकांसाठी आकर्षक टेम्पलेट।',
+          tags: {
+            marketing: 'मार्केटिंग',
+            socialMedia: 'सोशल मीडिया',
+            creative: 'सर्जनशील'
+          }
+        },
+        businessOperations: {
+          title: 'व्यवसाय संचालन',
+          description: 'व्यवसाय संचालन आणि व्यवस्थापनासाठी व्यावसायिक टेम्पलेट।',
+          tags: {
+            manager: 'मॅनेजर',
+            consultant: 'सल्लागार',
+            operations: 'संचालन'
+          }
+        },
+        freshGraduate: {
+          title: 'ताजे पदवीधर',
+          description: 'विद्यार्थी आणि अलीकडील पदवीधरांसाठी विशेषतः डिझाइन केलेले।',
+          tags: {
+            graduate: 'पदवीधर',
+            intern: 'इंटर्न',
+            entryLevel: 'प्रवेश स्तर'
+          }
+        },
+        executive: {
+          title: 'कार्यकारी',
+          description: 'वरिष्ठ कार्यकारी आणि नेतृत्व भूमिकांसाठी प्रीमियम टेम्पलेट।',
+          tags: {
+            director: 'निर्देशक',
+            vp: 'VP',
+            executive: 'कार्यकारी'
+          }
+        }
+      },
+      previewTemplate: 'टेम्पलेट पूर्वावलोकन',
+      dragToRotate: 'फिरवण्यासाठी ड्रॅग करा',
+      templatesCount: 'टेम्पलेट',
+      viewAllTemplates: 'सर्व टेम्पलेट पहा'
+    },
+    faq: {
+      badge: 'FAQ',
+      title: 'अनेकदा विचारले जाणारे प्रश्न',
+      description: 'CVSaathi बद्दल तुम्हाला जे काही माहित असणे आवश्यक आहे',
+      stillHaveQuestions: 'अजूनही प्रश्न आहेत?',
+      supportDescription: 'आमची सहायता टीम तुमच्या यशात मदत करण्यासाठी येथे आहे',
+      contactSupport: 'सहाय्याशी संपर्क साधा',
+      questions: {
+        q1: 'CVSaathi इतर रिझ्यूमे बिल्डरपेक्षा कसे वेगळे आहे?',
+        q2: 'CVSaathi फक्त रिझ्यूमेमध्ये मदत करते का?',
+        q3: 'ATS अनुकूलन कसे काम करते?',
+        q4: 'मी CVSaathi विनामूल्य वापरू शकतो का?',
+        q5: 'CVSaathi कोणत्या भाषांचे समर्थन करते? Tier-2 शहरांसाठी हे चांगले आहे का?',
+        q6: 'मी माझे रिझ्यूमे कोणत्या स्वरूपात डाउनलोड करू शकतो?',
+        q7: 'माझा डेटा सुरक्षित आणि खाजगी आहे का?',
+        q8: 'जर मी समाधानी नसलो तर काय होईल? तुम्ही रिफंड किंवा सहाय्य देतात का?'
+      },
+      answers: {
+        a1: 'CVSaathi फक्त एक रिझ्यूमे बिल्डर नाही – हे भारतात बनवलेले जागतिक मानसिकतेसह AI करिअर साथी आहे। आम्ही प्रगत AI (तुमचा सहाय्यक, Estel) भारतीय नोकरी बाजार आणि आंतरराष्ट्रीय भरती मानकांच्या खोल समजुतीसह एकत्र करतो। याचा अर्थ असा की तुम्हाला शहर-स्मार्ट रिझ्यूमे आणि करिअर मार्गदर्शन मिळते जे भारतीय भरती करणाऱ्यांसाठी आणि ATS प्रणालींसाठी काम करते, तर जागतिक संधींसाठी अजूनही पॉलिश आणि व्यावसायिक दिसते। आम्ही Tier-2 आणि उदयोन्मुख शहरांमधील वास्तविक उमेदवारांवर लक्ष केंद्रित करतो, सोपी भाषा, व्यावहारिक टिप्स, आणि आधुनिक टेम्पलेट वापरतो जे भारतीय आणि आंतरराष्ट्रीय दोन्ही भरती व्यवस्थापकांनी वास्तवात अपेक्षित आहेत।',
+        a2: 'नाही। CVSaathi एक मजबूत, ATS-तयार रिझ्यूमेसह सुरू होते परंतु खूप खोल जाते। अॅपच्या आत, Estel करू शकते:\n\n• AI सह तुमचे रिझ्यूमे सुधारा आणि पुन्हा लिहा\n• तुमच्या प्रोफाइलवर ATS तपासणी चालवा\n• मॉक Q&A सह मुलाखतीची तयारी करण्यात मदत करा\n• तुमच्या कौशल्य अंतराचे विश्लेषण करा आणि पुढे काय शिकावे याची शिफारस करा\n• सोप्या, स्पष्ट भाषेत तुम्हाला चरण-दर-चरण मार्गदर्शन करा\n\nहे तुमच्या खिशात एक वैयक्तिक करिअर मार्गदर्शक म्हणून विचार करा, फक्त एक-वेळचे रिझ्यूमे साधन नाही।',
+        a3: 'आमचा AI तुमच्या रिझ्यूमेची शीर्ष भारतीय कंपन्यांद्वारे वापरल्या जाणाऱ्या प्रमुख ATS सर्वोत्तम पद्धतींविरुद्ध तपासणी करते। आम्ही पुनरावलोकन करतो:\n\n• नोकरी वर्णन बनाम कीवर्ड\n• विभाग संरचना आणि शीर्षके\n• फॉर्मेटिंग, बुलेट शैली, आणि फॉन्ट\n• स्पष्टता, प्रभाव, आणि भूमिका-संबंधित यश\n\nतुम्हाला समजण्यास सोपा ATS स्कोर मिळतो तसेच काय दुरुस्त करावे यावर स्पष्ट सुझाव मिळतात जेणेकरून तुमच्या रिझ्यूमेला स्वयंचलित स्क्रीनिंग पास करण्याची आणि मानवी भरती करणाऱ्यापर्यंत पोहोचण्याची चांगली संधी असेल।',
+        a4: 'होय, तुम्ही विनामूल्य सुरू करू शकता। विनामूल्य योजना एक मजबूत, नोकरी-तयार रिझ्यूमे तयार करण्यात मदत करण्यासाठी डिझाइन केलेली आहे:\n\n• 1 सक्रिय रिझ्यूमे\n• आवश्यक टेम्पलेट\n• मूलभूत AI सुझाव\n• ATS स्कोर आणि PDF डाउनलोड\n\nजेव्हा तुम्ही तयार असाल, तेव्हा तुम्ही अतिरिक्त फायद्यांसाठी पेड योजनेत अपग्रेड करू शकता जसे की अनेक रिझ्यूमे, प्रीमियम टेम्पलेट, खोल AI पुनर्लेखन, Estel सह मुलाखत तयारी, आणि अधिक प्रगत करिअर अंतर्दृष्टी।',
+        a5: 'CVSaathi भारतीय उमेदवारांना लक्षात घेऊन बनवलेले आहे, विशेषतः Tier-2 आणि उदयोन्मुख शहरांमधून। आम्ही सोपी, स्पष्ट इंग्रजी वापरतो आणि अनेक भारतीय भाषांसाठी समर्थन सुरू करत आहोत जेणेकरून तुम्हाला तुम्ही सर्वात आरामदायक असलेल्या भाषेत मार्गदर्शन मिळू शकेल। आमचा शहर-स्मार्ट दृष्टीकोन म्हणजे आम्ही भारतीय शहरांमध्ये भिन्न वेतन श्रेणी, नोकरी शीर्षके, आणि अपेक्षा समजतो – मेट्रो भूमिकांपासून वाढत्या स्थानिक बाजारपेठेपर्यंत।',
+        a6: 'तुम्ही तुमचे रिझ्यूमे भरती करणाऱ्या-अनुकूल स्वरूपात डाउनलोड करू शकता, यासह:\n\n• PDF – सामायिक करण्यासाठी सर्वोत्तम आणि सर्वात ATS-अनुकूल\n• DOCX – मॅन्युअल ट्वीक्ससाठी संपादन योग्य स्वरूप\n• सादा मजकूर/ATS-अनुकूल मजकूर – ऑनलाइन पोर्टलमध्ये पेस्ट करण्यासाठी आदर्श\n\nआम्ही भरती करणाऱ्यांसह किंवा WhatsApp आणि ईमेलवर त्वरित सामायिक करण्यासाठी सामायिक करण्यायोग्य लिंक देखील प्रदान करतो।',
+        a7: 'होय। तुमची डेटा सुरक्षा आमच्यासाठी सर्वोच्च प्राथमिकता आहे। आम्ही तुमच्या माहितीचे संरक्षण करण्यासाठी मजबूत एन्क्रिप्शन वापरतो, आणि आम्ही कधीही तुमचा डेटा तृतीय पक्षांना विकत नाही। तुम्ही नियंत्रित करता की तुम्ही काय अपलोड करता आणि जेव्हा तुम्हाला हवे असेल तेव्हा तुमचे रिझ्यूमे आणि खाते डेटा हटवू शकता। CVSaathi भारतीय डेटा संरक्षण मानदंडांशी संरेखित करण्यासाठी बनवलेले आहे, आणि आम्ही स्पष्टपणे स्पष्ट करतो की तुमचा डेटा आमच्या गोपनीयता धोरणात कसा वापरला जातो।',
+        a8: 'आम्हाला CVSaathi खरोखर तुमच्या करिअरमध्ये मदत करायची आहे। जर तुम्हाला पेड योजनेसह समस्या येत असतील, तर तुम्ही आमच्या सहायता टीमशी संपर्क साधू शकता आणि, जेथे पात्र असेल, आमच्या रिफंड आणि रद्दीकरण धोरणानुसार रिफंडची विनंती करू शकता। आमची सहायता टीम बिलिंग प्रश्न, तांत्रिक समस्या, किंवा उत्पादन शंकांमध्ये तुमची मदत करण्यासाठी उपलब्ध आहे जेणेकरून तुम्ही कधीही स्वतः अडकू नका।'
+      }
+    }
+  };
+
+resources.mr.translation.dashboard = {
+  main: {
+    title: 'माझा डॅशबोर्ड',
+    quickSearch: 'द्रुत शोध',
+    keyboardShortcut: '⌘K'
+  },
+  sidebar: {
+    menu: {
+      dashboard: 'डॅशबोर्ड',
+      aiCoach: 'AI कोच',
+      resumeBuilder: 'रिझ्यूमे बिल्डर',
+      templates: 'टेम्पलेट',
+      atsChecker: 'ATS चेकर',
+      interviewPrep: 'मुलाखत तयारी',
+      skillGap: 'कौशल्य अंतर विश्लेषण'
+    },
+    bottom: {
+      pricing: 'किंमत',
+      settings: 'सेटिंग्ज',
+      help: 'मदत आणि समर्थन'
+    }
+  },
+  resumeBuilder: {
+    title: 'रिझ्यूमे बिल्डर',
+    welcomeTitle: 'तुमचे स्वप्नाचे रिझ्यूमे तयार करा',
+    minutes: 'मिनिटांमध्ये',
+    welcomeDescription: 'एस्टेल तुम्हाला व्यावसायिक, ATS-अनुकूलित रिझ्यूमे तयार करण्यात मदत करेल',
+    startFromScratch: 'सुरुवातीपासून सुरू करा',
+    startFromScratchDescription: 'AI मार्गदर्शनासह चरण-दर-चरण तुमचे रिझ्यूमे तयार करा',
+    importExisting: 'विद्यमान आयात करा',
+    importExistingDescription: 'तुमचे सध्याचे रिझ्यूमे अपलोड करा आणि सुधारा',
+    aiQuickBuild: 'AI द्रुत बिल्ड',
+    aiQuickBuildDescription: 'एस्टेलला तुमच्या प्रोफाइलवरून रिझ्यूमे तयार करू द्या',
+    continueWorkingOn: 'सुरू ठेवा',
+    resume: 'रिझ्यूमे',
+    resumes: 'रिझ्यूमे',
+    untitledResume: 'शीर्षक नसलेले रिझ्यूमे',
+    chooseTemplate: 'तुमचा टेम्प्लेट निवडा',
+    selectTemplateDescription: 'तुमच्या उद्योगाशी जुळणारा व्यावसायिक टेम्प्लेट निवडा',
+    templateChoiceMessage: 'छान निवड! चला तुमच्या रिझ्यूमेसाठी एक आकर्षक टेम्प्लेट निवडूया।',
+    templateCategories: {
+      all: 'सर्व',
+      modern: 'आधुनिक',
+      classic: 'क्लासिक',
+      creative: 'सृजनशील',
+      technical: 'तांत्रिक',
+      executive: 'कार्यकारी'
+    },
+    popular: '⭐ लोकप्रिय',
+    ats: 'ATS',
+    estelTip: "एस्टेलची टिप",
+    templateSelectedMessage: 'उत्कृष्ट निवड! {{name}} टेम्प्लेट {{description}} आहे। यात {{score}}% ATS अनुकूलता स्कोर आहे! 🎨',
+    skills: 'कौशल्ये',
+    showcaseYourSkills: 'तुमची कौशल्ये दाखवा',
+    technicalSkills: '💻 तांत्रिक कौशल्ये',
+    softSkills: '🤝 मऊ कौशल्ये',
+    typeAndPressEnter: 'टाइप करा आणि Enter दाबा',
+    suggested: '💡 सुचवलेले:',
+    projects: 'प्रकल्प',
+    showcaseYourBestWork: 'तुमचे सर्वोत्तम काम दाखवा',
+    projectNumber: 'प्रकल्प #{{n}}',
+    projectName: 'प्रकल्पाचे नाव',
+    date: 'तारीख',
+    description: 'विवरण',
+    addTech: 'टेक जोडा (Enter दाबा)',
+    addProject: 'प्रकल्प जोडा',
+    additional: 'अतिरिक्त',
+    addCertificationsLanguagesAwards: 'प्रमाणपत्रे, भाषा, पुरस्कार जोडा',
+    certifications: 'प्रमाणपत्रे',
+    languages: 'भाषा',
+    awards: 'पुरस्कार',
+    pressEnter: 'Enter दाबा',
+    aiCritique: 'AI समीक्षा',
+    getAIFeedback: 'AI अभिप्राय मिळवा',
+    readyForAIAnalysis: 'AI विश्लेषणासाठी तयार?',
+    analyzing: 'विश्लेषण करत आहे...',
+    analyzeResume: 'रिझ्यूमेचे विश्लेषण करा',
+    excellent: 'उत्कृष्ट!',
+    good: 'चांगले!',
+    content: 'सामग्री',
+    formatting: 'फॉर्मेटिंग',
+    impact: 'प्रभाव',
+    length: 'लांबी',
+    detailedFeedback: '📝 तपशीलवार अभिप्राय',
+    reAnalyze: 'पुन्हा विश्लेषण करा',
+    atsCheck: 'ATS तपासणी',
+    checkATSCompatibility: 'ATS अनुकूलता तपासा',
+    checkATS: 'ATS तपासा',
+    runATSCheck: 'ATS तपासणी चालवा',
+    contact: 'संपर्क',
+    reCheck: 'पुन्हा तपासा',
+    updated: 'अपडेट केले!',
+    exportResume: 'रिझ्यूमे निर्यात करा',
+    downloadAndShare: 'डाउनलोड करा आणि सामायिक करा',
+    amazingWork: 'अद्भुत काम!',
+    yourResumeIsReady: 'तुमचे रिझ्यूमे तयार आहे!',
+    downloadPDF: 'PDF डाउनलोड करा',
+    downloadDOCX: 'DOCX डाउनलोड करा',
+    copyLink: 'लिंक कॉपी करा',
+    emailResume: 'रिझ्यूमे ईमेल करा',
+    linkCopied: 'लिंक कॉपी केले!',
+    docxExportComingSoon: 'DOCX निर्यात लवकरच येणार आहे',
+    emailSharingComingSoon: 'ईमेल सामायिकरण लवकरच येणार आहे',
+    livePreview: 'लाइव्ह पूर्वावलोकन',
+    expandPreview: 'पूर्वावलोकन विस्तृत करा',
+    minimizePreview: 'पूर्वावलोकन कमी करा',
+    backToDashboard: 'डॅशबोर्डवर परत जा',
+    tellUsAboutYourself: 'तुमच्या बद्दल सांगा',
+    layout: {
+      title: 'लेआउट आणि डिझाइन',
+      description: 'तुमच्या रिझ्यूमेची देखावा आणि संरचना अनुकूलित करा',
+      accentColor: 'एक्सेंट रंग',
+      customColor: 'कस्टम रंग',
+      fontFamily: 'फॉन्ट फॅमिली',
+      fontCategories: {
+        modernsans: 'आधुनिक सॅन्स',
+        serif: 'सेरिफ',
+        boldsans: 'बोल्ड सॅन्स',
+        monospace: 'मोनोस्पेस',
+        minimal: 'मिनिमल'
+      },
+      headerStyle: 'हेडर स्टाइल',
+      headerStyles: {
+        centered: 'केंद्रित',
+        left: 'डावीकडे संरेखित',
+        twoColumn: 'दोन स्तंभ'
+      },
+      columnLayout: 'स्तंभ लेआउट',
+      columns: {
+        single: 'एकल स्तंभ',
+        singleDescription: 'पारंपरिक लेआउट',
+        two: 'दोन स्तंभ',
+        twoDescription: 'जागा कार्यक्षम'
+      },
+      fontSize: 'फॉन्ट आकार',
+      fontSizes: {
+        small: 'लहान',
+        smallDescription: 'अधिक सामग्री',
+        medium: 'मध्यम',
+        mediumDescription: 'संतुलित',
+        large: 'मोठे',
+        largeDescription: 'वाचण्यास सोपे'
+      },
+      sectionSpacing: 'विभाग अंतर',
+      spacing: {
+        compact: 'कॉम्पॅक्ट',
+        compactDescription: 'घट्ट अंतर',
+        balanced: 'संतुलित',
+        balancedDescription: 'शिफारस केलेले',
+        spacious: 'व्यापक',
+        spaciousDescription: 'अधिक श्वास घेण्याची जागा'
+      },
+      sectionVisibility: 'विभाग दृश्यता',
+      sectionOrder: 'विभाग क्रम',
+      reorderSections: 'विभागांना वर किंवा खाली हलवून त्यांना पुन्हा व्यवस्थित करा',
+      sections: {
+        summary: 'व्यावसायिक सारांश',
+        experience: 'अनुभव',
+        education: 'शिक्षण',
+        skills: 'कौशल्ये',
+        projects: 'प्रकल्प',
+        certifications: 'प्रमाणपत्रे',
+        languages: 'भाषा',
+        awards: 'पुरस्कार'
+      }
+    },
+    characters: 'अक्षरे',
+    invalidEmail: '⚠️ अवैध ईमेल स्वरूप',
+    aiGenerate: 'AI जनरेट करा',
+    personalInfo: {
+      title: 'वैयक्तिक माहिती',
+      fullName: 'पूर्ण नाव',
+      fullNamePlaceholder: 'राम कुमार',
+      email: 'ईमेल',
+      emailPlaceholder: 'ram.kumar@email.com',
+      phone: 'फोन',
+      phonePlaceholder: '+91 98765 43210',
+      location: 'स्थान',
+      locationPlaceholder: 'मुंबई, महाराष्ट्र',
+      linkedin: 'LinkedIn प्रोफाइल',
+      linkedinPlaceholder: 'linkedin.com/in/ramkumar',
+      portfolio: 'पोर्टफोलियो',
+      portfolioPlaceholder: 'ramkumar.com',
+      github: 'GitHub',
+      githubPlaceholder: 'github.com/ramkumar',
+      headline: 'व्यावसायिक हेडलाइन',
+      headlinePlaceholder: 'सीनियर सॉफ्टवेअर इंजिनियर | फुल-स्टॅक डेव्हलपर | टेक उत्साही'
+    },
+    summary: {
+      title: 'व्यावसायिक सारांश',
+      description: 'एक प्रभावशाली सारांश 6 सेकंदांमध्ये भरती करणाऱ्यांना आकर्षित करतो',
+      placeholder: 'एक प्रभावशाली सारांश लिहा जो तुमच्या प्रमुख कौशल्ये आणि अनुभव उजागर करेल...'
+    },
+    aiSummaryGenerator: '✨ AI सारांश जनरेटर',
+    targetRole: 'लक्ष्य भूमिका',
+    targetRolePlaceholder: 'सॉफ्टवेअर इंजिनियर',
+    yearsOfExperience: 'अनुभवाचे वर्ष',
+    yearsOfExperiencePlaceholder: '5+',
+    industry: 'उद्योग',
+    industryPlaceholder: 'तंत्रज्ञान',
+    generateSummaryWithAI: 'AI सह सारांश जनरेट करा',
+    yourProfessionalSummary: 'तुमचा व्यावसायिक सारांश',
+    optimal: '✓ इष्टतम',
+    summaryPlaceholder: 'एक प्रभावशाली सारांश लिहा जो तुमच्या प्रमुख यशांकडे आणि मूल्य प्रस्ताव उजागर करेल...',
+    tone: 'टोन',
+    professional: 'व्यावसायिक',
+    creative: 'सृजनशील',
+    technical: 'तांत्रिक',
+    workExperience: 'कामाचा अनुभव',
+    addExperienceDescription: 'AI-सहाय्यासह तुमचा व्यावसायिक अनुभव जोडा',
+    noExperienceAdded: 'अद्याप कोणताही अनुभव जोडला नाही',
+    addFirstExperienceDescription: 'सुरू करण्यासाठी तुमचा पहिला कामाचा अनुभव जोडा',
+    addFirstExperience: 'पहिला अनुभव जोडा',
+    addExperienceMessage: 'छान! तुमची नोकरीची माहिती जोडा आणि मी तुम्हाला प्रभावशाली यश बुलेट लिहिण्यात मदत करेन! 💼',
+    experienceNumber: 'अनुभव #{{n}}',
+    company: 'कंपनी',
+    companyPlaceholder: 'Google',
+    jobTitle: 'नोकरीचे शीर्षक',
+    jobTitlePlaceholder: 'सीनियर सॉफ्टवेअर इंजिनियर',
+    location: 'स्थान',
+    locationPlaceholder: 'मुंबई, महाराष्ट्र',
+    startDate: 'सुरुवातीची तारीख',
+    endDate: 'अंतिम तारीख',
+    current: 'सध्याचे',
+    achievementsAndResponsibilities: 'यश आणि जबाबदार्या',
+    aiGenerateBullet: 'AI बुलेट जनरेट करा',
+    bulletPlaceholder: '8 इंजिनियरांच्या संघाचे नेतृत्व केले, महत्त्वाचा प्रकल्प वितरित केला, ज्यामुळे 35% सुधारणा झाली...',
+    addBulletPoint: 'बुलेट पॉइंट जोडा',
+    addAnotherExperience: 'आणखी एक अनुभव जोडा',
+    education: 'शिक्षण',
+    addEducationDescription: 'तुमची शैक्षणिक पार्श्वभूमी जोडा',
+    noEducationAdded: 'अद्याप कोणतेही शिक्षण जोडले नाही',
+    addFirstEducationDescription: 'सुरू करण्यासाठी तुमची पहिली पदवी किंवा प्रमाणपत्र जोडा',
+    addFirstEducation: 'पहिले शिक्षण जोडा',
+    addEducationMessage: 'शिक्षण तुमचा पाया आहे! चला तुमच्या पदव्या आणि यश जोडूया। 🎓',
+    educationNumber: 'शिक्षण #{{n}}',
+    institution: 'संस्था',
+    institutionPlaceholder: 'स्टॅनफोर्ड विद्यापीठ',
+    degree: 'पदवी',
+    selectDegree: 'पदवी निवडा',
+    fieldOfStudy: 'अभ्यासाचे क्षेत्र',
+    fieldOfStudyPlaceholder: 'संगणक विज्ञान',
+    graduationYear: 'पदवी वर्ष',
+    graduationYearPlaceholder: '2024',
+    showGpa: 'GPA दाखवा',
+    gpaPlaceholder: '3.8/4.0',
+    honorsAndAwards: 'सन्मान आणि पुरस्कार (पर्यायी)',
+    pressEnterToAdd: 'जोडण्यासाठी Enter दाबा',
+    addAnotherEducation: 'आणखी एक शिक्षण जोडा',
+    addEducationMessage2: 'आणखी एक पदवी जोडत आहात? छान! शिक्षण तुमचा पाया दाखवते। 🎓',
+    steps: {
+      welcome: 'स्वागत',
+      template: 'टेम्पलेट',
+      personal: 'वैयक्तिक माहिती',
+      summary: 'सारांश',
+      experience: 'अनुभव',
+      education: 'शिक्षण',
+      skills: 'कौशल्ये',
+      projects: 'प्रकल्प',
+      additional: 'अतिरिक्त',
+      layout: 'लेआउट',
+      critique: 'AI समीक्षा',
+      ats: 'ATS तपासणी',
+      export: 'निर्यात'
+    }
+  },
+  atsChecker: {
+    title: 'ATS चेकर',
+    uploadTitle: 'तुमचे रिझ्यूमे अपलोड करा',
+    uploadDescription: 'तुमची रिझ्यूमे फाइल येथे ड्रॅग आणि ड्रॉप करा, किंवा ब्राउझ करण्यासाठी क्लिक करा',
+    supportedFormats: 'समर्थित स्वरूपे: PDF, DOCX, TXT',
+    analyzingTitle: 'तुमच्या रिझ्यूमेचे विश्लेषण करत आहोत...',
+    progress: {
+      formatting: 'फॉर्मेटिंग तपासत आहोत...',
+      keywords: 'कीवर्डचे विश्लेषण करत आहोत...',
+      structure: 'संरचनेची समीक्षा करत आहोत...',
+      score: 'ATS स्कोर मोजत आहोत...'
+    },
+    results: {
+      overallScore: 'एकूण ATS स्कोर',
+      breakdown: {
+        keywords: 'कीवर्ड',
+        formatting: 'फॉर्मेटिंग',
+        sections: 'विभाग',
+        length: 'लांबी',
+        readability: 'वाचनीयता'
+      },
+      issues: {
+        critical: 'गंभीर समस्या',
+        warnings: 'चेतावणी',
+        passed: 'पास झालेल्या तपासण्या'
+      },
+      keywords: {
+        found: 'सापडलेले कीवर्ड',
+        missing: 'गहाळ कीवर्ड',
+        suggested: 'सुचवलेले कीवर्ड'
+      },
+      aiRecommendations: 'AI शिफारसी'
+    },
+    buttons: {
+      upload: 'रिझ्यूमे अपलोड करा',
+      analyze: 'रिझ्यूमेचे विश्लेषण करा',
+      download: 'अहवाल डाउनलोड करा',
+      tryAnother: 'दुसरे रिझ्यूमे वापरा',
+      viewScans: 'मागील स्कॅन पहा'
+    },
+    recentScans: 'अलीकडील स्कॅन',
+    timeLabels: {
+      justNow: 'आत्ताच',
+      minutesAgo: '{{n}} मिनिटांपूर्वी',
+      hoursAgo: '{{n}} तासांपूर्वी',
+      daysAgo: '{{n}} दिवसांपूर्वी',
+      weeksAgo: '{{n}} आठवड्यांपूर्वी',
+      monthsAgo: '{{n}} महिन्यांपूर्वी',
+      unknown: 'अज्ञात'
+    }
+  },
+  interviewPrep: {
+    title: 'AI मुलाखत तयारी',
+    subtitle: 'AI-चालित मॉक मुलाखतींसह सराव करा',
+    backToDashboard: 'डॅशबोर्डवर परत जा',
+    newInterview: 'नवीन मुलाखत',
+    history: 'इतिहास',
+    experienceLevel: 'अनुभव स्तर',
+    selectExperienceLevel: 'तुमचा अनुभव स्तर निवडा',
+    targetRole: 'लक्ष्य भूमिका',
+    targetRoleDescription: 'तुम्ही कोणत्या पदासाठी मुलाखत देत आहात? (जसे, सॉफ्टवेअर इंजिनियर, प्रोडक्ट मॅनेजर, डेटा सायंटिस्ट)',
+    targetRolePlaceholder: 'तुमची लक्ष्य भूमिका प्रविष्ट करा (जसे, सॉफ्टवेअर इंजिनियर, प्रोडक्ट मॅनेजर)',
+    popularRoles: 'लोकप्रिय भूमिका:',
+    industry: 'उद्योग',
+    selectIndustry: 'उद्योग निवडा',
+    industryPlaceholder: 'उद्योग प्रविष्ट करा (जसे, तंत्रज्ञान, आरोग्य सेवा, वित्त)',
+    popularIndustries: 'लोकप्रिय उद्योग:',
+    startPractice: 'AI-चालित मुलाखत सुरू करा',
+    starting: 'AI मुलाखत सुरू करत आहे...',
+    interviewStarted: 'मुलाखत सुरू झाली! शुभेच्छा! 🎤',
+    interviewCompleted: 'मुलाखत पूर्ण झाली',
+    startFailed: 'मुलाखत सुरू करण्यात अयशस्वी: {{error}}',
+    recordingStarted: 'रेकॉर्डिंग सुरू झाली',
+    recordingStopped: 'रेकॉर्डिंग थांबवली',
+    microphoneDenied: 'मायक्रोफोन प्रवेश नाकारला',
+    submitAnswer: 'उत्तर सबमिट करा',
+    nextQuestion: 'पुढील प्रश्न',
+    finishInterview: 'मुलाखत समाप्त करा',
+    sessionSaved: 'मुलाखत सत्र जतन केले!',
+    saveFailed: 'सत्र जतन करण्यात अयशस्वी, परंतु परिणाम अद्याप उपलब्ध आहेत।',
+  freePlan: 'मोफत योजना',
+  premium: 'प्रीमियम',
+  unlimited: 'अमर्यादित',
+    today: 'आज',
+    upgradeMessage: 'मोफत वापरकर्ते: आज {{remaining}} प्रश्न शिल्लक आहेत। अमर्यादित सरावासाठी प्रीमियममध्ये अपग्रेड करा!',
+    upgradeLink: 'प्रीमियममध्ये अपग्रेड करा',
+    dailyLimitReached: 'दैनिक मर्यादा पोहोचली! अमर्यादित प्रश्नांसाठी प्रीमियममध्ये अपग्रेड करा।',
+    preparingQuestion: 'AI पुढील प्रश्न तयार करत आहे...',
+    questionOf: 'प्रश्न {{current}} / {{total}}',
+    complete: '{{percent}}% पूर्ण',
+    yourAnswer: 'तुमचे उत्तर',
+    answerPlaceholder: 'येथे तुमचे उत्तर टाइप करा किंवा खाली ऑडिओ रेकॉर्ड करा...',
+    voiceRecording: 'व्हॉईस रेकॉर्डिंग',
+    startRecording: 'रेकॉर्डिंग सुरू करा',
+    stopRecording: 'रेकॉर्डिंग थांबवा',
+    play: 'प्ले करा',
+    pause: 'विराम द्या',
+    recordingSaved: 'रेकॉर्डिंग जतन केली',
+    recording: 'रेकॉर्डिंग...',
+    submittingAnswer: 'उत्तर सबमिट करत आहे...',
+    hint: 'संकेत:',
+    questionsAnswered: '{{count}} प्रश्न{{plural}} उत्तर दिले',
+    interviewComplete: 'मुलाखत पूर्ण!',
+    youAnswered: 'तुम्ही {{count}} प्रश्नांची उत्तरे दिली',
+    yourPerformance: 'तुमचे कामगिरी',
+    averageScore: 'सरासरी स्कोर',
+    completed: 'पूर्ण',
+    minutes: 'मिनिटे',
+    interviewSummary: 'मुलाखत सारांश',
+    strengths: 'शक्ती',
+    improvements: 'सुधारणेचे क्षेत्र',
+    skillGapsIdentified: 'कौशल्य अंतर ओळखले',
+    recommendedNextSteps: 'शिफारस केलेले पुढील पाऊल',
+    detailedScores: 'तपशीलवार स्कोर',
+    strong: 'मजबूत',
+    good: 'चांगले',
+    needsImprovement: 'सुधारणेची गरज',
+    practiceAgain: 'पुन्हा सराव करा',
+    startingNewSession: 'नवीन सराव सत्र सुरू करत आहे!',
+    searchSessions: 'सत्र शोधा...',
+    allRoles: 'सर्व भूमिका',
+    allIndustries: 'सर्व उद्योग',
+    minScore: 'किमान स्कोर',
+    noSessionsFound: 'कोणतेही मुलाखत सत्र सापडले नाही',
+    sessionDeleted: 'सत्र हटवले',
+    sampleAnswerCopied: 'नमुना उत्तर कॉपी केले!',
+    copyFailed: 'कॉपी करण्यात अयशस्वी। कृपया स्वहस्ते कॉपी करा।',
+    interviewSessionNotInitialized: 'मुलाखत सत्र सुरू केले नाही',
+    sessionCreationFailed: 'सत्र निर्माण अयशस्वी, परंतु मुलाखत सुरू ठेवत आहे: {{error}}',
+    experienceLevels: {
+      fresher: {
+        label: 'फ्रेशर (0-2 वर्षे)',
+        badge: 'नवशिक्या'
+      },
+      junior: {
+        label: 'ज्युनियर (2-4 वर्षे)',
+        badge: 'मध्यम'
+      },
+      mid: {
+        label: 'मिड-लेवल (4-7 वर्षे)',
+        badge: 'प्रगत'
+      },
+      senior: {
+        label: 'सीनियर (7+ वर्षे)',
+        badge: 'तज्ञ'
+      }
+    }
+  },
+  skillGap: {
+    title: 'कौशल्य अंतर विश्लेषण',
+    backToDashboard: 'डॅशबोर्डवर परत जा',
+    unknown: 'अज्ञात',
+    justNow: 'आत्ताच',
+    minutesAgo: '{{n}} मिनिटांपूर्वी',
+    hoursAgo: '{{n}} तासांपूर्वी',
+    daysAgo: '{{n}} दिवसांपूर्वी',
+    weeksAgo: '{{n}} आठवड्यांपूर्वी',
+    monthsAgo: '{{n}} महिन्यांपूर्वी',
+    analysisLoaded: 'मागील विश्लेषण लोड केले!',
+    couldNotLoad: 'विश्लेषण परिणाम लोड करू शकले नाही',
+    loadFailed: 'मागील विश्लेषण लोड करण्यात अयशस्वी',
+    analysisFailed: 'कौशल्यांचे विश्लेषण करण्यात अयशस्वी: {{error}}',
+    whoAreYou: 'तुम्ही कोण आहात',
+    you: '?',
+    helpUsUnderstand: 'वैयक्तिक अंतर्दृष्टी प्रदान करण्यासाठी आम्हाला तुमचा प्रवास समजण्यात मदत करा',
+    steps: {
+      userType: 'तुमच्या बद्दल सांगा',
+      profile: 'तुमचे प्रोफाइल पूर्ण करा',
+      analyzing: 'तुमच्या कौशल्यांचे विश्लेषण करत आहे...',
+      results: 'तुमचे वैयक्तिक विश्लेषण'
+    },
+    userTypes: {
+      fresher: {
+        title: 'फ्रेशर',
+        description: 'माझी करिअर प्रवास सुरू करत आहे'
+      },
+      careerGrowth: {
+        title: 'करिअर वाढ',
+        description: 'सध्याच्या क्षेत्रात प्रगती करत आहे'
+      },
+      careerSwitch: {
+        title: 'करिअर स्विच',
+        description: 'नवीन भूमिकेत संक्रमण करत आहे'
+      },
+      explorer: {
+        title: 'एक्सप्लोरर',
+        description: 'संधी शोधत आहे'
+      },
+      skillAssessment: {
+        title: 'कौशल्य मूल्यांकन',
+        description: 'माझ्या सध्याच्या कौशल्यांचे मूल्यांकन करत आहे'
+      },
+      marketInsights: {
+        title: 'बाजार अंतर्दृष्टी',
+        description: 'उद्योग रुझान समजून घेत आहे'
+      }
+    },
+    profile: {
+      title: 'तुमच्या बद्दल सांगा',
+      subtitle: 'अचूक कौशल्य अंतर विश्लेषण मिळवण्यासाठी तुमची माहिती सामायिक करा',
+      education: 'शिक्षण',
+      selectEducation: 'तुमचे शिक्षण निवडा',
+      targetRole: 'लक्ष्य भूमिका',
+      targetRolePlaceholder: 'जसे, बिझनेस ॲनालिस्ट, डेटा सायंटिस्ट',
+      industry: 'उद्योग',
+      selectIndustry: 'उद्योग निवडा',
+      location: 'पसंतीचे स्थान',
+      selectLocation: 'स्थान निवडा',
+      addSkills: 'सध्याची कौशल्ये',
+      skillsDescription: 'वैयक्तिक अंतर विश्लेषण मिळवण्यासाठी तुमची सध्याची कौशल्ये जोडा',
+      skillName: 'कौशल्य नाव',
+      skillLevel: 'कौशल्य स्तर',
+      addSkill: 'कौशल्य जोडा',
+      removeSkill: 'काढा',
+      startAnalysis: 'विश्लेषण सुरू करा',
+      recentAnalyses: 'अलीकडील विश्लेषणे',
+      loadingAnalyses: 'अलीकडील विश्लेषणे लोड होत आहेत...',
+      noRecentAnalyses: 'अद्याप कोणतेही अलीकडील विश्लेषण नाही। ते येथे पाहण्यासाठी तुमचे पहिले विश्लेषण पूर्ण करा!',
+      unknownRole: 'अज्ञात भूमिका'
+    },
+    yourself: 'तुम्ही',
+    beginner: 'नवशिक्या',
+    expert: 'तज्ञ',
+    analyzing: 'तुमच्या कौशल्यांचे विश्लेषण करत आहे...',
+    scanningProfile: '🔍 तुमचे प्रोफाइल स्कॅन करत आहे...',
+    comparingJobs: '📊 10,000+ नोकरी याद्यांशी तुलना करत आहे...',
+    identifyingGaps: '🎯 कौशल्य अंतर ओळखत आहे...',
+    generatingRecommendations: '✨ वैयक्तिक शिफारसी तयार करत आहे...',
+    results: {
+      overallScore: 'एकूण मॅच स्कोर',
+      skillGaps: 'कौशल्य अंतर',
+      recommendations: 'शिक्षण शिफारसी',
+      marketInsights: 'बाजार अंतर्दृष्टी',
+      topCompanies: 'शीर्ष कंपन्या',
+      salaryRange: 'पगार श्रेणी',
+      timeline: 'शिक्षण वेळरेषा',
+      forRole: 'भूमिकेसाठी',
+      outOf100: '100 पैकी',
+      skillDistribution: 'कौशल्य वितरण',
+      technical: 'तांत्रिक',
+      softSkills: 'मऊ कौशल्ये',
+      domainKnowledge: 'डोमेन ज्ञान',
+      downloadReport: 'अहवाल डाउनलोड करा',
+      salaryRangeTitle: '💰 पगार श्रेणी',
+      perAnnum: 'या भूमिकेसाठी प्रति वर्ष',
+      skillGapsIdentified: '🎯 ओळखलेले कौशल्य अंतर',
+      currentLevel: 'सध्याची पातळी',
+      requiredLevel: 'आवश्यक पातळी',
+      learnNow: 'आत्ता शिका',
+      addToPlan: 'योजनेत जोडा',
+      skillComparisonRadar: '📊 कौशल्य तुलना रडार',
+      yourSkills: 'तुमची कौशल्ये',
+      required: 'आवश्यक',
+      recommendedLearningPaths: '📚 शिफारस केलेले शिक्षण मार्ग',
+      priority: 'प्राधान्य',
+      enroll: 'नोंदणी करा',
+      marketDemandTrend: '📈 बाजार मागणी रुझान',
+      topCompaniesHiring: '🏢 नोकरी देणाऱ्या शीर्ष कंपन्या',
+      yourLearningRoadmap: '🎯 तुमचा शिक्षण रोडमॅप',
+      first30Days: '📅 पहिले 30 दिवस',
+      next30Days: '📅 पुढील 30 दिवस (एकूण 60)',
+      final30Days: '📅 अंतिम 30 दिवस (एकूण 90)'
+    },
+    analyzingSteps: {
+      profileAnalysis: 'प्रोफाइल विश्लेषण',
+      marketResearch: 'बाजार संशोधन',
+      skillMatching: 'कौशल्य जुळणी',
+      reportGeneration: 'अहवाल निर्मिती'
+    },
+    customIndustryPlaceholder: 'तुमचा उद्योग प्रविष्ट करा (जसे, सप्लाई चेन, ऑपरेशन्स, इ.)',
+    backToDropdown: '← ड्रॉपडाउनवर परत जा',
+    addedSkills: 'जोडलेली कौशल्ये ({{count}})',
+    complete: '{{percent}}% पूर्ण',
+    skillPlaceholder: 'एक कौशल्य टाइप करा (जसे, Python, Leadership)',
+    unknownError: 'अज्ञात त्रुटी'
+  },
+  jobTracker: {
+    title: 'नोकरी अर्ज ट्रॅकर',
+    description: 'सुरुवातीपासून शेवटपर्यंत तुमच्या नोकरी अर्जांचा मागोवा घ्या',
+    viewAll: 'सर्व पहा',
+    loading: 'अर्ज लोड होत आहेत...',
+    noApplications: 'कोणतेही अर्ज नाहीत',
+    addJob: 'नोकरी जोडा',
+    addApplication: 'अर्ज जोडा',
+    editApplication: 'अर्ज संपादित करा',
+    searchPlaceholder: 'अर्ज शोधा...',
+    filter: 'फिल्टर',
+    filterAll: 'सर्व स्थिती',
+    viewKanban: 'कानबान',
+    viewList: 'यादी',
+    edit: 'संपादित करा',
+    delete: 'हटवा',
+    cancel: 'रद्द करा',
+    create: 'तयार करा',
+    update: 'अपडेट करा',
+    saving: 'साठवत आहे...',
+    confirmDelete: 'तुम्हाला खात्री आहे की तुम्ही हा अर्ज हटवू इच्छिता?',
+    deleteSuccess: 'अर्ज यशस्वीरित्या हटवला गेला',
+    deleteFailed: 'अर्ज हटवण्यात अयशस्वी: {{error}}',
+    createSuccess: 'अर्ज यशस्वीरित्या जोडला गेला',
+    updateSuccess: 'अर्ज यशस्वीरित्या अपडेट केला गेला',
+    saveFailed: 'अर्ज साठवण्यात अयशस्वी: {{error}}',
+    statusUpdated: 'स्थिती यशस्वीरित्या अपडेट केली गेली',
+    updateFailed: 'अर्ज अपडेट करण्यात अयशस्वी: {{error}}',
+    appliedOn: '{{date}} ला अर्ज केला',
+    nextInterview: 'पुढील मुलाखत: {{date}}',
+    viewJobPosting: 'नोकरी पोस्टिंग पहा',
+    columns: {
+      applied: 'अर्ज केले',
+      reviewing: 'पुनरावलोकन अंतर्गत',
+      interview: 'मुलाखत',
+      offer: 'ऑफर मिळाले'
+    },
+    status: {
+      applied: 'अर्ज केले',
+      screening: 'पुनरावलोकन अंतर्गत',
+      interview: 'मुलाखत',
+      offer: 'ऑफर मिळाले',
+      rejected: 'नाकारले',
+      withdrawn: 'मागे घेतले'
+    },
+    form: {
+      jobTitle: 'नोकरीचे शीर्षक',
+      jobTitlePlaceholder: 'उदा: सॉफ्टवेअर इंजिनियर',
+      company: 'कंपनी',
+      companyPlaceholder: 'उदा: Google',
+      status: 'स्थिती',
+      applicationDate: 'अर्जाची तारीख',
+      location: 'स्थान',
+      locationPlaceholder: 'उदा: सॅन फ्रान्सिस्को, CA',
+      salary: 'पगार',
+      salaryPlaceholder: 'उदा: ₹10,00,000 - ₹15,00,000',
+      jobUrl: 'नोकरी पोस्टिंग URL',
+      jobUrlPlaceholder: 'https://company.com/job-posting',
+      nextInterviewDate: 'पुढील मुलाखतीची तारीख',
+      notes: 'नोट्स',
+      notesPlaceholder: 'कोणतीही अतिरिक्त नोट्स किंवा स्मरणपत्रे जोडा...'
+    }
+  },
+  calendar: {
+    title: 'कॅलेंडर',
+    viewAll: 'सर्व पहा',
+    upcoming: 'आगामी',
+    pageTitle: 'कॅलेंडर',
+    pageDescription: 'तुमच्या मुलाखती, मुदतपत्रे आणि कार्यक्रम व्यवस्थापित करा',
+    addEvent: 'इव्हेंट जोडा',
+    editEvent: 'इव्हेंट संपादित करा',
+    today: 'आज',
+    more: 'अधिक',
+    eventsOnDate: '{{date}} ला इव्हेंट',
+    todaysEvents: 'आजचे इव्हेंट',
+    noEventsScheduled: 'कोणतेही इव्हेंट निर्धारित नाहीत',
+    upcomingEvents: 'आगामी इव्हेंट',
+    noUpcomingEvents: 'कोणतेही आगामी इव्हेंट नाहीत',
+    eventTitle: 'इव्हेंट शीर्षक',
+    eventTitlePlaceholder: 'इव्हेंट शीर्षक प्रविष्ट करा',
+    date: 'तारीख',
+    time: 'वेळ',
+    eventType: 'इव्हेंट प्रकार',
+    company: 'कंपनी',
+    companyPlaceholder: 'कंपनीचे नाव (पर्यायी)',
+    location: 'स्थान',
+    locationPlaceholder: 'स्थान (पर्यायी)',
+    notes: 'नोट्स',
+    notesPlaceholder: 'अतिरिक्त नोट्स (पर्यायी)',
+    cancel: 'रद्द करा',
+    create: 'तयार करा',
+    update: 'अपडेट करा',
+    confirmDelete: 'तुम्हाला खरोखर हे इव्हेंट हटवायचे आहे?',
+    eventCreated: 'इव्हेंट यशस्वीरित्या तयार केले!',
+    eventUpdated: 'इव्हेंट यशस्वीरित्या अपडेट केले!',
+    eventDeleted: 'इव्हेंट यशस्वीरित्या हटवले!',
+    deleteFailed: 'इव्हेंट हटवण्यात अयशस्वी: {{error}}',
+    saveFailed: 'इव्हेंट जतन करण्यात अयशस्वी: {{error}}',
+    eventTypes: {
+      interview: 'मुलाखत',
+      deadline: 'मुदतपत्र',
+      followup: 'फॉलो-अप',
+      networking: 'नेटवर्किंग'
+    }
+  },
+  profile: {
+    title: 'माझे प्रोफाइल',
+    backToDashboard: 'डॅशबोर्डवर परत जा',
+    logout: 'लॉगआउट',
+    logoutFailed: 'लॉगआउट करण्यात अयशस्वी। कृपया पुन्हा प्रयत्न करा।',
+    shareProfile: 'प्रोफाइल शेअर करा',
+    editProfile: 'प्रोफाइल संपादित करा',
+    updateSuccess: 'प्रोफाइल यशस्वीरित्या अपडेट केले!',
+    updateFailed: 'प्रोफाइल अपडेट करण्यात अयशस्वी। कृपया पुन्हा प्रयत्न करा।',
+    skillsUpdated: 'कौशल्ये यशस्वीरित्या अपडेट केली!',
+    skillsUpdateFailed: 'कौशल्ये अपडेट करण्यात अयशस्वी। कृपया पुन्हा प्रयत्न करा।',
+    educationUpdated: 'शिक्षण यशस्वीरित्या अपडेट केले!',
+    yourName: 'तुमचे नाव',
+    addHeadline: 'तुमची नोकरीची शीर्षक किंवा हेडलाइन जोडा',
+    addLocation: 'स्थान जोडा',
+    addWebsite: 'वेबसाइट जोडा',
+    yourPublicProfile: 'तुमचे सार्वजनिक प्रोफाइल',
+    aboutMe: 'माझ्याबद्दल',
+    bioPlaceholder: 'तुमच्याबद्दल, तुमचा अनुभव आणि करिअर उद्दिष्टे सांगा...',
+    clickToAddBio: 'तुमची जीवनचरित्र जोडण्यासाठी क्लिक करा...',
+    save: 'जतन करा',
+    cancel: 'रद्द करा',
+    connectLinkedIn: 'तुमचे LinkedIn कनेक्ट करा',
+    linkedInDescription: 'तुमचे प्रोफाइल डेटा आयात करा आणि ते सिंक ठेवा',
+    connectLinkedInButton: 'LinkedIn कनेक्ट करा',
+    careerInformation: 'करिअर माहिती',
+    currentRole: 'सध्याची भूमिका',
+    targetRole: 'लक्ष्य भूमिका',
+    experienceLevel: 'अनुभव स्तर',
+    workPreference: 'कामाची प्राधान्यता',
+    skillsAndExpertise: 'कौशल्ये आणि विशेषज्ञता',
+    addSkill: 'कौशल्य जोडा',
+    skillName: 'कौशल्य नाव',
+    proficiency: 'कौशल्य: {{level}}%',
+    level: 'स्तर: {{level}}%',
+    add: 'जोडा',
+    done: 'पूर्ण',
+    delete: 'हटवा',
+    noSkillsYet: 'अद्याप कोणतीही कौशल्ये जोडली नाहीत। सुरू करण्यासाठी "कौशल्य जोडा" वर क्लिक करा!',
+    educationAndCertifications: 'शिक्षण आणि प्रमाणपत्रे',
+    addEducation: 'शिक्षण जोडा',
+    degreePlaceholder: 'पदवी/प्रमाणपत्र नाव',
+    institutionPlaceholder: 'संस्था नाव',
+    yearPlaceholder: 'वर्ष (उदा., 2015 - 2019 किंवा 2020)',
+    noEducationYet: 'अद्याप कोणतीही शिक्षण प्रविष्टी नाही। सुरू करण्यासाठी "शिक्षण जोडा" वर क्लिक करा!',
+    resumeGallery: 'रिझ्यूमे गॅलरी',
+    createResume: 'रिझ्यूमे तयार करा',
+    atsScore: 'ATS: {{score}}%',
+    downloads: '{{count}} डाउनलोड',
+    noResumesYet: 'अद्याप कोणतेही रिझ्यूमे नाहीत। तुमचे पहिले रिझ्यूमे तयार करा!',
+    interviewRecordings: 'मुलाखत रेकॉर्डिंग',
+    newInterview: 'नवीन मुलाखत',
+    interviewPractice: 'मुलाखत सराव',
+    general: 'सामान्य',
+    score: 'स्कोर: {{score}}%',
+    noInterviewsYet: 'अद्याप कोणतेही मुलाखत सत्र नाहीत। सराव सुरू करा!',
+    skillTestResults: 'कौशल्य चाचणी परिणाम',
+    takeTest: 'चाचणी द्या',
+    topPercent: 'शीर्ष {{percent}}%',
+    scoreLabel: 'स्कोर',
+    noSkillTestsYet: 'अद्याप कोणतेही कौशल्य अंतर विश्लेषण नाही. परिणाम पाहण्यासाठी तुमचे पहिले विश्लेषण पूर्ण करा!',
+    profileStrength: 'प्रोफाइल शक्ती',
+    complete: 'पूर्ण',
+    profilePhotoAdded: 'प्रोफाइल फोटो जोडला',
+    bioCompleted: 'जीवनचरित्र पूर्ण',
+    skillsAdded: 'कौशल्ये जोडली ({{count}})',
+    addMoreProjects: '3 अधिक प्रकल्प जोडा',
+    uploadCertificate: 'प्रमाणपत्र अपलोड करा',
+    connectLinkedInChecklist: 'LinkedIn कनेक्ट करा',
+    quickStats: 'त्वरित आकडेवारी',
+    resumes: 'रिझ्यूमे',
+    aiSessions: 'AI सत्रे',
+    interviews: 'मुलाखती',
+    profileComplete: 'प्रोफाइल पूर्ण',
+    achievements: 'कामगिरी',
+    recentActivity: 'अलीकडील क्रियाकलाप',
+    updatedResume: 'रिझ्यूमे अपडेट केले',
+    hoursAgo: '{{hours}} तासांपूर्वी',
+    completedAICoaching: 'AI कोचिंग सत्र पूर्ण केले',
+    practicedInterview: 'मुलाखत तयारीचा सराव केला',
+    dayAgo: '{{days}} दिवसांपूर्वी',
+    daysAgo: '{{days}} दिवसांपूर्वी',
+    earnedBadge: '"{{badge}}" बॅज मिळवला',
+    imageSizeError: 'प्रतिमेचा आकार {{size}}MB पेक्षा कमी असावा',
+    profilePicUpdated: 'प्रोफाइल चित्र अपडेट केले!',
+    backgroundImageUpdated: 'पार्श्वभूमी प्रतिमा अपडेट केली!',
+    profilePicRemoved: 'प्रोफाइल चित्र हटवले!',
+    backgroundImageRemoved: 'पार्श्वभूमी प्रतिमा हटवली!',
+    profileUrlCopied: 'प्रोफाइल URL क्लिपबोर्डवर कॉपी केले!',
+    shareOptionsComingSoon: 'शेअर पर्याय लवकरच येत आहेत!',
+    linkedInIntegrationComingSoon: 'LinkedIn एकत्रीकरण लवकरच येत आहे!',
+    untitledResume: 'अनामित रिझ्यूमे',
+    achievementsList: {
+      firstResume: {
+        name: 'पहिले रिझ्यूमे',
+        description: 'तुमचे पहिले रिझ्यूमे तयार केले'
+      },
+      aiExplorer: {
+        name: 'AI एक्सप्लोरर',
+        description: '5 AI कोचिंग सत्रे पूर्ण केली'
+      },
+      interviewMaster: {
+        name: 'मुलाखत मास्टर',
+        description: 'मुलाखत तयारीत 90%+ स्कोर केला'
+      },
+      skillChampion: {
+        name: 'कौशल्य चॅम्पियन',
+        description: 'कौशल्य अंतर विश्लेषण पूर्ण केले'
+      },
+      profilePro: {
+        name: 'प्रोफाइल प्रो',
+        description: '100% प्रोफाइल पूर्णता'
+      },
+      atsExpert: {
+        name: 'ATS तज्ञ',
+        description: '10 ATS चेक पास केले'
+      }
+    },
+    statusLabels: {
+      'actively-looking': '🟢 सक्रियपणे शोधत आहेत',
+      'open': '🟡 ऑफरसाठी खुले',
+      'not-looking': '🔴 शोधत नाहीत'
+    },
+    currentPlan: 'सध्याची योजना',
+    planLabel: 'योजना'
+  },
+  features: {
+    aiCoach: {
+      title: 'AI करिअर कोच',
+      description: 'प्रगत AI द्वारे चालवलेले वैयक्तिक करिअर मार्गदर्शन मिळवा। नोकरी शोध रणनीती, करिअर संक्रमणे, आणि तुमच्या अद्वितीय उद्दिष्टांसाठी तयार केलेले व्यावसायिक विकासावर तज्ञ सल्ला मिळवा।',
+      author: 'AI टीम'
+    },
+    resumeBuilder: {
+      title: 'रिझ्यूमे बिल्डर',
+      description: 'तुमच्या उद्योगासाठी तयार केलेले स्मार्ट टेम्पलेट्स आणि AI-चालित सामग्री सुझावांसह शानदार, ATS-अनुकूलित रिझ्यूमे तयार करा।',
+      author: 'CV टीम'
+    },
+    atsChecker: {
+      title: 'ATS चेकर',
+      description: 'अर्जदार ट्रॅकिंग सिस्टमविरुद्ध तुमच्या रिझ्यूमेचे विश्लेषण करा आणि अनुकूलन सुझावांसह तत्काल फीडबॅक मिळवा।',
+      author: 'टेक टीम'
+    },
+    interviewPrep: {
+      title: 'AI मुलाखत तयारी',
+      description: 'तुमच्या लक्ष्य भूमिकेसाठी तयार केलेल्या AI-चालित मॉक मुलाखतींसह सराव करा आणि तुमच्या कामगिरीवर वास्तविक-वेळ फीडबॅक मिळवा।',
+      author: 'मुलाखत प्रो'
+    },
+    skillGap: {
+      title: 'कौशल्य अंतर विश्लेषण',
+      description: 'तुमच्या स्वप्नाच्या भूमिकेसाठी गहाळ कौशल्ये ओळखा आणि अंतर भरून काढण्यासाठी आणि तुमच्या करिअरला पुढे नेण्यासाठी वैयक्तिक शिक्षण मार्ग मिळवा।',
+      author: 'कौशल्य टीम'
+    }
+  },
+  analytics: {
+    overview: 'विश्लेषण अवलोकन',
+    resumesCreated: 'तयार केलेले रिझ्यूमे',
+    aiSessions: 'AI सत्रे',
+    interviewsPrepped: 'तयार केलेल्या मुलाखती',
+    applicationsSubmitted: 'सादर केलेले अर्ज',
+    viewingDetails: '{{metric}} तपशील पाहत आहेत'
+  },
+  performance: {
+    title: 'कामगिरी',
+    viewAll: 'सर्व पहा',
+    resumesCreated: 'तयार केलेले रिझ्यूमे',
+    aiSessions: 'AI सत्रे',
+    interviewPrep: 'मुलाखत तयारी',
+    profileComplete: 'प्रोफाइल पूर्ण',
+    total: 'एकूण {{count}}',
+    timeSpent: 'एकूण {{hours}}h {{minutes}}m',
+    completed: '{{count}} पूर्ण',
+    percentComplete: '{{percent}}% पूर्ण'
+  },
+    recentActivity: {
+      title: 'अलीकडील क्रियाकलाप',
+      seeAll: 'सर्व पहा',
+      noActivity: 'कोणतेही अलीकडील क्रियाकलाप नाही',
+      error: 'क्रियाकलाप लोड करण्यात अयशस्वी',
+      resumeUpdated: '{{name}} अपडेट केले',
+      resumeUpdatedGeneric: 'रिझ्यूमे अपडेट केले',
+      aiSession: 'AI सत्र',
+      interviewPrep: 'मुलाखत तयारी',
+      atsCheck: 'ATS तपासणी: {{fileName}}',
+      atsCheckGeneric: 'ATS तपासणी',
+      skillGapAnalysis: 'कौशल्य अंतर: {{role}}',
+      skillGapAnalysisGeneric: 'कौशल्य अंतर विश्लेषण'
+    },
+  help: {
+    title: 'मदत आणि समर्थन',
+    description: 'आम्ही मदत केंद्र अनुभव पूर्ण करत आहोत। या दरम्यान, कृपया मदतीसाठी support@cvsaathi.com वर संपर्क साधा।',
+    comingSoon: 'मदत आणि समर्थन लवकरच येत आहे।'
+  },
+  navigation: {
+    opening: '{{section}} उघडत आहेत'
+  },
+  profile: {
+    user: 'वापरकर्ता',
+  plan: 'योजना'
+  },
+  settings: {
+    title: 'सेटिंग्ज',
+    description: 'तुमच्या खाता सेटिंग्ज आणि प्राधान्ये व्यवस्थापित करा',
+    saving: 'जतन केले जात आहे...',
+    saveChanges: 'बदल जतन करा',
+    savedSuccessfully: 'सेटिंग्ज यशस्वीरित्या जतन केल्या!',
+    saveFailed: 'सेटिंग्ज जतन करण्यात अयशस्वी: {{error}}',
+    unknownError: 'अज्ञात त्रुटी',
+    passwordMismatch: 'नवीन पासवर्ड जुळत नाहीत',
+    passwordTooShort: 'पासवर्ड किमान 6 वर्ण असावा',
+    passwordUpdateFailed: 'पासवर्ड अपडेट करण्यात अयशस्वी: {{error}}',
+    passwordUpdated: 'पासवर्ड यशस्वीरित्या अपडेट झाला!',
+    themeChanged: 'थीम {{mode}} मध्ये बदलली',
+    profilePicUpdated: 'प्रोफाइल चित्र अपडेट झाले!',
+    pleaseLogin: 'सेटिंग्ज जतन करण्यासाठी कृपया लॉग इन करा',
+    tabs: {
+      profile: 'प्रोफाइल',
+      account: 'खाते',
+      notifications: 'सूचना',
+      subscription: 'सदस्यता',
+      privacy: 'गोपनीयता आणि सुरक्षा',
+      integrations: 'एकीकरण',
+      advanced: 'प्रगत'
+    },
+    profile: {
+      title: 'प्रोफाइल सेटिंग्ज',
+      description: 'तुमची वैयक्तिक माहिती आणि प्रोफाइल चित्र अपडेट करा',
+      profilePicture: 'प्रोफाइल चित्र',
+      uploadPhoto: 'फोटो अपलोड करा',
+      remove: 'काढा',
+      profilePicStoredLocally: 'प्रोफाइल चित्र स्थानिकरित्या संग्रहित आहे आणि सर्व्हरवर सिंक होत नाही',
+      personalInformation: 'वैयक्तिक माहिती',
+      firstName: 'पहिले नाव',
+      lastName: 'अंतिम नाव',
+      emailAddress: 'ईमेल पत्ता',
+      emailCannotBeChanged: 'ईमेल येथे बदलता येत नाही। ईमेल अपडेट करण्यासाठी खाता सेटिंग्ज वापरा।',
+      phoneNumber: 'फोन नंबर',
+      bio: 'बायो',
+      bioPlaceholder: 'तुमच्या बद्दल सांगा...'
+    },
+    account: {
+      title: 'खाता सेटिंग्ज',
+      description: 'तुमची खाता सुरक्षा आणि प्राधान्ये व्यवस्थापित करा',
+      changePassword: 'पासवर्ड बदला',
+      newPassword: 'नवीन पासवर्ड',
+      newPasswordPlaceholder: 'सध्याचा पासवर्ड ठेवण्यासाठी रिक्त सोडा',
+      confirmNewPassword: 'नवीन पासवर्ड पुष्टी करा',
+      twoFactorAuth: 'दोन-कारक प्रमाणीकरण',
+      twoFactorDescription: 'तुमच्या खात्यात अतिरिक्त सुरक्षा स्तर जोडा',
+      dangerZone: 'धोका क्षेत्र',
+      deleteAccount: 'खाते हटवा',
+      deleteAccountDescription: 'तुमचे खाते आणि सर्व डेटा कायमस्वरूपी हटवा',
+      delete: 'हटवा'
+    },
+    notifications: {
+      title: 'सूचना प्राधान्ये',
+      description: 'तुम्ही कसे सूचित होऊ इच्छिता ते निवडा',
+      emailNotifications: 'ईमेल सूचना',
+      emailNotificationsDescription: 'ईमेल अपडेट आणि सूचना प्राप्त करा',
+      jobAlerts: 'नोकरी अलर्ट',
+      jobAlertsDescription: 'संबंधित नोकरी संधींबद्दल सूचित व्हा',
+      weeklyDigest: 'साप्ताहिक सारांश',
+      weeklyDigestDescription: 'तुमच्या क्रियाकलापाचा साप्ताहिक सारांश प्राप्त करा',
+      pushNotifications: 'पुश सूचना',
+      pushNotificationsDescription: 'ब्राउझर पुश सूचना प्राप्त करा'
+    },
+    appearance: {
+      title: 'देखावा सेटिंग्ज',
+      description: 'CVSaathi तुमच्यासाठी कसे दिसावे ते सानुकूलित करा',
+      theme: 'थीम',
+      light: 'लाइट',
+      dark: 'डार्क',
+      auto: 'ऑटो',
+      language: 'भाषा',
+      englishUS: 'इंग्रजी (US)',
+      spanish: 'स्पॅनिश',
+      french: 'फ्रेंच',
+      german: 'जर्मन'
+    },
+    subscription: {
+      title: 'सदस्यता आणि बिलिंग',
+      description: 'तुमची सदस्यता आणि पेमेंट पद्धती व्यवस्थापित करा',
+      freePlan: 'मोफत योजना',
+      currentlyOnFreePlan: 'तुम्ही सध्या मोफत योजनेवर आहात',
+      upgradeToPro: 'प्रो मध्ये अपग्रेड करा'
+    },
+    privacy: {
+      title: 'गोपनीयता आणि सुरक्षा',
+      description: 'तुमचे डेटा आणि गोपनीयता सेटिंग्ज नियंत्रित करा',
+      activityLog: 'क्रियाकलाप लॉग',
+      activityLogDescription: 'अलीकडील लॉगिन, सुरक्षा बदल आणि अलर्टची स्वच्छ वेळरेषा।',
+      planned: 'नियोजित',
+      connectedDevices: 'कनेक्ट केलेली उपकरणे',
+      connectedDevicesDescription: 'सध्या साइन इन केलेली उपकरणे पहा आणि एका क्लिकने प्रवेश रद्द करा।',
+      activeSessions: 'सक्रिय सत्रे',
+      activeSessionsDescription: 'तुम्ही कोठे लॉग इन आहात ते पुन्हा पहा आणि दूरस्थपणे साइन आउट करा।',
+      loginHistory: 'लॉगिन इतिहास',
+      loginHistoryDescription: 'यशस्वी आणि अयशस्वी साइन-इन प्रयत्नांची कालक्रमानुसार यादी।',
+      dataPrivacyControls: 'डेटा गोपनीयता नियंत्रणे',
+      allowAnalyticsTracking: 'एनालिटिक्स ट्रॅकिंग परवानगी द्या',
+      analyticsTrackingDescription: 'वापर एनालिटिक्स सामायिक करून आम्हाला सुधारण्यात मदत करा',
+      shareAnonymizedData: 'अनामित वापर डेटा सामायिक करा',
+      shareAnonymizedDataDescription: 'संशोधन आणि सुधारण्यासाठी अनामित डेटा सामायिक करा',
+      allowPersonalizedRecommendations: 'वैयक्तिक शिफारसींना परवानगी द्या',
+      personalizedRecommendationsDescription: 'वैयक्तिक करिअर शिफारसी मिळवा',
+      thirdPartyDataSharing: 'तृतीय पक्ष डेटा सामायिकरण',
+      thirdPartyDataSharingDescription: 'विश्वासार्ह भागीदारांसह डेटा सामायिक करण्याची परवानगी द्या',
+      legalDocuments: 'कायदेशीर दस्तऐवज',
+      privacyPolicy: 'गोपनीयता धोरण',
+      privacyPolicyDescription: 'आम्ही तुमच्या डेटाचे संरक्षण आणि वापर कसा करतो',
+      termsOfService: 'सेवा अटी',
+      termsOfServiceDescription: 'कायदेशीर अटी आणि शर्ती',
+      exportYourData: 'तुमचा डेटा निर्यात करा',
+      exportDataDescription: 'JSON स्वरूपात तुमच्या सर्व डेटाची एक प्रत डाउनलोड करा',
+      export: 'निर्यात',
+      dataExportStarted: 'डेटा निर्यात सुरू झाली। तयार झाल्यावर तुम्हाला ईमेल मिळेल।',
+      cookiePreferences: 'कुकी प्राधान्ये',
+      essentialCookies: 'आवश्यक कुकीज',
+      performanceCookies: 'कामगिरी कुकीज',
+      functionalCookies: 'कार्यात्मक कुकीज',
+      marketingCookies: 'मार्केटिंग कुकीज',
+      requiredForBasicFunctionality: 'मूलभूत कार्यक्षमतेसाठी आवश्यक'
+    },
+    integrations: {
+      title: 'एकीकरण',
+      description: 'तृतीय पक्ष सेवांशी कनेक्ट करा',
+      noIntegrationsAvailable: 'अद्याप कोणतेही एकीकरण उपलब्ध नाही'
+    },
+    preferences: {
+      title: 'नोकरी प्राधान्ये',
+      description: 'तुमची करिअर उद्दिष्टे आणि प्राधान्ये सेट करा',
+      jobSearchSettings: 'नोकरी शोध सेटिंग्ज',
+      desiredJobTitle: 'इच्छित नोकरी शीर्षक',
+      preferredIndustry: 'पसंतीचा उद्योग',
+      technology: 'तंत्रज्ञान',
+      finance: 'वित्त',
+      healthcare: 'आरोग्य सेवा',
+      education: 'शिक्षण'
+    },
+    advanced: {
+      title: 'प्रगत सेटिंग्ज',
+      description: 'प्रगत पर्याय आणि सिस्टम सेटिंग्ज कॉन्फिगर करा',
+      apiAccess: 'API प्रवेश',
+      apiKey: 'API की',
+      databaseConnection: 'डेटाबेस कनेक्शन',
+      hardDriveStorage: 'हार्ड ड्राइव्ह स्टोरेज',
+      refreshInterval: 'रिफ्रेश मध्यांतर',
+      systemLogs: 'सिस्टम लॉग',
+      viewSystemLogs: 'सिस्टम लॉग आणि त्रुटी अहवाल पहा',
+      systemLogsDescription: 'डीबगिंग आणि कामगिरी निरीक्षणासाठी',
+      viewLogs: 'लॉग पहा',
+      dataExport: 'डेटा निर्यात',
+      exportData: 'डेटा निर्यात करा',
+      sessionManagement: 'सत्र व्यवस्थापन'
+    }
+  },
+  aiCoach: {
+    title: 'AI कोच',
+    backToDashboard: 'डॅशबोर्डवर परत जा',
+    estelName: 'Estel',
+    estelTitle: 'AI करिअर कोच',
+    newChat: 'नवीन चॅट',
+    history: 'इतिहास',
+    newConversation: 'नवीन संभाषण',
+    noConversations: 'अद्याप कोणतेही संभाषण नाही',
+    greeting: 'अरे, हे',
+    howCanIHelp: 'मी कशी मदत करू शकते?',
+    sendMessage: 'एक संदेश पाठवा...',
+    disclaimer: 'Estel सहाय्यक चुका करू शकतात। महत्त्वाच्या माहितीची तपासणी करण्याचा विचार करा।',
+    conversationCreated: 'नवीन संभाषण तयार केले!',
+    createFailed: 'नवीन संभाषण तयार करण्यात अयशस्वी: {{error}}',
+    messageSent: 'संदेश यशस्वीरित्या पाठवला!',
+    sendFailed: 'संदेश पाठवण्यात अयशस्वी: {{error}}',
+    unknownError: 'अज्ञात त्रुटी आली',
+    noResponseFromAI: 'AI सेवेकडून कोणतीही प्रतिक्रिया नाही। कृपया तुमची सदस्यता स्थिती तपासा किंवा नंतर पुन्हा प्रयत्न करा।',
+    quickPrompts: {
+      reviewResume: 'माझ्या रिझ्यूमेची समीक्षा करा',
+      careerGuidance: 'करिअर मार्गदर्शन सल्ला',
+      optimizeLinkedIn: 'माझे LinkedIn प्रोफाइल ऑप्टिमाइझ करा',
+      interviewTips: 'मुलाखत तयारी टिप्स',
+      careerPath: 'माझ्या करिअर मार्गाची योजना करा',
+      coverLetter: 'कव्हर लेटर मदत'
+    },
+    timeFormat: {
+      justNow: 'आत्ताच',
+      minAgo: '{{n}} मिनिटांपूर्वी',
+      hoursAgo: '{{n}} तासांपूर्वी',
+      daysAgo: '{{n}} दिवसांपूर्वी'
+    },
+    limitReached: 'AI सत्र मर्यादा पूर्ण झाली. तुमच्या {{plan}} योजनेवर {{limit}} सत्र शिल्लक आहेत.',
+    lowUsage: 'या महिन्यात फक्त {{remaining}} AI सत्र शिल्लक आहेत. अमर्यादित प्रवेशासाठी अपग्रेड करण्याचा विचार करा.',
+    sessionsRemaining: 'शिल्लक सत्रे',
+    upgradePrompt: 'अमर्यादित सत्रांसाठी अपग्रेड करा',
+    upgrade: 'अपग्रेड करा'
+  },
+  commandPalette: {
+    goToDashboard: 'डॅशबोर्डवर जा',
+    openAICoach: 'AI करिअर कोच उघडा',
+    createResume: 'नवीन रिझ्यूमे तयार करा',
+    checkATSScore: 'ATS स्कोर तपासा',
+    startInterviewPrep: 'मुलाखत तयारी सुरू करा',
+    analyzeSkillGap: 'कौशल्य अंतर विश्लेषण करा',
+    viewAnalytics: 'विश्लेषण पहा',
+    openSettings: 'सेटिंग्ज उघडा',
+    navigation: 'नेव्हिगेशन',
+    features: 'वैशिष्ट्ये',
+    placeholder: 'एक कमांड टाइप करा किंवा शोधा...',
+    noResults: 'कोणतेही परिणाम सापडले नाहीत',
+    toNavigate: 'नेव्हिगेट करण्यासाठी',
+    toSelect: 'निवडण्यासाठी'
+  },
+  templates: {
+    title: 'टेम्पलेट गॅलरी',
+    description: 'व्यावसायिक रिज्यूमे टेम्पलेट ब्राउझ करा आणि डाउनलोड करा',
+    backToDashboard: 'डॅशबोर्डवर परत जा',
+    searchPlaceholder: 'टेम्पलेट शोधा...',
+    categoryAll: 'सर्व',
+    categoryEntryLevel: 'एंट्री-लेवल',
+    categoryProfessional: 'व्यावसायिक',
+    templatesFound: '{{count}} टेम्पलेट सापडले',
+    templatesFoundPlural: '{{count}} टेम्पलेट सापडले',
+    noTemplatesFound: 'कोणतेही टेम्पलेट सापडले नाहीत',
+    noTemplatesDescription: 'तुमची शोध किंवा फिल्टर निकष समायोजित करण्याचा प्रयत्न करा',
+    preview: 'पूर्वावलोकन',
+    download: 'डाउनलोड',
+    downloading: '{{name}} डाउनलोड होत आहे...',
+    downloadFailed: 'टेम्पलेट डाउनलोड करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.',
+    templateCategory: '{{category}} टेम्पलेट',
+    loading: 'टेम्पलेट लोड होत आहेत...',
+    loadFailed: 'टेम्पलेट लोड करण्यात अयशस्वी',
+    zoom: '{{percent}}%',
+    close: 'बंद करा'
+  },
+  pricing: {
+    title: 'किंमत',
+    pageTitle: 'तुमची योजना निवडा',
+    pageDescription: 'CVSaathi सह तुमची करिअर क्षमता अनलॉक करा',
+    billingCycle: {
+      monthly: 'मासिक',
+      annual: 'वार्षिक',
+      saveUpTo: '₹{{amount}} पर्यंत वाचवा'
+    },
+    plans: {
+      free: {
+        name: 'मोफत योजना',
+        description: 'सुरुवातीसाठी परिपूर्ण',
+        cta: 'सध्याची योजना',
+        features: {
+          aiCoaching: 'AI करिअर कोचिंग: 3 सत्र/महिना',
+          resumeBuilder: 'रिझ्यूमे बिल्डर: 3 रिझ्यूमे समीक्षा आणि ATS सह',
+          templates: 'रिझ्यूमे टेम्पलेट: 10 मोफत टेम्पलेट',
+          pdfExport: 'PDF निर्यात: 3 PDF वॉटरमार्क सह',
+          interviewPrep: 'मुलाखत तयारी: 2 पूर्ण सत्र/महिना',
+          languages: 'भाषा: सर्व भाषा (EN/HI/MR)',
+          profileSetup: 'मूलभूत प्रोफाइल सेटअप: उपलब्ध',
+          atsChecker: 'ATS चेकर: 1 विश्लेषण/महिना',
+          skillGap: 'कौशल्य अंतर विश्लेषण: 1 विश्लेषण/महिना',
+          whatsapp: 'WhatsApp निर्यात: वॉटरमार्क सह'
+        }
+      },
+      starter: {
+        name: 'स्टार्टर योजना',
+        description: 'नोकरी शोधकांसाठी उत्कृष्ट',
+        cta: 'आत्ता अपग्रेड करा',
+        features: {
+          aiCoaching: 'AI करिअर कोचिंग: 15 सत्र/महिना',
+          resumeBuilder: 'रिझ्यूमे बिल्डर: 10 रिझ्यूमे समीक्षा आणि ATS सह',
+          templates: 'रिझ्यूमे टेम्पलेट: 15 टेम्पलेट',
+          pdfExport: 'PDF निर्यात: 10 PDF वॉटरमार्कशिवाय',
+          interviewPrep: 'मुलाखत तयारी: 15 पूर्ण सत्र/महिना',
+          languages: 'भाषा: सर्व भाषा (EN/HI/MR)',
+          atsChecker: 'ATS चेकर: 5 विश्लेषण/महिना',
+          skillGap: 'कौशल्य अंतर विश्लेषण: 8 विश्लेषण/महिना',
+          whatsapp: 'WhatsApp निर्यात: स्वच्छ निर्यात',
+          emailSupport: 'ईमेल समर्थन: उपलब्ध'
+        },
+        savingsAnnual: '₹198/वर्ष वाचवा'
+      },
+      professional: {
+        name: 'प्रोफेशनल योजना',
+        description: 'गंभीर करिअर वाढीसाठी',
+        cta: 'योजना निवडा',
+        badge: 'सर्वात लोकप्रिय',
+        features: {
+          aiCoaching: 'अमर्यादित AI करिअर कोचिंग',
+          resumeBuilder: 'रिझ्यूमे बिल्डर: अमर्यादित रिझ्यूमे समीक्षा आणि ATS सह',
+          templates: 'सर्व प्रीमियम टेम्पलेट: अमर्यादित प्रवेश',
+          interviewPrep: 'अमर्यादित मुलाखत तयारी',
+          atsChecker: 'अमर्यादित ATS चेकर + तपशीलवार अहवाल',
+          skillGap: 'अमर्यादित कौशल्य अंतर विश्लेषण',
+          pdfExport: 'PDF निर्यात: अमर्यादित वॉटरमार्कशिवाय',
+          formatting: 'प्रगत फॉर्मेटिंग: उपलब्ध',
+          prioritySupport: 'प्राधान्य समर्थन: उपलब्ध',
+          whatsapp: 'WhatsApp सूचना: उपलब्ध',
+          analytics: 'प्रगत विश्लेषण: उपलब्ध'
+        },
+        savingsAnnual: '₹398/वर्ष वाचवा'
+      }
+    },
+    price: {
+      perMonth: '/महिना',
+      perYear: '/वर्ष',
+      free: 'मोफत'
+    },
+    buttons: {
+      processing: 'प्रक्रिया करत आहे...',
+      currentPlan: 'सध्याची योजना'
+    },
+    whatsIncluded: 'काय समाविष्ट आहे:',
+    comparePlans: 'योजनांची तुलना करा',
+    comparisonTable: {
+      feature: 'वैशिष्ट्य',
+      freePlan: 'मोफत योजना',
+      starterPlan: 'स्टार्टर योजना',
+      professionalPlan: 'प्रोफेशनल योजना',
+      features: {
+        aiCoaching: 'AI करिअर कोचिंग',
+        resumeBuilder: 'रिझ्यूमे बिल्डर',
+        templates: 'रिझ्यूमे टेम्पलेट',
+        pdfExport: 'PDF निर्यात',
+        interviewPrep: 'मुलाखत तयारी',
+        atsChecker: 'ATS चेकर',
+        skillGap: 'कौशल्य अंतर विश्लेषण',
+        languages: 'भाषा',
+        whatsapp: 'WhatsApp निर्यात',
+        support: 'समर्थन',
+        formatting: 'प्रगत फॉर्मेटिंग',
+        analytics: 'प्रगत विश्लेषण',
+        notifications: 'WhatsApp सूचना'
+      },
+      values: {
+        unlimited: 'अमर्यादित',
+        community: 'समुदाय',
+        emailSupport: 'ईमेल समर्थन',
+        prioritySupport: 'प्राधान्य समर्थन',
+        watermark: 'वॉटरमार्क सह',
+        noWatermark: 'वॉटरमार्कशिवाय',
+        cleanExport: 'स्वच्छ निर्यात',
+        allLanguages: 'सर्व (EN/HI/MR)',
+        available: '✓',
+        notAvailable: '—'
+      }
+    },
+    faq: {
+      title: 'वारंवार विचारले जाणारे प्रश्न',
+      questions: {
+        changePlans: {
+          q: 'मी कधीही योजना बदलू शकतो का?',
+          a: 'होय, तुम्ही कधीही तुमची योजना अपग्रेड किंवा डाउनग्रेड करू शकता। अपग्रेडसाठी बदल त्वरित प्रतिबिंबित होतील, आणि डाउनग्रेडसाठी तुमच्या बिलिंग चक्राच्या शेवटी।'
+        },
+        paymentMethods: {
+          q: 'तुम्ही कोणत्या पेमेंट पद्धती स्वीकारता?',
+          a: 'आम्ही Razorpay माध्यमातून सर्व प्रमुख क्रेडिट/डेबिट कार्ड, UPI, नेट बँकिंग, आणि डिजिटल वॉलेट स्वीकारतो।'
+        },
+        refundPolicy: {
+          q: 'रिफंड धोरण आहे का?',
+          a: 'होय, जर तुम्ही आमच्या सेवेने समाधानी नसाल तर आम्ही 7-दिवसीय मनी-बॅक हमी देऊ। रिफंड विनंत्या करिता समर्थनाशी संपर्क साधा।'
+        },
+        annualDiscounts: {
+          q: 'तुम्ही वार्षिक सवलत देतात?',
+          a: 'होय! वार्षिक योजना तुम्हाला 2 महिन्यांची सदस्यता शुल्क वाचवतात। स्टार्टरवर ₹198 आणि प्रोफेशनल योजनांवर ₹398 बचत आहे।'
+        },
+        exceedLimits: {
+          q: 'जर मी माझ्या योजना मर्यादा ओलांडल्या तर काय होईल?',
+          a: 'तुम्ही तुमच्या मर्यादांजवळ पोहोचताच तुम्हाला सूचित केले जाईल। तुम्ही कधीही वैशिष्ट्ये वापरत राहण्यासाठी उच्च योजनेत अपग्रेड करू शकता।'
+        },
+        cancelSubscription: {
+          q: 'मी माझी सदस्यता रद्द करू शकतो का?',
+          a: 'होय, तुम्ही तुमच्या खाता सेटिंग्जमधून कधीही रद्द करू शकता। तुमची सदस्यता सध्याच्या बिलिंग कालावधीच्या शेवटपर्यंत सक्रिय राहील।'
+        }
+      }
+    },
+    toasts: {
+      alreadyOnFreePlan: 'तुम्ही आधीच मोफत योजनेवर आहात',
+      signInRequired: 'सदस्यता घेण्यासाठी कृपया साइन इन करा',
+      paymentGatewayLoading: 'पेमेंट गेटवे लोड होत आहे। कृपया एक क्षण प्रतीक्षा करा।',
+      creatingOrder: 'पेमेंट ऑर्डर तयार केला जात आहे...',
+      verifyingPayment: 'पेमेंट सत्यापित केला जात आहे...',
+      paymentSuccess: 'पेमेंट यशस्वी! तुमची सदस्यता आता सक्रिय आहे।',
+      welcomeToPlan: '{{planName}} मध्ये आपले स्वागत आहे!',
+      paymentVerificationFailed: 'पेमेंट सत्यापन अयशस्वी',
+      contactSupportIfDeducted: 'जर पेमेंट कापला गेला असेल तर कृपया समर्थनाशी संपर्क साधा।',
+      paymentCancelled: 'पेमेंट रद्द',
+      paymentFailed: 'पेमेंट अयशस्वी',
+      tryAgainOrContactSupport: 'कृपया पुन्हा प्रयत्न करा किंवा समर्थनाशी संपर्क साधा।',
+      failedToStartPayment: 'पेमेंट सुरू करण्यात अयशस्वी',
+      tryAgainLater: 'कृपया नंतर पुन्हा प्रयत्न करा।',
+      failedToLoadGateway: 'पेमेंट गेटवे लोड करण्यात अयशस्वी। कृपया पृष्ठ रीफ्रेश करा।'
+    }
+  }
+};
+
+// Share aiCoach translations with dashboard namespace
+resources.en.translation.dashboard.aiCoach = resources.en.translation.aiCoach;
+resources.hi.translation.dashboard.aiCoach = resources.hi.translation.aiCoach;
+resources.mr.translation.dashboard.aiCoach = resources.mr.translation.aiCoach;
+
+// Load saved language from localStorage
+const savedLanguage = localStorage.getItem('userLanguage') || 'en';
+const validLanguages = ['en', 'hi', 'mr'];
+const initialLanguage = validLanguages.includes(savedLanguage) ? savedLanguage : 'en';
 
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en',
+    lng: initialLanguage,
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false,

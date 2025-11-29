@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { FileText, CheckCircle, Briefcase, Bot, TrendingUp, ArrowRight, Layers } from "lucide-react";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -9,53 +10,7 @@ const interviewPrepImage = "/AI interview Prep.png";
 // Use local Estel asset from public/Assets (placed by user)
 const aiCoachImage = "/ESHA HERO BANNERS.png";
 
-const features = [
-  {
-    id: 1,
-    icon: FileText,
-    title: "Resume Builder",
-    description: "Create beautiful, job-winning resumes in minutes. Choose from 50+ AI-crafted templates tailored for every profession, region, and experience level — designed to impress both global recruiters and ATS systems.",
-    image: resumeBuilderImage,
-    hasImage: true,
-    large: true,
-  },
-  {
-    id: 2,
-    icon: CheckCircle,
-    title: "ATS Optimizer",
-    description: "Beat the bots and reach human eyes faster. Get instant ATS compatibility checks, keyword enhancements, and smart formatting suggestions to maximize your shortlisting chances.",
-    hasImage: false,
-  },
-  {
-    id: 3,
-    icon: Briefcase,
-    title: "Interview Prep Assistant",
-    description: "Train with your personal AI interviewer. Practice role-specific mock sessions, receive instant feedback, and build confidence — across any domain, industry, or language.",
-    image: interviewPrepImage,
-    hasImage: true,
-    centerPiece: true,
-    large: true,
-  },
-  {
-    id: 4,
-    icon: Bot,
-    title: "AI Career Companion Estel",
-    description: "Your 24×7 AI career companion that understands your journey. Estel powers all our features — from crafting perfect resumes to preparing for interviews, get expert-level advice and tailored growth suggestions — whenever you need it.",
-    image: aiCoachImage,
-    hasImage: true,
-    inCard: true,
-    isCore: true, // Mark as core feature
-  },
-  {
-    id: 5,
-    icon: TrendingUp,
-    title: "Skill Gap Analysis",
-    description: "Know exactly what skills you need to grow. Compare your profile with top industry roles worldwide and get a personalized roadmap to upskill with AI-powered insights.",
-    hasImage: false,
-  },
-];
-
-function FeatureCard({ feature, index }: { feature: typeof features[0]; index: number }) {
+function FeatureCard({ feature, index }: { feature: { id: number; icon: any; title: string; description: string; image?: string; hasImage: boolean; large?: boolean; centerPiece?: boolean; inCard?: boolean; isCore?: boolean }; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -179,6 +134,54 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
 }
 
 export function FeaturesBentoModern() {
+  const { t } = useTranslation();
+  
+  const features = [
+    {
+      id: 1,
+      icon: FileText,
+      title: t('landing.features.resumeBuilder.title'),
+      description: t('landing.features.resumeBuilder.description'),
+      image: resumeBuilderImage,
+      hasImage: true,
+      large: true,
+    },
+    {
+      id: 2,
+      icon: CheckCircle,
+      title: t('landing.features.atsOptimizer.title'),
+      description: t('landing.features.atsOptimizer.description'),
+      hasImage: false,
+    },
+    {
+      id: 3,
+      icon: Briefcase,
+      title: t('landing.features.interviewPrep.title'),
+      description: t('landing.features.interviewPrep.description'),
+      image: interviewPrepImage,
+      hasImage: true,
+      centerPiece: true,
+      large: true,
+    },
+    {
+      id: 4,
+      icon: Bot,
+      title: t('landing.features.estel.title'),
+      description: t('landing.features.estel.description'),
+      image: aiCoachImage,
+      hasImage: true,
+      inCard: true,
+      isCore: true, // Mark as core feature
+    },
+    {
+      id: 5,
+      icon: TrendingUp,
+      title: t('landing.features.skillGap.title'),
+      description: t('landing.features.skillGap.description'),
+      hasImage: false,
+    },
+  ];
+  
   return (
     <section id="features" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-50">
       {/* Subtle background elements */}
@@ -218,10 +221,10 @@ export function FeaturesBentoModern() {
               backgroundClip: 'text',
             }}
           >
-            All features in 1 tool
+            {t('landing.features.allFeatures')}
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Discover smart tools that simplify your job search, boost confidence, and help you grow — all in one powerful Platform.
+            {t('landing.features.allFeaturesDesc')}
           </p>
         </motion.div>
 
@@ -268,7 +271,7 @@ export function FeaturesBentoModern() {
                 className="bg-gray-900 hover:bg-gray-800 text-white gap-2 shadow-lg rounded-xl px-8"
                 style={{ fontSize: '1rem', fontWeight: 600, padding: '1.25rem 2rem' }}
               >
-                Get Started
+                {t('landing.features.getStarted')}
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
@@ -284,7 +287,7 @@ export function FeaturesBentoModern() {
                 document.getElementById('templates')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              See Our Services
+              {t('landing.features.seeServices')}
             </Button>
           </motion.div>
         </motion.div>

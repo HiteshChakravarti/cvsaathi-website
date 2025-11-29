@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Search, Bot, FileText, FileCheck, Briefcase, BarChart3, Settings, Home, Calendar, Users, TrendingUp, Award } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -8,21 +9,25 @@ interface CommandPaletteProps {
   onNavigate: (section: string) => void;
 }
 
-const commands = [
-  { id: 'dashboard', icon: Home, label: 'Go to Dashboard', category: 'Navigation' },
-  { id: 'ai-coach', icon: Bot, label: 'Open AI Career Coach', category: 'Features' },
-  { id: 'resume-builder', icon: FileText, label: 'Create New Resume', category: 'Features' },
-  { id: 'ats-checker', icon: FileCheck, label: 'Check ATS Score', category: 'Features' },
-  { id: 'interview-prep', icon: Briefcase, label: 'Start Interview Prep', category: 'Features' },
-  { id: 'skill-gap', icon: BarChart3, label: 'Analyze Skill Gap', category: 'Features' },
-  { id: 'analytics', icon: TrendingUp, label: 'View Analytics', category: 'Navigation' },
-  { id: 'settings', icon: Settings, label: 'Open Settings', category: 'Navigation' },
-];
+function getCommands(t: any) {
+  return [
+    { id: 'dashboard', icon: Home, label: t('dashboard.commandPalette.goToDashboard'), category: t('dashboard.commandPalette.navigation') },
+    { id: 'ai-coach', icon: Bot, label: t('dashboard.commandPalette.openAICoach'), category: t('dashboard.commandPalette.features') },
+    { id: 'resume-builder', icon: FileText, label: t('dashboard.commandPalette.createResume'), category: t('dashboard.commandPalette.features') },
+    { id: 'ats-checker', icon: FileCheck, label: t('dashboard.commandPalette.checkATSScore'), category: t('dashboard.commandPalette.features') },
+    { id: 'interview-prep', icon: Briefcase, label: t('dashboard.commandPalette.startInterviewPrep'), category: t('dashboard.commandPalette.features') },
+    { id: 'skill-gap', icon: BarChart3, label: t('dashboard.commandPalette.analyzeSkillGap'), category: t('dashboard.commandPalette.features') },
+    { id: 'analytics', icon: TrendingUp, label: t('dashboard.commandPalette.viewAnalytics'), category: t('dashboard.commandPalette.navigation') },
+    { id: 'settings', icon: Settings, label: t('dashboard.commandPalette.openSettings'), category: t('dashboard.commandPalette.navigation') },
+  ];
+}
 
 export function CommandPalette({ isOpen, onClose, isDark, onNavigate }: CommandPaletteProps) {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  const commands = getCommands(t);
   const filteredCommands = commands.filter(cmd =>
     cmd.label.toLowerCase().includes(search.toLowerCase())
   );
@@ -82,7 +87,7 @@ export function CommandPalette({ isOpen, onClose, isDark, onNavigate }: CommandP
           <Search className={`size-5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
           <input
             type="text"
-            placeholder="Type a command or search..."
+            placeholder={t('dashboard.commandPalette.placeholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             autoFocus
@@ -103,7 +108,7 @@ export function CommandPalette({ isOpen, onClose, isDark, onNavigate }: CommandP
         <div className="max-h-96 overflow-y-auto p-2">
           {filteredCommands.length === 0 ? (
             <div className={`text-center py-12 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-              No results found
+              {t('dashboard.commandPalette.noResults')}
             </div>
           ) : (
             filteredCommands.map((cmd, index) => {
@@ -163,13 +168,13 @@ export function CommandPalette({ isOpen, onClose, isDark, onNavigate }: CommandP
               <kbd className={`px-1.5 py-0.5 rounded border ${
                 isDark ? 'bg-white/5 border-white/10' : 'bg-gray-100 border-gray-300'
               }`}>↓</kbd>
-              to navigate
+              {t('dashboard.commandPalette.toNavigate')}
             </span>
             <span className="flex items-center gap-1">
               <kbd className={`px-1.5 py-0.5 rounded border ${
                 isDark ? 'bg-white/5 border-white/10' : 'bg-gray-100 border-gray-300'
               }`}>↵</kbd>
-              to select
+              {t('dashboard.commandPalette.toSelect')}
             </span>
           </div>
           <span className="text-teal-500">⌘K</span>

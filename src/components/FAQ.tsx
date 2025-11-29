@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import {
   Accordion,
   AccordionContent,
@@ -6,42 +7,47 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 
-const faqs = [
-  {
-    question: "What makes CVSaathi different from other resume builders?",
-    answer: "CVSaathi is India's first AI-powered city-smart resume builder. We combine advanced AI technology with local job market insights to create resumes specifically optimized for Indian recruiters and ATS systems. Our platform understands regional preferences and industry standards across different Indian cities.",
-  },
-  {
-    question: "How does the ATS optimization work?",
-    answer: "Our AI analyzes your resume against 50+ ATS parameters used by top Indian companies. We check formatting, keyword optimization, section structure, and content relevance. You get a real-time ATS score with specific suggestions to improve your chances of passing automated screening.",
-  },
-  {
-    question: "Can I use CVSaathi for free?",
-    answer: "Yes! Our free plan includes 1 resume, basic templates, ATS score checking, and PDF downloads. It's perfect for getting started. Upgrade to Pro for unlimited resumes, premium templates, and advanced AI features whenever you're ready.",
-  },
-  {
-    question: "What formats can I download my resume in?",
-    answer: "You can download your resume in multiple formats including PDF (most recommended for ATS), DOCX (editable), and even get a shareable link. Pro users also get access to ATS-optimized plain text versions perfect for online applications.",
-  },
-  {
-    question: "Is my data secure and private?",
-    answer: "Absolutely! We use bank-level encryption to protect your data. Your resume and personal information are never shared with third parties. You have complete control over your data and can delete it anytime. We're fully compliant with Indian data protection regulations.",
-  },
-  {
-    question: "Do you offer a money-back guarantee?",
-    answer: "Yes! All paid plans come with a 30-day money-back guarantee. If you're not satisfied for any reason, we'll refund your payment in full, no questions asked. We also offer a 7-day free trial for Pro plans so you can try before you buy.",
-  },
-  {
-    question: "Can CVSaathi help with cover letters too?",
-    answer: "Yes! Pro and Lifetime plans include an AI-powered cover letter builder. Our AI helps you create compelling, personalized cover letters that match your resume and the specific job you're applying for. It's like having a professional writer on demand.",
-  },
-  {
-    question: "How often are templates updated?",
-    answer: "We regularly add new templates based on current design trends and recruiter feedback. Pro and Lifetime users get instant access to all new templates as they're released. We also update existing templates to match evolving ATS requirements.",
-  },
-];
+function getFaqs(t: any) {
+  return [
+    {
+      question: t('landing.faq.questions.q1'),
+      answer: t('landing.faq.answers.a1'),
+    },
+    {
+      question: t('landing.faq.questions.q2'),
+      answer: t('landing.faq.answers.a2'),
+    },
+    {
+      question: t('landing.faq.questions.q3'),
+      answer: t('landing.faq.answers.a3'),
+    },
+    {
+      question: t('landing.faq.questions.q4'),
+      answer: t('landing.faq.answers.a4'),
+    },
+    {
+      question: t('landing.faq.questions.q5'),
+      answer: t('landing.faq.answers.a5'),
+    },
+    {
+      question: t('landing.faq.questions.q6'),
+      answer: t('landing.faq.answers.a6'),
+    },
+    {
+      question: t('landing.faq.questions.q7'),
+      answer: t('landing.faq.answers.a7'),
+    },
+    {
+      question: t('landing.faq.questions.q8'),
+      answer: t('landing.faq.answers.a8'),
+    },
+  ];
+}
 
 export function FAQ() {
+  const { t } = useTranslation();
+  const faqs = getFaqs(t);
+
   return (
     <section className="py-32 px-6 relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-teal-50/30">
       {/* Decorative elements */}
@@ -64,7 +70,9 @@ export function FAQ() {
             viewport={{ once: true }}
             className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
           >
-            <span className="text-teal-700 uppercase tracking-wider">FAQ</span>
+          <span className="text-teal-700 uppercase tracking-wider">
+            {t('landing.faq.badge')}
+          </span>
           </motion.div>
           <h2
             className="mb-6"
@@ -77,12 +85,12 @@ export function FAQ() {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}
-          >
-            Frequently asked questions
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Everything you need to know about CVSaathi
-          </p>
+        >
+          {t('landing.faq.title')}
+        </h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          {t('landing.faq.description')}
+        </p>
         </motion.div>
 
         {/* Accordion */}
@@ -108,7 +116,7 @@ export function FAQ() {
                   <AccordionTrigger className="text-gray-900 hover:text-teal-600 hover:no-underline py-6">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 pb-6">
+                  <AccordionContent className="text-gray-600 pb-6 whitespace-pre-line">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -127,17 +135,17 @@ export function FAQ() {
         >
           <div className="bg-white rounded-3xl p-8 border-2 border-teal-200 shadow-xl">
             <h3 className="text-gray-900 mb-3">
-              Still have questions?
+              {t('landing.faq.stillHaveQuestions')}
             </h3>
             <p className="text-gray-600 mb-6">
-              Our support team is here to help you succeed
+              {t('landing.faq.supportDescription')}
             </p>
             <motion.button
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
               className="px-8 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 transition-all"
             >
-              Contact Support
+              {t('landing.faq.contactSupport')}
             </motion.button>
           </div>
         </motion.div>

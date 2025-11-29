@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface TemplatesGalleryPageProps {
   isDark: boolean;
@@ -106,6 +107,7 @@ const templateMetadata: Record<string, { category: 'Entry-Level' | 'Professional
 };
 
 export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPageProps) {
+  const { t } = useTranslation();
   const [templates, setTemplates] = useState<Template[]>([]);
   const [filteredTemplates, setFilteredTemplates] = useState<Template[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<'All' | 'Entry-Level' | 'Professional'>('All');
@@ -136,7 +138,7 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
         setFilteredTemplates(templateList);
       } catch (error) {
         console.error('Error loading templates:', error);
-        toast.error('Failed to load templates');
+        toast.error(t('dashboard.templates.loadFailed'));
       } finally {
         setLoading(false);
       }
@@ -177,10 +179,10 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
       link.click();
       document.body.removeChild(link);
       
-      toast.success(`Downloading ${template.name}...`);
+      toast.success(t('dashboard.templates.downloading', { name: template.name }));
     } catch (error) {
       console.error('Download error:', error);
-      toast.error('Failed to download template. Please try again.');
+      toast.error(t('dashboard.templates.downloadFailed'));
     }
   };
 
@@ -198,10 +200,12 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
       <div className={`min-h-screen transition-colors duration-500 flex items-center justify-center ${
         isDark ? 'bg-slate-900' : 'bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-50'
       }`}>
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-purple-500" />
-          <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>Loading templates...</p>
-        </div>
+          <div className="text-center">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-purple-500" />
+            <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+              {t('dashboard.templates.loading')}
+            </p>
+          </div>
       </div>
     );
   }
@@ -225,14 +229,14 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
                 className={`${isDark ? 'hover:bg-white/5' : 'hover:bg-gray-100'}`}
               >
                 <ChevronLeft className="size-5 mr-2" />
-                Back to Dashboard
+                {t('dashboard.templates.backToDashboard')}
               </Button>
               <div>
                 <h1 className={`text-3xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  Resume Templates
+                  {t('dashboard.templates.title')}
                 </h1>
                 <p className={`text-sm mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Browse and download professional resume templates
+                  {t('dashboard.templates.description')}
                 </p>
               </div>
             </div>
@@ -247,7 +251,7 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
               }`} />
               <input
                 type="text"
-                placeholder="Search templates..."
+                placeholder={t('dashboard.templates.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
@@ -260,23 +264,28 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
 
             {/* Category Filters */}
             <div className="flex gap-2">
-              {(['All', 'Entry-Level', 'Professional'] as const).map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                    selectedCategory === category
-                      ? isDark
-                        ? 'bg-purple-500 text-white'
-                        : 'bg-purple-500 text-white'
-                      : isDark
-                        ? 'bg-white/5 text-gray-300 hover:bg-white/10'
-                        : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
+              {(['All', 'Entry-Level', 'Professional'] as const).map((category) => {
+                const categoryKey = category === 'All' ? 'categoryAll' : 
+                                  category === 'Entry-Level' ? 'categoryEntryLevel' : 
+                                  'categoryProfessional';
+                return (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                      selectedCategory === category
+                        ? isDark
+                          ? 'bg-purple-500 text-white'
+                          : 'bg-purple-500 text-white'
+                        : isDark
+                          ? 'bg-white/5 text-gray-300 hover:bg-white/10'
+                          : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    }`}
+                  >
+                    {t(`dashboard.templates.${categoryKey}`)}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -287,7 +296,10 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
         {/* Results Count */}
         <div className="mb-6">
           <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            {filteredTemplates.length} template{filteredTemplates.length !== 1 ? 's' : ''} found
+            {filteredTemplates.length === 1 
+              ? t('dashboard.templates.templatesFound', { count: filteredTemplates.length })
+              : t('dashboard.templates.templatesFoundPlural', { count: filteredTemplates.length })
+            }
           </p>
         </div>
 
@@ -300,10 +312,10 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
               isDark ? 'text-gray-600' : 'text-gray-400'
             }`} />
             <h3 className={`text-xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              No templates found
+              {t('dashboard.templates.noTemplatesFound')}
             </h3>
             <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
-              Try adjusting your search or filter criteria
+              {t('dashboard.templates.noTemplatesDescription')}
             </p>
           </div>
         ) : (
@@ -358,14 +370,14 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
                       }`}
                     >
                       <Eye className="size-4 mr-2" />
-                      Preview
+                      {t('dashboard.templates.preview')}
                     </Button>
                     <Button
                       onClick={() => handleDownload(template)}
                       className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
                     >
                       <Download className="size-4 mr-2" />
-                      Download
+                      {t('dashboard.templates.download')}
                     </Button>
                   </div>
                 </div>
@@ -396,7 +408,7 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
                   {selectedTemplate.name}
                 </h3>
                 <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {selectedTemplate.category} Template
+                  {t('dashboard.templates.templateCategory', { category: selectedTemplate.category })}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -409,7 +421,7 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
                   <ZoomOut className="size-5" />
                 </button>
                 <span className={`text-sm w-16 text-center ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {previewZoom}%
+                  {t('dashboard.templates.zoom', { percent: previewZoom })}
                 </span>
                 <button
                   onClick={() => setPreviewZoom(Math.min(200, previewZoom + 10))}
@@ -438,17 +450,21 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
             </div>
 
             {/* PDF Preview */}
-            <div className="overflow-auto max-h-[calc(90vh-80px)] p-4 flex justify-center">
-              <iframe
-                src={`${selectedTemplate.filePath}#toolbar=0&zoom=${previewZoom}`}
-                className="w-full border-0"
-                style={{ 
-                  minHeight: '600px',
-                  transform: `scale(${previewZoom / 100})`,
-                  transformOrigin: 'top center'
-                }}
-                title={selectedTemplate.name}
-              />
+            <div className="overflow-auto max-h-[calc(90vh-80px)] p-4 flex justify-center bg-gray-100 dark:bg-gray-800">
+              <div className="w-full" style={{ maxWidth: '210mm' }}>
+                <iframe
+                  src={`${selectedTemplate.filePath}#toolbar=0&navpanes=0&scrollbar=1`}
+                  className="w-full border-0 rounded-lg shadow-lg"
+                  style={{ 
+                    height: '800px',
+                    minHeight: '600px'
+                  }}
+                  title={selectedTemplate.name}
+                  onError={() => {
+                    toast.error(t('dashboard.templates.loadFailed'));
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>

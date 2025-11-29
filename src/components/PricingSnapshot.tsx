@@ -1,15 +1,19 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Check, Sparkles, Zap, Crown, DollarSign } from "lucide-react";
 import { Button } from "./ui/button";
 
-const plans = [
-  {
-    name: "Free Plan",
-    icon: Sparkles,
-    price: "₹0",
-    period: "month",
-    description: "Perfect for getting started",
+export function PricingSnapshot() {
+  const { t } = useTranslation();
+  
+  const plans = [
+    {
+      name: t('landing.pricing.freePlan.name'),
+      icon: Sparkles,
+      price: "₹0",
+      period: "month",
+      description: t('landing.pricing.freePlan.description'),
     features: [
       { title: "AI career coaching", detail: "3 sessions/month" },
       { title: "Resume builder", detail: "3 resumes with critique & ATS" },
@@ -22,16 +26,16 @@ const plans = [
       { title: "Skill gap analysis", detail: "1 analysis/month" },
       { title: "WhatsApp export", detail: "With watermark" },
     ],
-    cta: "Current Plan",
-    popular: false,
-    gradient: "from-gray-400 to-gray-600",
-  },
-  {
-    name: "Starter Plan",
-    icon: Zap,
-    price: "₹99",
-    period: "month",
-    description: "Great for job seekers",
+      cta: t('landing.pricing.freePlan.cta'),
+      popular: false,
+      gradient: "from-gray-400 to-gray-600",
+    },
+    {
+      name: t('landing.pricing.starterPlan.name'),
+      icon: Zap,
+      price: "₹99",
+      period: "month",
+      description: t('landing.pricing.starterPlan.description'),
     features: [
       { title: "AI career coaching", detail: "15 sessions/month" },
       { title: "Resume builder", detail: "10 resumes with critique & ATS" },
@@ -44,16 +48,16 @@ const plans = [
       { title: "WhatsApp export", detail: "Clean export" },
       { title: "Email support", detail: "Available" },
     ],
-    cta: "Upgrade Now",
-    popular: false,
-    gradient: "from-teal-500 to-cyan-500",
-  },
-  {
-    name: "Professional Plan",
-    icon: Crown,
-    price: "₹199",
-    period: "month",
-    description: "For serious career growth",
+      cta: t('landing.pricing.starterPlan.cta'),
+      popular: false,
+      gradient: "from-teal-500 to-cyan-500",
+    },
+    {
+      name: t('landing.pricing.professionalPlan.name'),
+      icon: Crown,
+      price: "₹199",
+      period: "month",
+      description: t('landing.pricing.professionalPlan.description'),
     features: [
       { title: "Unlimited AI career coaching", detail: "Unlimited" },
       { title: "Resume builder", detail: "Unlimited resumes with critique & ATS" },
@@ -67,13 +71,12 @@ const plans = [
       { title: "WhatsApp notifications", detail: "Available" },
       { title: "Advanced analytics", detail: "Available" },
     ],
-    cta: "Select Plan",
-    popular: true,
-    gradient: "from-teal-500 to-cyan-500",
-  },
-];
-
-export function PricingSnapshot() {
+      cta: t('landing.pricing.professionalPlan.cta'),
+      popular: true,
+      gradient: "from-teal-500 to-cyan-500",
+    },
+  ];
+  
   return (
     <section id="pricing" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
       {/* Decorative background */}
@@ -96,7 +99,7 @@ export function PricingSnapshot() {
             className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
           >
             <DollarSign className="w-4 h-4 text-teal-600" />
-            <span className="text-teal-700 uppercase tracking-wider">Simple Pricing</span>
+            <span className="text-teal-700 uppercase tracking-wider">{t('landing.pricing.badge')}</span>
           </motion.div>
           <h2 
             className="mb-6"
@@ -110,10 +113,10 @@ export function PricingSnapshot() {
               backgroundClip: 'text',
             }}
           >
-            Choose your perfect plan
+            {t('landing.pricing.title')}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Start free, upgrade anytime. No hidden fees, cancel anytime.
+            {t('landing.pricing.description')}
           </p>
         </motion.div>
 
@@ -139,7 +142,7 @@ export function PricingSnapshot() {
                   className="absolute -top-4 left-1/2 -translate-x-1/2 z-10"
                 >
                   <div className="px-4 py-1 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-full text-sm shadow-lg">
-                    Most Popular
+                    {t('landing.pricing.professionalPlan.popular')}
                   </div>
                 </motion.div>
               )}

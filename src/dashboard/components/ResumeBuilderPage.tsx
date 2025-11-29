@@ -23,6 +23,7 @@ import {
 } from "recharts";
 import { TemplateRenderer } from "./templates/TemplateRenderer";
 import { LayoutCustomization } from "./LayoutCustomization";
+import { useTranslation } from "react-i18next";
 
 interface ResumeBuilderPageProps {
   isDark: boolean;
@@ -108,31 +109,31 @@ export interface ResumeData {
   };
 }
 
-const templates = [
-  { id: 'modern-pro', name: 'Modern Professional', category: 'Modern', atsScore: 95, description: 'Clean and contemporary design' },
-  { id: 'classic', name: 'Classic Executive', category: 'Classic', atsScore: 98, description: 'Traditional corporate style' },
-  { id: 'creative', name: 'Creative Bold', category: 'Creative', atsScore: 85, description: 'Stand out with unique design' },
-  { id: 'technical', name: 'Tech Specialist', category: 'Technical', atsScore: 96, description: 'Perfect for developers' },
-  { id: 'minimal', name: 'Minimal Elegant', category: 'Minimal', atsScore: 97, description: 'Less is more approach' },
-  { id: 'modern-two', name: 'Modern Two-Column', category: 'Modern', atsScore: 93, description: 'Efficient space usage' },
-  { id: 'academic', name: 'Academic Scholar', category: 'Academic', atsScore: 99, description: 'For research positions' },
-  { id: 'executive', name: 'Senior Executive', category: 'Executive', atsScore: 94, description: 'C-level professionals' }
+const getTemplates = (t: any) => [
+  { id: 'modern-pro', name: t('dashboard.resumeBuilder.templates.modernPro'), category: 'modern', categoryLabel: t('dashboard.resumeBuilder.templateCategories.modern'), atsScore: 95, description: t('dashboard.resumeBuilder.templateDescriptions.modernPro') },
+  { id: 'classic', name: t('dashboard.resumeBuilder.templates.classic'), category: 'classic', categoryLabel: t('dashboard.resumeBuilder.templateCategories.classic'), atsScore: 98, description: t('dashboard.resumeBuilder.templateDescriptions.classic') },
+  { id: 'creative', name: t('dashboard.resumeBuilder.templates.creative'), category: 'creative', categoryLabel: t('dashboard.resumeBuilder.templateCategories.creative'), atsScore: 85, description: t('dashboard.resumeBuilder.templateDescriptions.creative') },
+  { id: 'technical', name: t('dashboard.resumeBuilder.templates.technical'), category: 'technical', categoryLabel: t('dashboard.resumeBuilder.templateCategories.technical'), atsScore: 96, description: t('dashboard.resumeBuilder.templateDescriptions.technical') },
+  { id: 'minimal', name: t('dashboard.resumeBuilder.templates.minimal'), category: 'modern', categoryLabel: t('dashboard.resumeBuilder.templateCategories.modern'), atsScore: 97, description: t('dashboard.resumeBuilder.templateDescriptions.minimal') },
+  { id: 'modern-two', name: t('dashboard.resumeBuilder.templates.modernTwo'), category: 'modern', categoryLabel: t('dashboard.resumeBuilder.templateCategories.modern'), atsScore: 93, description: t('dashboard.resumeBuilder.templateDescriptions.modernTwo') },
+  { id: 'academic', name: t('dashboard.resumeBuilder.templates.academic'), category: 'classic', categoryLabel: t('dashboard.resumeBuilder.templateCategories.classic'), atsScore: 99, description: t('dashboard.resumeBuilder.templateDescriptions.academic') },
+  { id: 'executive', name: t('dashboard.resumeBuilder.templates.executive'), category: 'executive', categoryLabel: t('dashboard.resumeBuilder.templateCategories.executive'), atsScore: 94, description: t('dashboard.resumeBuilder.templateDescriptions.executive') }
 ];
 
-const steps = [
-  { id: 'welcome', title: 'Welcome', icon: FileText },
-  { id: 'template', title: 'Template', icon: Palette },
-  { id: 'personal', title: 'Personal Info', icon: Users },
-  { id: 'summary', title: 'Summary', icon: FileText },
-  { id: 'experience', title: 'Experience', icon: Briefcase },
-  { id: 'education', title: 'Education', icon: GraduationCap },
-  { id: 'skills', title: 'Skills', icon: Award },
-  { id: 'projects', title: 'Projects', icon: Code },
-  { id: 'additional', title: 'Additional', icon: Plus },
-  { id: 'layout', title: 'Layout', icon: Palette },
-  { id: 'critique', title: 'AI Critique', icon: Sparkles },
-  { id: 'ats', title: 'ATS Check', icon: FileCheck },
-  { id: 'export', title: 'Export', icon: Download }
+const getSteps = (t: any) => [
+  { id: 'welcome', title: t('dashboard.resumeBuilder.steps.welcome'), icon: FileText },
+  { id: 'template', title: t('dashboard.resumeBuilder.steps.template'), icon: Palette },
+  { id: 'personal', title: t('dashboard.resumeBuilder.steps.personal'), icon: Users },
+  { id: 'summary', title: t('dashboard.resumeBuilder.steps.summary'), icon: FileText },
+  { id: 'experience', title: t('dashboard.resumeBuilder.steps.experience'), icon: Briefcase },
+  { id: 'education', title: t('dashboard.resumeBuilder.steps.education'), icon: GraduationCap },
+  { id: 'skills', title: t('dashboard.resumeBuilder.steps.skills'), icon: Award },
+  { id: 'projects', title: t('dashboard.resumeBuilder.steps.projects'), icon: Code },
+  { id: 'additional', title: t('dashboard.resumeBuilder.steps.additional'), icon: Plus },
+  { id: 'layout', title: t('dashboard.resumeBuilder.steps.layout'), icon: Palette },
+  { id: 'critique', title: t('dashboard.resumeBuilder.steps.critique'), icon: Sparkles },
+  { id: 'ats', title: t('dashboard.resumeBuilder.steps.ats'), icon: FileCheck },
+  { id: 'export', title: t('dashboard.resumeBuilder.steps.export'), icon: Download }
 ];
 
 const accentColors = [
@@ -145,6 +146,7 @@ const accentColors = [
 ];
 
 export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [currentResumeId, setCurrentResumeId] = useState<string | undefined>();
   const { resumes, saveResume, loadResume, loading: resumeLoading, saving: resumeSaving } = useResumes();
@@ -153,6 +155,8 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
   const previewPrintRef = useRef<HTMLDivElement>(null);
   const exportA4Ref = useRef<HTMLDivElement>(null);
   
+  const steps = getSteps(t);
+  const templates = getTemplates(t);
   const [currentStep, setCurrentStep] = useState<Step>('welcome');
   const [resumeData, setResumeData] = useState<ResumeData>({
     templateId: 'modern-pro',
@@ -200,13 +204,16 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
   const [showPreview, setShowPreview] = useState(true);
   const [previewMinimized, setPreviewMinimized] = useState(false);
   const [previewZoom, setPreviewZoom] = useState(100);
-  const [estelMessage, setEstelMessage] = useState("Hi! I'm Estel, your AI resume coach. Let's build an amazing resume together! 🎉");
+  const [estelMessage, setEstelMessage] = useState(t('dashboard.resumeBuilder.estelWelcome'));
   const [lastSaved, setLastSaved] = useState<Date>(new Date());
   const [aiGenerating, setAiGenerating] = useState(false);
+  const [targetRole, setTargetRole] = useState('Software Engineer');
+  const [yearsOfExperience, setYearsOfExperience] = useState('5+');
+  const [industry, setIndustry] = useState('Technology');
   const [newSkill, setNewSkill] = useState('');
   const [newTech, setNewTech] = useState('');
   const [atsScore, setAtsScore] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [critiqueData, setCritiqueData] = useState({
     overall: 0,
     content: 0,
@@ -252,7 +259,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
         setLastSaved(new Date());
         // Only show toast if user is actively editing (not on welcome step)
         if (currentStep !== 'welcome') {
-          toast.success('Resume auto-saved', { duration: 1000 });
+          toast.success(t('dashboard.resumeBuilder.autoSaved'), { duration: 1000 });
         }
       } catch (error) {
         console.error('Auto-save failed:', error);
@@ -272,13 +279,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
     const now = new Date();
     const diffSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
     
-    if (diffSeconds < 60) return 'just now';
+    if (diffSeconds < 60) return t('dashboard.resumeBuilder.justNow');
     const diffMinutes = Math.floor(diffSeconds / 60);
-    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+    if (diffMinutes < 60) return t('dashboard.resumeBuilder.minutesAgo', { n: diffMinutes });
     const diffHours = Math.floor(diffMinutes / 60);
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return t('dashboard.resumeBuilder.hoursAgo', { n: diffHours });
     const diffDays = Math.floor(diffHours / 24);
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return t('dashboard.resumeBuilder.daysAgo', { n: diffDays });
     return date.toLocaleDateString();
   };
 
@@ -328,7 +335,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
 
   const generateWithAI = async (type: string, context?: any) => {
     setAiGenerating(true);
-    setEstelMessage("🤔 Hmm, let me think about this...");
+    setEstelMessage(t('dashboard.resumeBuilder.aiThinking'));
     
     try {
       let prompt = '';
@@ -351,11 +358,24 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
           aiContext.resumeSection = 'headline';
           break;
         case 'bullet':
-          prompt = `Write a powerful, achievement-focused bullet point for a resume. 
-          Context: ${context?.project || 'Project/Experience'} at ${context?.company || 'Company'}. 
-          Role: ${context?.title || 'Position'}. 
-          Make it specific, include metrics/numbers if possible, and highlight impact. 
-          Format: Start with action verb, include what was done and the result. One sentence only.`;
+          const companyInfo = context?.company ? ` at ${context.company}` : '';
+          const locationInfo = context?.location ? ` in ${context.location}` : '';
+          const dateInfo = context?.startDate || context?.endDate 
+            ? ` (${context.startDate || ''}${context.endDate ? ` - ${context.endDate}` : ' - Present'})`
+            : '';
+          prompt = `Write 3-5 powerful, achievement-focused bullet points for a resume. 
+          Job Title: ${context?.title || 'Position'}
+          Company: ${context?.company || 'Company'}${locationInfo}${dateInfo}
+          
+          Requirements:
+          - Generate exactly 3-5 bullet points
+          - Each bullet should start with a strong action verb
+          - Include specific metrics, numbers, and quantifiable results
+          - Highlight impact, achievements, and responsibilities
+          - Make each bullet point distinct and valuable
+          - Keep each bullet to 1-2 sentences maximum
+          
+          Format: Return ONLY the bullet points, one per line, without numbering or bullets. Each line should be a complete, standalone bullet point.`;
           aiContext.resumeSection = 'experience_bullet';
           break;
         case 'project-description':
@@ -376,21 +396,38 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
         throw new Error('No response from AI');
       }
 
-      const result = response.items.map(item => item.content).join('\n').trim();
+      let result = response.items.map(item => item.content).join('\n').trim();
+      
+      // Process bullet points: split into multiple bullets if type is 'bullet'
+      if (type === 'bullet') {
+        // Split by newlines and clean up each bullet point
+        const bullets = result
+          .split('\n')
+          .map(line => line.trim())
+          .filter(line => line.length > 0)
+          .map(line => {
+            // Remove leading numbers, dashes, or bullets if present
+            return line.replace(/^[\d\-•*]\s*/, '').trim();
+          })
+          .filter(line => line.length > 0);
+        
+        // Return as array for bullet type, or join for other types
+        result = bullets.length > 0 ? bullets : [result];
+      }
       
       // Set success message based on type
       switch(type) {
         case 'summary':
-          setEstelMessage("✨ Here's a professional summary I crafted for you! Feel free to edit it.");
+          setEstelMessage(t('dashboard.resumeBuilder.aiSummarySuccess'));
           break;
         case 'headline':
-          setEstelMessage("🎯 This headline will grab recruiters' attention!");
+          setEstelMessage(t('dashboard.resumeBuilder.aiHeadlineSuccess'));
           break;
         case 'bullet':
-          setEstelMessage("💪 Added impact metrics to make this bullet powerful!");
+          setEstelMessage(t('dashboard.resumeBuilder.aiBulletSuccess'));
           break;
         case 'project-description':
-          setEstelMessage("🚀 Made your project sound impressive!");
+          setEstelMessage(t('dashboard.resumeBuilder.aiProjectSuccess'));
           break;
       }
       
@@ -398,7 +435,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
       return result;
     } catch (error: any) {
       console.error('AI generation error:', error);
-      setEstelMessage("😅 Oops! I had trouble generating that. Please try again or write it yourself.");
+      setEstelMessage(t('dashboard.resumeBuilder.aiError'));
       setAiGenerating(false);
       
       // Fallback to a basic template
@@ -764,7 +801,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
   // Generate critique scores
   const generateCritique = async () => {
     setAiGenerating(true);
-    setEstelMessage("🔍 Analyzing your resume... This might take a moment!");
+    setEstelMessage(t('dashboard.resumeBuilder.analyzingResume'));
     setDetailedFeedback(''); // Clear previous feedback
     
     try {
@@ -793,15 +830,15 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
       // Store detailed feedback text
       if (insights.detailedFeedback) {
         setDetailedFeedback(insights.detailedFeedback);
-        setEstelMessage("✨ Analysis complete! Check the detailed feedback below.");
+        setEstelMessage(t('dashboard.resumeBuilder.analysisComplete'));
       } else {
         console.warn('No detailed feedback in insights:', insights);
-        setEstelMessage("✨ Analysis complete! Check the scores below.");
+        setEstelMessage(t('dashboard.resumeBuilder.analysisCompleteBasic'));
       }
       
     } catch (error: any) {
       console.error('AI critique error:', error);
-      setEstelMessage("😅 Had trouble analyzing. Using basic ATS check instead.");
+      setEstelMessage(t('dashboard.resumeBuilder.analysisError'));
       
       // Fallback to basic calculation
       const overall = calculateATSScore();
@@ -837,7 +874,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
               >
                 <ChevronLeft className="size-4" />
-                <span className="text-sm">Back to Dashboard</span>
+                <span className="text-sm">{t('dashboard.resumeBuilder.backToDashboard')}</span>
               </button>
               <div className={`h-6 w-px ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}></div>
               <div className="flex items-center gap-3">
@@ -846,19 +883,19 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 </div>
                 <div>
                   <h1 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Resume Builder
+                    {t('dashboard.resumeBuilder.title')}
                   </h1>
                   <p className="text-sm text-gray-400 flex items-center gap-2">
                     {resumeSaving ? (
                       <>
                         <Loader2 className="size-4 animate-spin" />
-                        <span>Saving...</span>
+                        <span>{t('dashboard.resumeBuilder.saving')}</span>
                       </>
                     ) : (
                       <>
                         <CheckCircle className="size-4 text-green-500" />
                         <span>
-                          Last saved {formatRelativeTime(lastSaved)}
+                          {t('dashboard.resumeBuilder.lastSaved', { time: formatRelativeTime(lastSaved) })}
                         </span>
                       </>
                     )}
@@ -875,11 +912,11 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     className="bg-white/10 hover:bg-white/20 text-white border-0"
                   >
                     <Eye className="size-4 mr-2" />
-                    {showPreview ? 'Hide' : 'Show'} Preview
+                    {showPreview ? t('dashboard.resumeBuilder.hidePreview') : t('dashboard.resumeBuilder.showPreview')}
                   </Button>
                   <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
                     <Save className="size-4 mr-2" />
-                    Save Draft
+                    {t('dashboard.resumeBuilder.saveDraft')}
                   </Button>
                 </>
               )}
@@ -933,7 +970,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
       {/* Main Content */}
       <main className="flex">
         {/* Left Panel - Form/Content */}
-        <div className={`${showPreview && currentStep !== 'welcome' && !previewMinimized ? 'flex-1' : 'w-full'} ${showPreview && currentStep !== 'welcome' && !previewMinimized ? '' : 'max-w-6xl mx-auto'} p-8 transition-all duration-300`}>
+        <div className={`${showPreview && currentStep !== 'welcome' && !previewMinimized ? 'flex-1' : 'w-full'} ${showPreview && currentStep !== 'welcome' && !previewMinimized ? (currentStep === 'critique' ? 'max-w-4xl' : '') : 'max-w-6xl mx-auto'} p-8 transition-all duration-300`}>
           {/* Estel Coach */}
           {currentStep !== 'welcome' && (
             <div className={`mb-6 p-4 rounded-xl border-2 border-purple-500/30 ${
@@ -946,7 +983,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      Estel's Tip
+                      {t('dashboard.resumeBuilder.estelTip')}
                     </span>
                     {aiGenerating && (
                       <div className="flex gap-1">
@@ -977,102 +1014,72 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               </div>
 
               <h1 className={`text-5xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Build Your Dream Resume in <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Minutes</span>
+                {t('dashboard.resumeBuilder.welcomeTitle')} <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">{t('dashboard.resumeBuilder.minutes')}</span>
               </h1>
               <p className={`text-xl mb-12 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Let Estel guide you through creating a professional, ATS-optimized resume
+                {t('dashboard.resumeBuilder.welcomeDescription')}
               </p>
 
-              {/* Load Existing Resume - Enhanced Resume Selection */}
+              {/* Load Existing Resume - history panel (backend-aligned) */}
               {resumes.length > 0 && (
                 <div className={`mb-8 p-6 rounded-2xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-white border border-gray-200'}`}>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      Continue Working On
+                      {t('dashboard.resumeBuilder.continueWorkingOn')}
                     </h3>
                     <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {resumes.length} {resumes.length === 1 ? 'resume' : 'resumes'}
+                      {resumes.length} {resumes.length === 1 ? t('dashboard.resumeBuilder.resume') : t('dashboard.resumeBuilder.resumes')}
                     </span>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
                     {resumes.map((resume) => {
-                      const savedResumeData = resume.resume_data || {};
-                      const lastStep = savedResumeData.lastStep || 'template';
-                      const templateName = templates.find(t => t.id === resume.template_id)?.name || 'Modern Professional';
-                      const hasContent = savedResumeData.personalInfo?.fullName || savedResumeData.summary || (savedResumeData.experiences?.length > 0);
-                      
+                      const savedSections = (resume as any).sections || {};
+                      const savedLastStep = savedSections.lastStep || 'template';
+                      const validStep = steps.find(s => s.id === savedLastStep) ? savedLastStep : 'template';
+
                       return (
                         <button
                           key={resume.id}
-                          onClick={async () => {
+                          onClick={() => {
                             try {
-                              // Fetch full resume data from database
-                              const { data, error } = await supabase
-                                .from('resumes')
-                                .select('resume_data')
-                                .eq('id', resume.id)
-                                .eq('user_id', user?.id)
-                                .single();
+                              // sections already contains full resume JSON from backend
+                              const { lastStep, ...resumeContent } = savedSections;
+                              setResumeData(resumeContent);
+                              setCurrentResumeId(resume.id);
+                              setCurrentStep(validStep as Step);
                               
-                              if (error) throw error;
-                              
-                              if (data?.resume_data) {
-                                const loadedData = data.resume_data;
-                                
-                                // Remove lastStep from resume data (it's metadata, not part of resume content)
-                                const { lastStep: savedLastStep, ...resumeContent } = loadedData;
-                                
-                                setResumeData(resumeContent);
-                                setCurrentResumeId(resume.id);
-                                
-                                // Restore to last step or default to template
-                                const stepToRestore = savedLastStep || 'template';
-                                
-                                // Validate step exists in steps array
-                                const validStep = steps.find(s => s.id === stepToRestore) ? stepToRestore : 'template';
-                                setCurrentStep(validStep as Step);
-                                
-                                const stepTitle = steps.find(s => s.id === validStep)?.title || 'Template';
-                                toast.success(`Resume loaded! Continuing from ${stepTitle} step`);
-                              }
+                              const stepTitle = steps.find(s => s.id === validStep)?.title || t('dashboard.resumeBuilder.steps.template');
+                              toast.success(t('dashboard.resumeBuilder.resumeLoaded', { step: stepTitle }));
                             } catch (error) {
-                              console.error('Error loading resume:', error);
-                              toast.error('Failed to load resume');
+                              console.error('Error loading resume from sections:', error);
+                              toast.error(t('dashboard.resumeBuilder.loadFailed'));
                             }
                           }}
-                          className={`group text-left p-4 rounded-xl border-2 transition-all hover:scale-105 hover:shadow-lg ${
+                          className={`group p-4 rounded-xl border-2 transition-all hover:scale-105 hover:shadow-lg ${
                             isDark 
                               ? 'bg-white/5 border-white/10 hover:border-purple-500/50' 
                               : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:shadow-md'
                           }`}
                         >
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex-1 min-w-0">
-                              <p className={`font-semibold truncate mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                                {resume.title || 'Untitled Resume'}
-                              </p>
-                              <p className={`text-xs mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                                {templateName}
-                              </p>
-                            </div>
-                            <div className={`w-2 h-2 rounded-full ml-2 flex-shrink-0 ${
-                              hasContent ? 'bg-green-500' : 'bg-gray-400'
-                            }`} title={hasContent ? 'Has content' : 'Empty'} />
-                          </div>
-                          
+                          {/* Title */}
+                          <p className={`font-semibold truncate mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                            {resume.name || t('dashboard.resumeBuilder.untitledResume')}
+                          </p>
+
+                          {/* Last updated & step */}
                           <div className="flex items-center justify-between text-xs">
                             <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>
-                              {new Date(resume.updated_at).toLocaleDateString('en-US', { 
+                              {resume.updated_at ? new Date(resume.updated_at).toLocaleDateString('en-US', { 
                                 month: 'short', 
                                 day: 'numeric',
                                 year: 'numeric'
-                              })}
+                              }) : '—'}
                             </span>
-                            {savedResumeData.lastStep && (
+                            {savedLastStep && (
                               <span className={`px-2 py-0.5 rounded ${
                                 isDark ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-700'
                               }`}>
-                                {steps.find(s => s.id === savedResumeData.lastStep)?.title || 'Template'}
+                                {steps.find(s => s.id === savedLastStep)?.title || t('dashboard.resumeBuilder.steps.template')}
                               </span>
                             )}
                           </div>
@@ -1132,7 +1139,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       }
                     });
                     setCurrentStep('template');
-                    setEstelMessage("Great choice! Let's pick a stunning template for your resume.");
+                    setEstelMessage(t('dashboard.resumeBuilder.templateChoiceMessage'));
                   }}
                   className={`group p-8 rounded-2xl border-2 transition-all hover:scale-105 hover:shadow-2xl ${
                     isDark
@@ -1144,17 +1151,17 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <FileText className="size-8 text-white" />
                   </div>
                   <h3 className={`text-xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Start from Scratch
+                    {t('dashboard.resumeBuilder.startFromScratch')}
                   </h3>
                   <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Build your resume step-by-step with AI guidance
+                    {t('dashboard.resumeBuilder.startFromScratchDescription')}
                   </p>
                 </button>
 
                 <button
                   onClick={() => {
-                    toast.info('Upload feature coming soon!');
-                    setEstelMessage("Upload feature is coming soon! For now, let's build from scratch.");
+                    toast.info(t('dashboard.resumeBuilder.uploadComingSoon'));
+                    setEstelMessage(t('dashboard.resumeBuilder.uploadComingSoonMessage'));
                   }}
                   className={`group p-8 rounded-2xl border-2 transition-all hover:scale-105 hover:shadow-2xl ${
                     isDark
@@ -1166,17 +1173,17 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <Upload className="size-8 text-white" />
                   </div>
                   <h3 className={`text-xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Import Existing
+                    {t('dashboard.resumeBuilder.importExisting')}
                   </h3>
                   <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Upload your current resume and enhance it
+                    {t('dashboard.resumeBuilder.importExistingDescription')}
                   </p>
                 </button>
 
                 <button
                   onClick={() => {
-                    toast.info('AI Quick Build coming soon!');
-                    setEstelMessage("AI Quick Build is coming soon! Let's start with templates.");
+                    toast.info(t('dashboard.resumeBuilder.aiQuickBuildComingSoon'));
+                    setEstelMessage(t('dashboard.resumeBuilder.aiQuickBuildComingSoonMessage'));
                   }}
                   className={`group p-8 rounded-2xl border-2 transition-all hover:scale-105 hover:shadow-2xl ${
                     isDark
@@ -1188,10 +1195,10 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <Sparkles className="size-8 text-white" />
                   </div>
                   <h3 className={`text-xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    AI Quick Build
+                    {t('dashboard.resumeBuilder.aiQuickBuild')}
                   </h3>
                   <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Let Estel create a resume from your profile
+                    {t('dashboard.resumeBuilder.aiQuickBuildDescription')}
                   </p>
                 </button>
               </div>
@@ -1202,27 +1209,34 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
           {currentStep === 'template' && (
             <div>
               <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Choose Your Template
+                {t('dashboard.resumeBuilder.chooseTemplate')}
               </h2>
               <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Select a professional template that matches your industry
+                {t('dashboard.resumeBuilder.selectTemplateDescription')}
               </p>
 
               {/* Filter Tags */}
               <div className="flex flex-wrap gap-2 mb-6">
-                {['All', 'Modern', 'Classic', 'Creative', 'Technical', 'Executive'].map(cat => (
+                {[
+                  { id: 'all', label: t('dashboard.resumeBuilder.templateCategories.all') },
+                  { id: 'modern', label: t('dashboard.resumeBuilder.templateCategories.modern') },
+                  { id: 'classic', label: t('dashboard.resumeBuilder.templateCategories.classic') },
+                  { id: 'creative', label: t('dashboard.resumeBuilder.templateCategories.creative') },
+                  { id: 'technical', label: t('dashboard.resumeBuilder.templateCategories.technical') },
+                  { id: 'executive', label: t('dashboard.resumeBuilder.templateCategories.executive') }
+                ].map(cat => (
                   <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
                     className={`px-4 py-2 rounded-lg text-sm transition-all ${
-                      selectedCategory === cat
+                      selectedCategory === cat.id
                         ? 'bg-purple-500 text-white'
                         : isDark
                           ? 'bg-white/5 text-gray-300 hover:bg-white/10'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    {cat}
+                    {cat.label}
                   </button>
                 ))}
               </div>
@@ -1231,14 +1245,18 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               <div className="grid grid-cols-2 gap-6">
                 {templates
                   .filter(template => 
-                    selectedCategory === 'All' || template.category === selectedCategory
+                    selectedCategory === 'all' || template.category === selectedCategory
                   )
                   .map((template) => (
                   <button
                     key={template.id}
                     onClick={() => {
                       setResumeData({ ...resumeData, templateId: template.id });
-                      setEstelMessage(`Excellent choice! The ${template.name} template is ${template.description.toLowerCase()}. It has a ${template.atsScore}% ATS compatibility score! 🎨`);
+                      setEstelMessage(t('dashboard.resumeBuilder.templateSelectedMessage', {
+                        name: template.name,
+                        description: template.description.toLowerCase(),
+                        score: template.atsScore
+                      }));
                     }}
                     className={`group relative p-6 rounded-2xl border-2 transition-all hover:scale-105 text-left ${
                       resumeData.templateId === template.id
@@ -1280,13 +1298,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                           style={{ width: `${template.atsScore}%` }}
                         ></div>
                       </div>
-                      <span className="text-sm text-green-500">{template.atsScore}% ATS</span>
+                      <span className="text-sm text-green-500">{template.atsScore}% {t('dashboard.resumeBuilder.ats')}</span>
                     </div>
 
                     {/* Popular Badge */}
                     {['modern-pro', 'classic', 'technical'].includes(template.id) && (
                       <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-yellow-500 text-white text-xs">
-                        ⭐ Popular
+                        {t('dashboard.resumeBuilder.popular')}
                       </div>
                     )}
                   </button>
@@ -1300,13 +1318,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   className="bg-white/10 hover:bg-white/20 text-white border-0"
                 >
                   <ChevronLeft className="size-4 mr-2" />
-                  Back
+                  {t('dashboard.resumeBuilder.buttons.previous')}
                 </Button>
                 <Button
                   onClick={nextStep}
                   className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
                 >
-                  Continue
+                  {t('dashboard.resumeBuilder.continue')}
                   <ChevronRight className="size-4 ml-2" />
                 </Button>
               </div>
@@ -1317,17 +1335,17 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
           {currentStep === 'personal' && (
             <div>
               <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Personal Information
+                {t('dashboard.resumeBuilder.personalInfo.title')}
               </h2>
               <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Tell us about yourself
+                {t('dashboard.resumeBuilder.tellUsAboutYourself')}
               </p>
 
               <div className="space-y-6">
                 {/* Full Name */}
                 <div>
                   <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Full Name *
+                    {t('dashboard.resumeBuilder.personalInfo.fullName')} *
                   </label>
                   <input
                     type="text"
@@ -1336,7 +1354,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       ...resumeData,
                       personalInfo: { ...resumeData.personalInfo, fullName: e.target.value }
                     })}
-                    placeholder="John Doe"
+                    placeholder={t('dashboard.resumeBuilder.personalInfo.fullNamePlaceholder')}
                     className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                       isDark
                         ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1349,7 +1367,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                      Professional Headline *
+                      {t('dashboard.resumeBuilder.personalInfo.headline')} *
                     </label>
                     <button
                       onClick={async () => {
@@ -1367,7 +1385,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       className="text-sm text-purple-500 hover:text-purple-600 flex items-center gap-1"
                     >
                       <Sparkles className="size-4" />
-                      AI Generate
+                      {t('dashboard.resumeBuilder.aiGenerate')}
                     </button>
                   </div>
                   <input
@@ -1377,7 +1395,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       ...resumeData,
                       personalInfo: { ...resumeData.personalInfo, headline: e.target.value }
                     })}
-                    placeholder="Senior Software Engineer | Full-Stack Developer | Tech Enthusiast"
+                    placeholder={t('dashboard.resumeBuilder.personalInfo.headlinePlaceholder')}
                     className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                       isDark
                         ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1385,7 +1403,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     }`}
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    {resumeData.personalInfo.headline.length}/100 characters
+                    {resumeData.personalInfo.headline.length}/100 {t('dashboard.resumeBuilder.characters')}
                   </p>
                 </div>
 
@@ -1394,7 +1412,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   <div>
                     <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                       <AtSign className="size-4 inline mr-1" />
-                      Email *
+                      {t('dashboard.resumeBuilder.personalInfo.email')} *
                     </label>
                     <input
                       type="email"
@@ -1403,7 +1421,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                         ...resumeData,
                         personalInfo: { ...resumeData.personalInfo, email: e.target.value }
                       })}
-                      placeholder="john.doe@email.com"
+                      placeholder={t('dashboard.resumeBuilder.personalInfo.emailPlaceholder')}
                       className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                         isDark
                           ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1411,14 +1429,14 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       }`}
                     />
                     {resumeData.personalInfo.email && !resumeData.personalInfo.email.includes('@') && (
-                      <p className="text-xs text-red-500 mt-1">⚠️ Invalid email format</p>
+                      <p className="text-xs text-red-500 mt-1">{t('dashboard.resumeBuilder.invalidEmail')}</p>
                     )}
                   </div>
 
                   <div>
                     <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                       <Phone className="size-4 inline mr-1" />
-                      Phone *
+                      {t('dashboard.resumeBuilder.personalInfo.phone')} *
                     </label>
                     <input
                       type="tel"
@@ -1427,7 +1445,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                         ...resumeData,
                         personalInfo: { ...resumeData.personalInfo, phone: e.target.value }
                       })}
-                      placeholder="+1 (555) 123-4567"
+                      placeholder={t('dashboard.resumeBuilder.personalInfo.phonePlaceholder')}
                       className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                         isDark
                           ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1439,18 +1457,18 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
 
                 {/* Location */}
                 <div>
-                  <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    <MapPin className="size-4 inline mr-1" />
-                    Location *
-                  </label>
-                  <input
-                    type="text"
-                    value={resumeData.personalInfo.location}
-                    onChange={(e) => setResumeData({
-                      ...resumeData,
-                      personalInfo: { ...resumeData.personalInfo, location: e.target.value }
-                    })}
-                    placeholder="San Francisco, CA"
+                    <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                      <MapPin className="size-4 inline mr-1" />
+                      {t('dashboard.resumeBuilder.personalInfo.location')} *
+                    </label>
+                    <input
+                      type="text"
+                      value={resumeData.personalInfo.location}
+                      onChange={(e) => setResumeData({
+                        ...resumeData,
+                        personalInfo: { ...resumeData.personalInfo, location: e.target.value }
+                      })}
+                      placeholder={t('dashboard.resumeBuilder.personalInfo.locationPlaceholder')}
                     className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                       isDark
                         ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1464,7 +1482,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   <div>
                     <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                       <Linkedin className="size-4 inline mr-1" />
-                      LinkedIn
+                      {t('dashboard.resumeBuilder.personalInfo.linkedin')}
                     </label>
                     <input
                       type="url"
@@ -1473,7 +1491,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                         ...resumeData,
                         personalInfo: { ...resumeData.personalInfo, linkedin: e.target.value }
                       })}
-                      placeholder="linkedin.com/in/johndoe"
+                      placeholder={t('dashboard.resumeBuilder.personalInfo.linkedinPlaceholder')}
                       className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                         isDark
                           ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1485,7 +1503,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   <div>
                     <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                       <Github className="size-4 inline mr-1" />
-                      GitHub
+                      {t('dashboard.resumeBuilder.personalInfo.github')}
                     </label>
                     <input
                       type="url"
@@ -1494,7 +1512,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                         ...resumeData,
                         personalInfo: { ...resumeData.personalInfo, github: e.target.value }
                       })}
-                      placeholder="github.com/johndoe"
+                      placeholder={t('dashboard.resumeBuilder.personalInfo.githubPlaceholder')}
                       className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                         isDark
                           ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1506,7 +1524,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   <div>
                     <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                       <Globe className="size-4 inline mr-1" />
-                      Portfolio
+                      {t('dashboard.resumeBuilder.personalInfo.portfolio')}
                     </label>
                     <input
                       type="url"
@@ -1515,7 +1533,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                         ...resumeData,
                         personalInfo: { ...resumeData.personalInfo, portfolio: e.target.value }
                       })}
-                      placeholder="johndoe.com"
+                      placeholder={t('dashboard.resumeBuilder.personalInfo.portfolioPlaceholder')}
                       className={`w-full px-4 py-3 rounded-xl border transition-colors ${
                         isDark
                           ? 'bg-white/5 border-white/10 text-white placeholder-gray-500'
@@ -1533,14 +1551,14 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   className="bg-white/10 hover:bg-white/20 text-white border-0"
                 >
                   <ChevronLeft className="size-4 mr-2" />
-                  Back
+                  {t('dashboard.resumeBuilder.buttons.previous')}
                 </Button>
                 <Button
                   onClick={nextStep}
                   disabled={!resumeData.personalInfo.fullName || !resumeData.personalInfo.email}
                   className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 disabled:opacity-50"
                 >
-                  Continue
+                  {t('dashboard.resumeBuilder.continue')}
                   <ChevronRight className="size-4 ml-2" />
                 </Button>
               </div>
@@ -1551,25 +1569,27 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
           {currentStep === 'summary' && (
             <div>
               <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Professional Summary
+                {t('dashboard.resumeBuilder.summary.title')}
               </h2>
               <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                A compelling summary hooks recruiters in 6 seconds
+                {t('dashboard.resumeBuilder.summary.description')}
               </p>
 
               {/* AI Generator Options */}
               <div className={`p-6 rounded-xl mb-6 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
                 <h3 className={`text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  ✨ AI Summary Generator
+                  {t('dashboard.resumeBuilder.aiSummaryGenerator')}
                 </h3>
                 <div className="grid grid-cols-3 gap-4 mb-4">
                   <div>
                     <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                      Target Role
+                      {t('dashboard.resumeBuilder.targetRole')}
                     </label>
                     <input
                       type="text"
-                      placeholder="Software Engineer"
+                      value={targetRole}
+                      onChange={(e) => setTargetRole(e.target.value)}
+                      placeholder={t('dashboard.resumeBuilder.targetRolePlaceholder')}
                       className={`w-full px-3 py-2 rounded-lg text-sm ${
                         isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-white border border-gray-200 text-gray-900'
                       }`}
@@ -1577,11 +1597,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   </div>
                   <div>
                     <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                      Years of Experience
+                      {t('dashboard.resumeBuilder.yearsOfExperience')}
                     </label>
                     <input
                       type="text"
-                      placeholder="5+"
+                      value={yearsOfExperience}
+                      onChange={(e) => setYearsOfExperience(e.target.value)}
+                      placeholder={t('dashboard.resumeBuilder.yearsOfExperiencePlaceholder')}
                       className={`w-full px-3 py-2 rounded-lg text-sm ${
                         isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-white border border-gray-200 text-gray-900'
                       }`}
@@ -1589,11 +1611,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   </div>
                   <div>
                     <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                      Industry
+                      {t('dashboard.resumeBuilder.industry')}
                     </label>
                     <input
                       type="text"
-                      placeholder="Technology"
+                      value={industry}
+                      onChange={(e) => setIndustry(e.target.value)}
+                      placeholder={t('dashboard.resumeBuilder.industryPlaceholder')}
                       className={`w-full px-3 py-2 rounded-lg text-sm ${
                         isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-white border border-gray-200 text-gray-900'
                       }`}
@@ -1603,9 +1627,9 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 <Button
                   onClick={async () => {
                     const result = await generateWithAI('summary', {
-                      title: 'Software Engineer',
-                      years: '5+',
-                      industry: 'Technology'
+                      title: targetRole || 'Software Engineer',
+                      years: yearsOfExperience || '5+',
+                      industry: industry || 'Technology'
                     });
                     setResumeData({ ...resumeData, summary: result });
                   }}
@@ -1613,7 +1637,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
                 >
                   <Wand2 className="size-4 mr-2" />
-                  Generate Summary with AI
+                  {t('dashboard.resumeBuilder.generateSummaryWithAI')}
                 </Button>
               </div>
 
@@ -1621,20 +1645,20 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Your Professional Summary
+                    {t('dashboard.resumeBuilder.yourProfessionalSummary')}
                   </label>
                   <span className={`text-xs ${
                     resumeData.summary.length >= 150 && resumeData.summary.length <= 300
                       ? 'text-green-500'
                       : 'text-gray-500'
                   }`}>
-                    {resumeData.summary.length}/300 {resumeData.summary.length >= 150 && resumeData.summary.length <= 300 ? '✓ Optimal' : ''}
+                    {resumeData.summary.length}/300 {resumeData.summary.length >= 150 && resumeData.summary.length <= 300 ? t('dashboard.resumeBuilder.optimal') : ''}
                   </span>
                 </div>
                 <textarea
                   value={resumeData.summary}
                   onChange={(e) => setResumeData({ ...resumeData, summary: e.target.value })}
-                  placeholder="Write a compelling summary that highlights your key achievements and value proposition..."
+                  placeholder={t('dashboard.resumeBuilder.summaryPlaceholder')}
                   rows={6}
                   className={`w-full px-4 py-3 rounded-xl border transition-colors resize-none ${
                     isDark
@@ -1647,10 +1671,10 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               {/* Tone Selector */}
               <div className="mt-4">
                 <label className={`block text-sm mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Tone
+                  {t('dashboard.resumeBuilder.tone')}
                 </label>
                 <div className="flex gap-2">
-                  {['Professional', 'Creative', 'Technical'].map(tone => (
+                  {[t('dashboard.resumeBuilder.professional'), t('dashboard.resumeBuilder.creative'), t('dashboard.resumeBuilder.technical')].map(tone => (
                     <button
                       key={tone}
                       className={`px-4 py-2 rounded-lg text-sm transition-all ${
@@ -1672,13 +1696,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   className="bg-white/10 hover:bg-white/20 text-white border-0"
                 >
                   <ChevronLeft className="size-4 mr-2" />
-                  Back
+                  {t('dashboard.resumeBuilder.buttons.previous')}
                 </Button>
                 <Button
                   onClick={nextStep}
                   className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
                 >
-                  Continue
+                  {t('dashboard.resumeBuilder.continue')}
                   <ChevronRight className="size-4 ml-2" />
                 </Button>
               </div>
@@ -1689,10 +1713,10 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
           {currentStep === 'experience' && (
             <div>
               <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Work Experience
+                {t('dashboard.resumeBuilder.workExperience')}
               </h2>
               <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Add your professional experience with AI-powered assistance
+                {t('dashboard.resumeBuilder.addExperienceDescription')}
               </p>
 
               {/* Show empty state if no experiences */}
@@ -1700,20 +1724,20 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 <div className={`p-12 rounded-xl text-center mb-6 ${isDark ? 'bg-white/5' : 'bg-gradient-to-br from-purple-50 to-pink-50'}`}>
                   <Briefcase className={`size-16 mx-auto mb-4 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
                   <h3 className={`text-xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    No Experience Added Yet
+                    {t('dashboard.resumeBuilder.noExperienceAdded')}
                   </h3>
                   <p className={`mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Add your first work experience to get started
+                    {t('dashboard.resumeBuilder.addFirstExperienceDescription')}
                   </p>
                   <Button
                     onClick={() => {
                       addExperience();
-                      setEstelMessage("Great! Add your job details and I'll help you write impressive achievement bullets! 💼");
+                      setEstelMessage(t('dashboard.resumeBuilder.addExperienceMessage'));
                     }}
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
                   >
                     <Plus className="size-4 mr-2" />
-                    Add First Experience
+                    {t('dashboard.resumeBuilder.addFirstExperience')}
                   </Button>
                 </div>
               )}
@@ -1731,7 +1755,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       <div className="flex items-center gap-2">
                         <GripVertical className="size-5 text-gray-400 cursor-move" />
                         <h3 className={`text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                          Experience #{index + 1}
+                          {t('dashboard.resumeBuilder.experienceNumber', { n: index + 1 })}
                         </h3>
                       </div>
                       {resumeData.experiences.length > 1 && (
@@ -1747,13 +1771,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Company *
+                          {t('dashboard.resumeBuilder.company')} *
                         </label>
                         <input
                           type="text"
                           value={exp.company}
                           onChange={(e) => updateExperience(exp.id, 'company', e.target.value)}
-                          placeholder="Google"
+                          placeholder={t('dashboard.resumeBuilder.companyPlaceholder')}
                           className={`w-full px-3 py-2 rounded-lg ${
                             isDark ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
                           }`}
@@ -1761,13 +1785,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       </div>
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Job Title *
+                          {t('dashboard.resumeBuilder.jobTitle')} *
                         </label>
                         <input
                           type="text"
                           value={exp.title}
                           onChange={(e) => updateExperience(exp.id, 'title', e.target.value)}
-                          placeholder="Senior Software Engineer"
+                          placeholder={t('dashboard.resumeBuilder.jobTitlePlaceholder')}
                           className={`w-full px-3 py-2 rounded-lg ${
                             isDark ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
                           }`}
@@ -1778,13 +1802,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <div className="grid grid-cols-3 gap-4 mb-4">
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Location
+                          {t('dashboard.resumeBuilder.location')}
                         </label>
                         <input
                           type="text"
                           value={exp.location}
                           onChange={(e) => updateExperience(exp.id, 'location', e.target.value)}
-                          placeholder="San Francisco, CA"
+                          placeholder={t('dashboard.resumeBuilder.locationPlaceholder')}
                           className={`w-full px-3 py-2 rounded-lg ${
                             isDark ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
                           }`}
@@ -1792,7 +1816,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       </div>
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Start Date
+                          {t('dashboard.resumeBuilder.startDate')}
                         </label>
                         <input
                           type="month"
@@ -1805,7 +1829,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       </div>
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          End Date
+                          {t('dashboard.resumeBuilder.endDate')}
                         </label>
                         <div className="flex items-center gap-2">
                           <input
@@ -1825,7 +1849,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                             onChange={(e) => updateExperience(exp.id, 'current', e.target.checked)}
                             className="rounded"
                           />
-                          <span className="text-sm text-gray-500">Current</span>
+                          <span className="text-sm text-gray-500">{t('dashboard.resumeBuilder.current')}</span>
                         </label>
                       </div>
                     </div>
@@ -1834,19 +1858,27 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <div>
                       <div className="flex items-center justify-between mb-2">
                         <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Achievements & Responsibilities
+                          {t('dashboard.resumeBuilder.achievementsAndResponsibilities')}
                         </label>
                         <button
                           onClick={async () => {
-                            const result = await generateWithAI('bullet', { project: exp.title });
-                            const newBullets = [...exp.bullets, result];
+                            const result = await generateWithAI('bullet', { 
+                              title: exp.title,
+                              company: exp.company,
+                              location: exp.location,
+                              startDate: exp.startDate,
+                              endDate: exp.current ? 'Present' : exp.endDate
+                            });
+                            // Result is now an array of bullet points
+                            const bulletsArray = Array.isArray(result) ? result : [result];
+                            const newBullets = [...exp.bullets, ...bulletsArray];
                             updateExperience(exp.id, 'bullets', newBullets);
                           }}
                           disabled={aiGenerating}
                           className="text-sm text-purple-500 hover:text-purple-600 flex items-center gap-1"
                         >
                           <Sparkles className="size-4" />
-                          AI Generate Bullet
+                          {t('dashboard.resumeBuilder.aiGenerateBullet')}
                         </button>
                       </div>
                       <div className="space-y-2">
@@ -1860,7 +1892,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                                 newBullets[bulletIndex] = e.target.value;
                                 updateExperience(exp.id, 'bullets', newBullets);
                               }}
-                              placeholder="Led team of 8 engineers to deliver critical project, resulting in 35% improvement..."
+                              placeholder={t('dashboard.resumeBuilder.bulletPlaceholder')}
                               rows={2}
                               className={`flex-1 px-3 py-2 rounded-lg resize-none ${
                                 isDark ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
@@ -1889,7 +1921,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                         }`}
                       >
                         <Plus className="size-4" />
-                        Add Bullet Point
+                        {t('dashboard.resumeBuilder.addBulletPoint')}
                       </button>
                     </div>
                   </div>
@@ -1900,12 +1932,16 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               <Button
                 onClick={() => {
                   addExperience();
-                  setEstelMessage("Great! Add your job details and I'll help you write impressive achievement bullets! 💼");
+                  setEstelMessage(t('dashboard.resumeBuilder.addExperienceMessage'));
                 }}
-                className="w-full mb-6 bg-white/10 hover:bg-white/20 text-white border-0"
+                className={`w-full mb-6 border-2 ${
+                  isDark 
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-purple-500/50' 
+                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-purple-400'
+                }`}
               >
                 <Plus className="size-4 mr-2" />
-                Add Another Experience
+                {t('dashboard.resumeBuilder.addAnotherExperience')}
               </Button>
 
               {/* Navigation */}
@@ -1915,13 +1951,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   className="bg-white/10 hover:bg-white/20 text-white border-0"
                 >
                   <ChevronLeft className="size-4 mr-2" />
-                  Back
+                  {t('dashboard.resumeBuilder.buttons.previous')}
                 </Button>
                 <Button
                   onClick={nextStep}
                   className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
                 >
-                  Continue
+                  {t('dashboard.resumeBuilder.continue')}
                   <ChevronRight className="size-4 ml-2" />
                 </Button>
               </div>
@@ -1932,10 +1968,10 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
           {currentStep === 'education' && (
             <div>
               <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Education
+                {t('dashboard.resumeBuilder.education')}
               </h2>
               <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Add your educational background
+                {t('dashboard.resumeBuilder.addEducationDescription')}
               </p>
 
               {/* Show empty state if no education */}
@@ -1943,20 +1979,20 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 <div className={`p-12 rounded-xl text-center mb-6 ${isDark ? 'bg-white/5' : 'bg-gradient-to-br from-purple-50 to-pink-50'}`}>
                   <GraduationCap className={`size-16 mx-auto mb-4 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
                   <h3 className={`text-xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    No Education Added Yet
+                    {t('dashboard.resumeBuilder.noEducationAdded')}
                   </h3>
                   <p className={`mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Add your first degree or certification
+                    {t('dashboard.resumeBuilder.addFirstEducationDescription')}
                   </p>
                   <Button
                     onClick={() => {
                       addEducation();
-                      setEstelMessage("Education is your foundation! Let's add your degrees and achievements. 🎓");
+                      setEstelMessage(t('dashboard.resumeBuilder.addEducationMessage'));
                     }}
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
                   >
                     <Plus className="size-4 mr-2" />
-                    Add First Education
+                    {t('dashboard.resumeBuilder.addFirstEducation')}
                   </Button>
                 </div>
               )}
@@ -1974,7 +2010,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       <div className="flex items-center gap-2">
                         <GripVertical className="size-5 text-gray-400 cursor-move" />
                         <h3 className={`text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                          Education #{index + 1}
+                          {t('dashboard.resumeBuilder.educationNumber', { n: index + 1 })}
                         </h3>
                       </div>
                       {resumeData.education.length > 1 && (
@@ -1990,13 +2026,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Institution *
+                          {t('dashboard.resumeBuilder.institution')} *
                         </label>
                         <input
                           type="text"
                           value={edu.institution}
                           onChange={(e) => updateEducation(edu.id, 'institution', e.target.value)}
-                          placeholder="Stanford University"
+                          placeholder={t('dashboard.resumeBuilder.institutionPlaceholder')}
                           className={`w-full px-3 py-2 rounded-lg ${
                             isDark ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
                           }`}
@@ -2004,7 +2040,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       </div>
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Degree *
+                          {t('dashboard.resumeBuilder.degree')} *
                         </label>
                         <select
                           value={edu.degree}
@@ -2013,7 +2049,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                             isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-gray-50 border border-gray-200 text-gray-900'
                           }`}
                         >
-                          <option value="">Select Degree</option>
+                          <option value="">{t('dashboard.resumeBuilder.selectDegree')}</option>
                           <option value="B.Tech">B.Tech</option>
                           <option value="B.S.">B.S.</option>
                           <option value="M.Tech">M.Tech</option>
@@ -2028,13 +2064,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Field of Study *
+                          {t('dashboard.resumeBuilder.fieldOfStudy')} *
                         </label>
                         <input
                           type="text"
                           value={edu.field}
                           onChange={(e) => updateEducation(edu.id, 'field', e.target.value)}
-                          placeholder="Computer Science"
+                          placeholder={t('dashboard.resumeBuilder.fieldOfStudyPlaceholder')}
                           className={`w-full px-3 py-2 rounded-lg ${
                             isDark ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
                           }`}
@@ -2042,13 +2078,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                       </div>
                       <div>
                         <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Graduation Year
+                          {t('dashboard.resumeBuilder.graduationYear')}
                         </label>
                         <input
                           type="text"
                           value={edu.graduationYear}
                           onChange={(e) => updateEducation(edu.id, 'graduationYear', e.target.value)}
-                          placeholder="2024"
+                          placeholder={t('dashboard.resumeBuilder.graduationYearPlaceholder')}
                           className={`w-full px-3 py-2 rounded-lg ${
                             isDark ? 'bg-white/5 border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
                           }`}
@@ -2064,14 +2100,14 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                           onChange={(e) => updateEducation(edu.id, 'showGpa', e.target.checked)}
                           className="rounded"
                         />
-                        <span className="text-sm text-gray-500">Show GPA</span>
+                        <span className="text-sm text-gray-500">{t('dashboard.resumeBuilder.showGpa')}</span>
                       </label>
                       {edu.showGpa && (
                         <input
                           type="text"
                           value={edu.gpa}
                           onChange={(e) => updateEducation(edu.id, 'gpa', e.target.value)}
-                          placeholder="3.8/4.0"
+                          placeholder={t('dashboard.resumeBuilder.gpaPlaceholder')}
                           className={`w-full px-3 py-2 rounded-lg ${
                             isDark ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
                           }`}
@@ -2081,11 +2117,11 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
 
                     <div>
                       <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Honors & Awards (optional)
+                        {t('dashboard.resumeBuilder.honorsAndAwards')}
                       </label>
                       <input
                         type="text"
-                        placeholder="Press Enter to add"
+                        placeholder={t('dashboard.resumeBuilder.pressEnterToAdd')}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && e.currentTarget.value) {
                             updateEducation(edu.id, 'honors', [...edu.honors, e.currentTarget.value]);
@@ -2123,12 +2159,12 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               <Button
                 onClick={() => {
                   addEducation();
-                  setEstelMessage("Adding another degree? Great! Education shows your foundation. 🎓");
+                  setEstelMessage(t('dashboard.resumeBuilder.addEducationMessage2'));
                 }}
                 className="w-full mb-6 bg-white/10 hover:bg-white/20 text-white border-0"
               >
                 <Plus className="size-4 mr-2" />
-                Add Another Education
+                {t('dashboard.resumeBuilder.addAnotherEducation')}
               </Button>
 
               {/* Navigation */}
@@ -2138,13 +2174,13 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   className="bg-white/10 hover:bg-white/20 text-white border-0"
                 >
                   <ChevronLeft className="size-4 mr-2" />
-                  Back
+                  {t('dashboard.resumeBuilder.buttons.previous')}
                 </Button>
                 <Button
                   onClick={nextStep}
                   className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
                 >
-                  Continue
+                  {t('dashboard.resumeBuilder.continue')}
                   <ChevronRight className="size-4 ml-2" />
                 </Button>
               </div>
@@ -2154,17 +2190,17 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
           {/* STEP: SKILLS */}
           {currentStep === 'skills' && (
             <div>
-              <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Skills</h2>
-              <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Showcase your skills</p>
+              <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.resumeBuilder.skills')}</h2>
+              <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.resumeBuilder.showcaseYourSkills')}</p>
               <div className="mb-8">
-                <h3 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>💻 Technical Skills</h3>
+                <h3 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.resumeBuilder.technicalSkills')}</h3>
                 <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
                   <div className="flex gap-2 mb-4">
-                    <input type="text" value={newTech} onChange={(e) => setNewTech(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && newTech.trim()) { addSkill('technical', newTech.trim()); setNewTech(''); }}} placeholder="Type and press Enter" className={`flex-1 px-4 py-3 rounded-xl border ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`} />
+                    <input type="text" value={newTech} onChange={(e) => setNewTech(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && newTech.trim()) { addSkill('technical', newTech.trim()); setNewTech(''); }}} placeholder={t('dashboard.resumeBuilder.typeAndPressEnter')} className={`flex-1 px-4 py-3 rounded-xl border ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`} />
                     <Button onClick={() => { if (newTech.trim()) { addSkill('technical', newTech.trim()); setNewTech(''); }}} className="bg-purple-500 hover:bg-purple-600 text-white border-0"><Plus className="size-4" /></Button>
                   </div>
                   <div className="mb-4">
-                    <p className="text-sm text-gray-500 mb-2">💡 Suggested:</p>
+                    <p className="text-sm text-gray-500 mb-2">{t('dashboard.resumeBuilder.suggested')}</p>
                     <div className="flex flex-wrap gap-2">
                       {['JavaScript', 'Python', 'React', 'Node.js', 'AWS', 'Docker'].map(skill => (
                         <button key={skill} onClick={() => { if (!resumeData.technicalSkills.includes(skill)) addSkill('technical', skill); }} className={`px-3 py-1 rounded-lg text-sm ${resumeData.technicalSkills.includes(skill) ? 'bg-green-500 text-white' : isDark ? 'bg-white/10 text-gray-300' : 'bg-gray-200 text-gray-700'}`}>{resumeData.technicalSkills.includes(skill) ? '✓ ' : '+ '}{skill}</button>
@@ -2177,14 +2213,14 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 </div>
               </div>
               <div className="mb-8">
-                <h3 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>🤝 Soft Skills</h3>
+                <h3 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.resumeBuilder.softSkills')}</h3>
                 <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
                   <div className="flex gap-2 mb-4">
-                    <input type="text" value={newSkill} onChange={(e) => setNewSkill(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && newSkill.trim()) { addSkill('soft', newSkill.trim()); setNewSkill(''); }}} placeholder="Type and press Enter" className={`flex-1 px-4 py-3 rounded-xl border ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`} />
+                    <input type="text" value={newSkill} onChange={(e) => setNewSkill(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && newSkill.trim()) { addSkill('soft', newSkill.trim()); setNewSkill(''); }}} placeholder={t('dashboard.resumeBuilder.typeAndPressEnter')} className={`flex-1 px-4 py-3 rounded-xl border ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`} />
                     <Button onClick={() => { if (newSkill.trim()) { addSkill('soft', newSkill.trim()); setNewSkill(''); }}} className="bg-purple-500 hover:bg-purple-600 text-white border-0"><Plus className="size-4" /></Button>
                   </div>
                   <div className="mb-4">
-                    <p className="text-sm text-gray-500 mb-2">💡 Suggested:</p>
+                    <p className="text-sm text-gray-500 mb-2">{t('dashboard.resumeBuilder.suggested')}</p>
                     <div className="flex flex-wrap gap-2">
                       {['Leadership', 'Communication', 'Problem Solving', 'Teamwork'].map(skill => (
                         <button key={skill} onClick={() => { if (!resumeData.softSkills.includes(skill)) addSkill('soft', skill); }} className={`px-3 py-1 rounded-lg text-sm ${resumeData.softSkills.includes(skill) ? 'bg-green-500 text-white' : isDark ? 'bg-white/10 text-gray-300' : 'bg-gray-200 text-gray-700'}`}>{resumeData.softSkills.includes(skill) ? '✓ ' : '+ '}{skill}</button>
@@ -2196,13 +2232,214 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between"><Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0"><ChevronLeft className="size-4 mr-2" />Back</Button><Button onClick={nextStep} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">Continue<ChevronRight className="size-4 ml-2" /></Button></div>
+              <div className="flex justify-between">
+                <Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0">
+                  <ChevronLeft className="size-4 mr-2" />
+                  {t('dashboard.resumeBuilder.buttons.previous')}
+                </Button>
+                <Button onClick={nextStep} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
+                  {t('dashboard.resumeBuilder.continue')}
+                  <ChevronRight className="size-4 ml-2" />
+                </Button>
+              </div>
             </div>
           )}
 
           {/* STEP: PROJECTS */}
-          {currentStep === 'projects' && (<div><h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Projects</h2><p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Showcase your best work</p><div className="space-y-6 mb-6">{resumeData.projects.map((project: any, index: number) => (<div key={project.id} className={`p-6 rounded-xl border-2 ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'}`}><div className="flex items-start justify-between mb-4"><h3 className={isDark ? 'text-white' : 'text-gray-900'}>Project #{index + 1}</h3>{resumeData.projects.length > 1 && (<button onClick={() => removeProject(project.id)} className="text-red-500"><Trash2 className="size-5" /></button>)}</div><div className="grid grid-cols-2 gap-4 mb-4"><input type="text" value={project.name} onChange={(e) => updateProject(project.id, 'name', e.target.value)} placeholder="Project Name" className={`px-3 py-2 rounded-lg ${isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-gray-50 border border-gray-200'}`} /><input type="text" value={project.date} onChange={(e) => updateProject(project.id, 'date', e.target.value)} placeholder="Date" className={`px-3 py-2 rounded-lg ${isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-gray-50 border border-gray-200'}`} /></div><textarea value={project.description} onChange={(e) => updateProject(project.id, 'description', e.target.value)} placeholder="Description" rows={3} className={`w-full px-3 py-2 rounded-lg mb-4 ${isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-gray-50 border border-gray-200'}`} /><input type="text" placeholder="Add tech (press Enter)" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { updateProject(project.id, 'technologies', [...project.technologies, e.currentTarget.value]); e.currentTarget.value = ''; }}} className={`w-full px-3 py-2 rounded-lg mb-2 ${isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-gray-50 border border-gray-200'}`} /><div className="flex flex-wrap gap-2">{project.technologies.map((tech: string, i: number) => (<span key={i} className="px-3 py-1 rounded-full bg-teal-500/20 text-teal-500 text-sm flex items-center gap-2">{tech}<button onClick={() => updateProject(project.id, 'technologies', project.technologies.filter((_: any, idx: number) => idx !== i))}><X className="size-3" /></button></span>))}</div></div>))}</div><Button onClick={addProject} className="w-full mb-6 bg-white/10 hover:bg-white/20 text-white border-0"><Plus className="size-4 mr-2" />Add Project</Button><div className="flex justify-between"><Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0"><ChevronLeft className="size-4 mr-2" />Back</Button><Button onClick={nextStep} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">Continue<ChevronRight className="size-4 ml-2" /></Button></div></div>)}
-{currentStep === 'additional' && (<div><h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Additional</h2><p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Add certifications, languages, awards</p><div className="space-y-6"><div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}><h3 className={`mb-4 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}><Award className="size-5" />Certifications</h3><input type="text" placeholder="Press Enter" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { setResumeData({ ...resumeData, certifications: [...resumeData.certifications, e.currentTarget.value] }); e.currentTarget.value = ''; }}} className={`w-full px-4 py-3 rounded-xl border mb-3 ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`} /><div className="flex flex-wrap gap-2">{resumeData.certifications.map((cert: string, i: number) => (<span key={i} className="px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 text-white flex items-center gap-2">{cert}<button onClick={() => setResumeData({ ...resumeData, certifications: resumeData.certifications.filter((_: any, idx: number) => idx !== i) })}><X className="size-4" /></button></span>))}</div></div><div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}><h3 className={`mb-4 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}><Languages className="size-5" />Languages</h3><input type="text" placeholder="Press Enter" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { setResumeData({ ...resumeData, languages: [...resumeData.languages, e.currentTarget.value] }); e.currentTarget.value = ''; }}} className={`w-full px-4 py-3 rounded-xl border mb-3 ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`} /><div className="flex flex-wrap gap-2">{resumeData.languages.map((lang: string, i: number) => (<span key={i} className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 text-white flex items-center gap-2">{lang}<button onClick={() => setResumeData({ ...resumeData, languages: resumeData.languages.filter((_: any, idx: number) => idx !== i) })}><X className="size-4" /></button></span>))}</div></div><div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}><h3 className={`mb-4 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}><Trophy className="size-5" />Awards</h3><input type="text" placeholder="Press Enter" onKeyDown={(e) => { if (e.key === 'Enter' && e.currentTarget.value) { setResumeData({ ...resumeData, awards: [...resumeData.awards, e.currentTarget.value] }); e.currentTarget.value = ''; }}} className={`w-full px-4 py-3 rounded-xl border mb-3 ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`} /><div className="flex flex-wrap gap-2">{resumeData.awards.map((award: string, i: number) => (<span key={i} className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 text-white flex items-center gap-2">{award}<button onClick={() => setResumeData({ ...resumeData, awards: resumeData.awards.filter((_: any, idx: number) => idx !== i) })}><X className="size-4" /></button></span>))}</div></div></div><div className="flex justify-between mt-8"><Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0"><ChevronLeft className="size-4 mr-2" />Back</Button><Button onClick={nextStep} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">Continue<ChevronRight className="size-4 ml-2" /></Button></div></div>)}
+          {/* STEP: PROJECTS */}
+          {currentStep === 'projects' && (
+            <div>
+              <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {t('dashboard.resumeBuilder.projects')}
+              </h2>
+              <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                {t('dashboard.resumeBuilder.showcaseYourBestWork')}
+              </p>
+              <div className="space-y-6 mb-6">
+                {resumeData.projects.map((project: any, index: number) => (
+                  <div key={project.id} className={`p-6 rounded-xl border-2 ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'}`}>
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className={isDark ? 'text-white' : 'text-gray-900'}>
+                        {t('dashboard.resumeBuilder.projectNumber', { n: index + 1 })}
+                      </h3>
+                      {resumeData.projects.length > 1 && (
+                        <button onClick={() => removeProject(project.id)} className="text-red-500">
+                          <Trash2 className="size-5" />
+                        </button>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <input
+                        type="text"
+                        value={project.name}
+                        onChange={(e) => updateProject(project.id, 'name', e.target.value)}
+                        placeholder={t('dashboard.resumeBuilder.projectName')}
+                        className={`px-3 py-2 rounded-lg ${isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-gray-50 border border-gray-200'}`}
+                      />
+                      <input
+                        type="text"
+                        value={project.date}
+                        onChange={(e) => updateProject(project.id, 'date', e.target.value)}
+                        placeholder={t('dashboard.resumeBuilder.date')}
+                        className={`px-3 py-2 rounded-lg ${isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-gray-50 border border-gray-200'}`}
+                      />
+                    </div>
+                    <textarea
+                      value={project.description}
+                      onChange={(e) => updateProject(project.id, 'description', e.target.value)}
+                      placeholder={t('dashboard.resumeBuilder.description')}
+                      rows={3}
+                      className={`w-full px-3 py-2 rounded-lg mb-4 ${isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-gray-50 border border-gray-200'}`}
+                    />
+                    <input
+                      type="text"
+                      placeholder={t('dashboard.resumeBuilder.addTech')}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && e.currentTarget.value) {
+                          updateProject(project.id, 'technologies', [...project.technologies, e.currentTarget.value]);
+                          e.currentTarget.value = '';
+                        }
+                      }}
+                      className={`w-full px-3 py-2 rounded-lg mb-2 ${isDark ? 'bg-white/5 border border-white/10 text-white' : 'bg-gray-50 border border-gray-200'}`}
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.map((tech: string, i: number) => (
+                        <span key={i} className="px-3 py-1 rounded-full bg-teal-500/20 text-teal-500 text-sm flex items-center gap-2">
+                          {tech}
+                          <button onClick={() => updateProject(project.id, 'technologies', project.technologies.filter((_: any, idx: number) => idx !== i))}>
+                            <X className="size-3" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <Button onClick={addProject} className="w-full mb-6 bg-white/10 hover:bg-white/20 text-white border-0">
+                <Plus className="size-4 mr-2" />
+                {t('dashboard.resumeBuilder.addProject')}
+              </Button>
+              <div className="flex justify-between">
+                <Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0">
+                  <ChevronLeft className="size-4 mr-2" />
+                  {t('dashboard.resumeBuilder.buttons.previous')}
+                </Button>
+                <Button onClick={nextStep} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
+                  {t('dashboard.resumeBuilder.continue')}
+                  <ChevronRight className="size-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
+          {/* STEP: ADDITIONAL */}
+          {currentStep === 'additional' && (
+            <div>
+              <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {t('dashboard.resumeBuilder.additional')}
+              </h2>
+              <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                {t('dashboard.resumeBuilder.addCertificationsLanguagesAwards')}
+              </p>
+              <div className="space-y-6">
+                {/* Certifications */}
+                <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                  <h3 className={`mb-4 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <Award className="size-5" />
+                    {t('dashboard.resumeBuilder.certifications')}
+                  </h3>
+                  <input
+                    type="text"
+                    placeholder={t('dashboard.resumeBuilder.pressEnter')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && e.currentTarget.value) {
+                        setResumeData({ ...resumeData, certifications: [...resumeData.certifications, e.currentTarget.value] });
+                        e.currentTarget.value = '';
+                      }
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl border mb-3 ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`}
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    {resumeData.certifications.map((cert: string, i: number) => (
+                      <span key={i} className="px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 text-white flex items-center gap-2">
+                        {cert}
+                        <button onClick={() => setResumeData({ ...resumeData, certifications: resumeData.certifications.filter((_: any, idx: number) => idx !== i) })}>
+                          <X className="size-4" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Languages */}
+                <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                  <h3 className={`mb-4 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <Languages className="size-5" />
+                    {t('dashboard.resumeBuilder.languages')}
+                  </h3>
+                  <input
+                    type="text"
+                    placeholder={t('dashboard.resumeBuilder.pressEnter')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && e.currentTarget.value) {
+                        setResumeData({ ...resumeData, languages: [...resumeData.languages, e.currentTarget.value] });
+                        e.currentTarget.value = '';
+                      }
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl border mb-3 ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`}
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    {resumeData.languages.map((lang: string, i: number) => (
+                      <span key={i} className="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 text-white flex items-center gap-2">
+                        {lang}
+                        <button onClick={() => setResumeData({ ...resumeData, languages: resumeData.languages.filter((_: any, idx: number) => idx !== i) })}>
+                          <X className="size-4" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Awards */}
+                <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                  <h3 className={`mb-4 flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <Trophy className="size-5" />
+                    {t('dashboard.resumeBuilder.awards')}
+                  </h3>
+                  <input
+                    type="text"
+                    placeholder={t('dashboard.resumeBuilder.pressEnter')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && e.currentTarget.value) {
+                        setResumeData({ ...resumeData, awards: [...resumeData.awards, e.currentTarget.value] });
+                        e.currentTarget.value = '';
+                      }
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl border mb-3 ${isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200'}`}
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    {resumeData.awards.map((award: string, i: number) => (
+                      <span key={i} className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 text-white flex items-center gap-2">
+                        {award}
+                        <button onClick={() => setResumeData({ ...resumeData, awards: resumeData.awards.filter((_: any, idx: number) => idx !== i) })}>
+                          <X className="size-4" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between mt-8">
+                <Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0">
+                  <ChevronLeft className="size-4 mr-2" />
+                  {t('dashboard.resumeBuilder.buttons.previous')}
+                </Button>
+                <Button onClick={nextStep} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
+                  {t('dashboard.resumeBuilder.continue')}
+                  <ChevronRight className="size-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
 {currentStep === 'layout' && (
             <LayoutCustomization
               resumeData={resumeData}
@@ -2212,17 +2449,24 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               nextStep={nextStep}
             />
           )}
-{currentStep === 'critique' && (
-            <div>
-              <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>AI Critique</h2>
-              <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Get AI feedback</p>
+          {/* STEP: CRITIQUE */}
+          {currentStep === 'critique' && (
+            <div className="w-full overflow-x-hidden">
+              <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {t('dashboard.resumeBuilder.aiCritique')}
+              </h2>
+              <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                {t('dashboard.resumeBuilder.getAIFeedback')}
+              </p>
               
               {critiqueData.overall === 0 ? (
                 <div className="text-center py-12">
                   <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
                     <Sparkles className="size-16 text-white" />
                   </div>
-                  <h3 className={`text-2xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Ready for AI Analysis?</h3>
+                  <h3 className={`text-2xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {t('dashboard.resumeBuilder.readyForAIAnalysis')}
+                  </h3>
                   <Button 
                     onClick={generateCritique} 
                     disabled={aiGenerating}
@@ -2231,18 +2475,18 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     {aiGenerating ? (
                       <>
                         <Loader2 className="size-5 mr-2 animate-spin" />
-                        Analyzing...
+                        {t('dashboard.resumeBuilder.analyzing')}
                       </>
                     ) : (
                       <>
                         <Wand2 className="size-5 mr-2" />
-                        Analyze Resume
+                        {t('dashboard.resumeBuilder.analyzeResume')}
                       </>
                     )}
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-6 w-full overflow-x-hidden">
                   {/* Estel's Tip Banner */}
                   {estelMessage && (
                     <div className={`p-4 rounded-xl mb-6 ${isDark ? 'bg-purple-500/20 border border-purple-500/30' : 'bg-purple-50 border border-purple-200'}`}>
@@ -2261,27 +2505,29 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <h3 className={`text-4xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {Math.round(critiqueData.overall)}/100
                     </h3>
-                    <p className="text-purple-500">{critiqueData.overall >= 80 ? 'Excellent!' : 'Good!'}</p>
+                    <p className="text-purple-500">
+                      {critiqueData.overall >= 80 ? t('dashboard.resumeBuilder.excellent') : t('dashboard.resumeBuilder.good')}
+                    </p>
                   </div>
 
                   {/* Category Scores */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
-                      { label: 'Content', value: critiqueData.content },
-                      { label: 'Formatting', value: critiqueData.formatting },
-                      { label: 'Impact', value: critiqueData.impact },
-                      { label: 'Length', value: critiqueData.length }
+                      { label: t('dashboard.resumeBuilder.content'), value: critiqueData.content },
+                      { label: t('dashboard.resumeBuilder.formatting'), value: critiqueData.formatting },
+                      { label: t('dashboard.resumeBuilder.impact'), value: critiqueData.impact },
+                      { label: t('dashboard.resumeBuilder.length'), value: critiqueData.length }
                     ].map((cat) => (
                       <div key={cat.label} className={`p-4 rounded-xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
-                        <p className="text-sm text-gray-500 mb-2">{cat.label}</p>
-                        <div className="flex items-center gap-3">
-                          <div className={`flex-1 h-2 rounded-full ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}>
+                        <p className="text-sm text-gray-500 mb-2 truncate">{cat.label}</p>
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className={`flex-1 h-2 rounded-full min-w-0 ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}>
                             <div 
                               className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" 
                               style={{ width: `${cat.value}%` }}
                             ></div>
                           </div>
-                          <span className={`text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                          <span className={`text-lg flex-shrink-0 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                             {Math.round(cat.value)}
                           </span>
                         </div>
@@ -2291,12 +2537,14 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
 
                   {/* Detailed Feedback */}
                   {detailedFeedback && (
-                    <div className={`rounded-xl border p-6 max-h-[600px] overflow-y-auto ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'}`}>
+                    <div className={`rounded-xl border p-6 max-h-[600px] overflow-y-auto overflow-x-hidden ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'}`}>
                       <h3 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        📝 Detailed Feedback
+                        {t('dashboard.resumeBuilder.detailedFeedback')}
                       </h3>
-                      <div className={`prose prose-sm max-w-none ${isDark ? 'prose-invert' : ''}`}>
-                        {renderMarkdownText(detailedFeedback)}
+                      <div className={`prose prose-sm max-w-none break-words ${isDark ? 'prose-invert' : ''}`}>
+                        <div className="word-break break-words overflow-wrap-anywhere">
+                          {renderMarkdownText(detailedFeedback)}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -2310,12 +2558,12 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     {aiGenerating ? (
                       <>
                         <Loader2 className="size-4 mr-2 animate-spin" />
-                        Analyzing...
+                        {t('dashboard.resumeBuilder.analyzing')}
                       </>
                     ) : (
                       <>
                         <RefreshCw className="size-4 mr-2" />
-                        Re-analyze
+                        {t('dashboard.resumeBuilder.reAnalyze')}
                       </>
                     )}
                   </Button>
@@ -2325,22 +2573,178 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               <div className="flex justify-between mt-8">
                 <Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0">
                   <ChevronLeft className="size-4 mr-2" />
-                  Back
+                  {t('dashboard.resumeBuilder.buttons.previous')}
                 </Button>
                 <Button onClick={nextStep} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
-                  Continue
+                  {t('dashboard.resumeBuilder.continue')}
                   <ChevronRight className="size-4 ml-2" />
                 </Button>
               </div>
             </div>
           )}
-{currentStep === 'ats' && (<div><h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>ATS Check</h2><p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Check ATS compatibility</p>{atsScore === 0 ? (<div className="text-center py-12"><div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center"><FileCheck className="size-16 text-white" /></div><h3 className={`text-2xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Check ATS</h3><Button onClick={() => setAtsScore(calculateATSScore())} className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-0 px-8 py-4"><FileCheck className="size-5 mr-2" />Run ATS Check</Button></div>) : (<div className="space-y-6"><div className={`p-8 rounded-xl text-center ${atsScore >= 80 ? 'bg-green-50' : 'bg-yellow-50'}`}><div className="text-6xl mb-4">{atsScore >= 80 ? '🎉' : '👍'}</div><h3 className={`text-4xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{atsScore}/100</h3><p className={atsScore >= 80 ? 'text-green-500' : 'text-yellow-500'}>{atsScore >= 80 ? 'Excellent!' : 'Good'}</p></div><div className="grid grid-cols-2 gap-4"><div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-white'}`}><div className="flex items-center justify-between mb-2"><span className="text-gray-500">Contact</span><CheckCircle className="size-5 text-green-500" /></div><p className="text-2xl">{resumeData.personalInfo.email ? '100%' : '50%'}</p></div><div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-white'}`}><div className="flex items-center justify-between mb-2"><span className="text-gray-500">Skills</span>{resumeData.technicalSkills.length >= 5 ? <CheckCircle className="size-5 text-green-500" /> : <AlertCircle className="size-5 text-yellow-500" />}</div><p className="text-2xl">{resumeData.technicalSkills.length}</p></div></div><Button onClick={() => { setAtsScore(calculateATSScore()); toast.success('Updated!'); }} className="w-full bg-white/10 hover:bg-white/20 text-white border-0"><RefreshCw className="size-4 mr-2" />Re-check</Button></div>)}<div className="flex justify-between mt-8"><Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0"><ChevronLeft className="size-4 mr-2" />Back</Button><Button onClick={nextStep} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">Continue<ChevronRight className="size-4 ml-2" /></Button></div></div>)}
-{currentStep === 'export' && (<div><h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Export Resume</h2><p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Download and share</p><div className="text-center py-12 mb-8"><div className="text-8xl mb-6">🎉</div><h3 className={`text-3xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Amazing Work!</h3><p className={isDark ? 'text-gray-400' : 'text-gray-600'}>Your resume is ready!</p></div><div style={{ position: 'fixed', left: '-10000px', top: 0, width: '210mm', height: '297mm', background: '#ffffff', overflow: 'hidden', zIndex: -1 }} ref={exportA4Ref}><TemplateRenderer templateId={resumeData.templateId} resumeData={resumeData} isDark={false} /></div><div className="grid grid-cols-2 gap-6 mb-8"><button onClick={() => { const fullName = resumeData.personalInfo.fullName || 'Resume'; const fileName = `${fullName.replace(/\\s+/g,'_')}.pdf`; const target = exportA4Ref.current || previewPrintRef.current; exportElementToPdf(target, fileName); }} className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}><Download className="size-12 mx-auto mb-4 text-purple-500" /><h4 className={isDark ? 'text-white' : 'text-gray-900'}>Download PDF</h4></button><button onClick={() => toast.info('DOCX export coming soon')} className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}><FileText className="size-12 mx-auto mb-4 text-blue-500" /><h4 className={isDark ? 'text-white' : 'text-gray-900'}>Download DOCX</h4></button><button onClick={() => { navigator.clipboard.writeText(window.location.href); toast.success('Link copied!'); }} className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}><Link2 className="size-12 mx-auto mb-4 text-teal-500" /><h4 className={isDark ? 'text-white' : 'text-gray-900'}>Copy Link</h4></button><button onClick={() => { toast.info('Email sharing coming soon'); }} className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}><Mail className="size-12 mx-auto mb-4 text-pink-500" /><h4 className={isDark ? 'text-white' : 'text-gray-900'}>Email Resume</h4></button></div><div className="flex justify-between"><Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0"><ChevronLeft className="size-4 mr-2" />Back</Button><Button onClick={onBack} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">Back to Dashboard<ArrowRight className="size-4 ml-2" /></Button></div></div>)}
+          {/* STEP: ATS CHECK */}
+          {currentStep === 'ats' && (
+            <div>
+              <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {t('dashboard.resumeBuilder.atsCheck')}
+              </h2>
+              <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                {t('dashboard.resumeBuilder.checkATSCompatibility')}
+              </p>
+              {atsScore === 0 ? (
+                <div className="text-center py-12">
+                  <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center">
+                    <FileCheck className="size-16 text-white" />
+                  </div>
+                  <h3 className={`text-2xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {t('dashboard.resumeBuilder.checkATS')}
+                  </h3>
+                  <Button onClick={() => setAtsScore(calculateATSScore())} className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-0 px-8 py-4">
+                    <FileCheck className="size-5 mr-2" />
+                    {t('dashboard.resumeBuilder.runATSCheck')}
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className={`p-8 rounded-xl text-center ${atsScore >= 80 ? 'bg-green-50' : 'bg-yellow-50'}`}>
+                    <div className="text-6xl mb-4">{atsScore >= 80 ? '🎉' : '👍'}</div>
+                    <h3 className={`text-4xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      {atsScore}/100
+                    </h3>
+                    <p className={atsScore >= 80 ? 'text-green-500' : 'text-yellow-500'}>
+                      {atsScore >= 80 ? t('dashboard.resumeBuilder.excellent') : t('dashboard.resumeBuilder.good')}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-gray-500">{t('dashboard.resumeBuilder.contact')}</span>
+                        <CheckCircle className="size-5 text-green-500" />
+                      </div>
+                      <p className="text-2xl">{resumeData.personalInfo.email ? '100%' : '50%'}</p>
+                    </div>
+                    <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-gray-500">{t('dashboard.resumeBuilder.skills')}</span>
+                        {resumeData.technicalSkills.length >= 5 ? (
+                          <CheckCircle className="size-5 text-green-500" />
+                        ) : (
+                          <AlertCircle className="size-5 text-yellow-500" />
+                        )}
+                      </div>
+                      <p className="text-2xl">{resumeData.technicalSkills.length}</p>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => {
+                      setAtsScore(calculateATSScore());
+                      toast.success(t('dashboard.resumeBuilder.updated'));
+                    }}
+                    className="w-full bg-white/10 hover:bg-white/20 text-white border-0"
+                  >
+                    <RefreshCw className="size-4 mr-2" />
+                    {t('dashboard.resumeBuilder.reCheck')}
+                  </Button>
+                </div>
+              )}
+              <div className="flex justify-between mt-8">
+                <Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0">
+                  <ChevronLeft className="size-4 mr-2" />
+                  {t('dashboard.resumeBuilder.buttons.previous')}
+                </Button>
+                <Button onClick={nextStep} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
+                  {t('dashboard.resumeBuilder.continue')}
+                  <ChevronRight className="size-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
+          {/* STEP: EXPORT */}
+          {currentStep === 'export' && (
+            <div>
+              <h2 className={`text-3xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {t('dashboard.resumeBuilder.exportResume')}
+              </h2>
+              <p className={`text-lg mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                {t('dashboard.resumeBuilder.downloadAndShare')}
+              </p>
+              <div className="text-center py-12 mb-8">
+                <div className="text-8xl mb-6">🎉</div>
+                <h3 className={`text-3xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {t('dashboard.resumeBuilder.amazingWork')}
+                </h3>
+                <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+                  {t('dashboard.resumeBuilder.yourResumeIsReady')}
+                </p>
+              </div>
+              <div style={{ position: 'fixed', left: '-10000px', top: 0, width: '210mm', height: '297mm', background: '#ffffff', overflow: 'hidden', zIndex: -1 }} ref={exportA4Ref}>
+                <TemplateRenderer templateId={resumeData.templateId} resumeData={resumeData} isDark={false} />
+              </div>
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                <button
+                  onClick={() => {
+                    const fullName = resumeData.personalInfo.fullName || 'Resume';
+                    const fileName = `${fullName.replace(/\s+/g, '_')}.pdf`;
+                    const target = exportA4Ref.current || previewPrintRef.current;
+                    exportElementToPdf(target, fileName);
+                  }}
+                  className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}
+                >
+                  <Download className="size-12 mx-auto mb-4 text-purple-500" />
+                  <h4 className={isDark ? 'text-white' : 'text-gray-900'}>
+                    {t('dashboard.resumeBuilder.downloadPDF')}
+                  </h4>
+                </button>
+                <button
+                  onClick={() => toast.info(t('dashboard.resumeBuilder.docxExportComingSoon'))}
+                  className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}
+                >
+                  <FileText className="size-12 mx-auto mb-4 text-blue-500" />
+                  <h4 className={isDark ? 'text-white' : 'text-gray-900'}>
+                    {t('dashboard.resumeBuilder.downloadDOCX')}
+                  </h4>
+                </button>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    toast.success(t('dashboard.resumeBuilder.linkCopied'));
+                  }}
+                  className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}
+                >
+                  <Link2 className="size-12 mx-auto mb-4 text-teal-500" />
+                  <h4 className={isDark ? 'text-white' : 'text-gray-900'}>
+                    {t('dashboard.resumeBuilder.copyLink')}
+                  </h4>
+                </button>
+                <button
+                  onClick={() => {
+                    toast.info(t('dashboard.resumeBuilder.emailSharingComingSoon'));
+                  }}
+                  className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}
+                >
+                  <Mail className="size-12 mx-auto mb-4 text-pink-500" />
+                  <h4 className={isDark ? 'text-white' : 'text-gray-900'}>
+                    {t('dashboard.resumeBuilder.emailResume')}
+                  </h4>
+                </button>
+              </div>
+              <div className="flex justify-between">
+                <Button onClick={prevStep} className="bg-white/10 hover:bg-white/20 text-white border-0">
+                  <ChevronLeft className="size-4 mr-2" />
+                  {t('dashboard.resumeBuilder.buttons.previous')}
+                </Button>
+                <Button onClick={onBack} className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
+                  {t('dashboard.resumeBuilder.backToDashboard')}
+                  <ArrowRight className="size-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Panel - Live Preview */}
         {showPreview && currentStep !== 'welcome' && (
-          <div className={`${previewMinimized ? 'w-12' : 'w-[500px]'} border-l transition-all duration-300 sticky top-0 h-screen overflow-y-auto flex-shrink-0 ${
+          <div className={`${previewMinimized ? 'w-12' : currentStep === 'critique' ? 'w-[450px]' : 'w-[500px]'} border-l transition-all duration-300 sticky top-0 h-screen overflow-y-auto flex-shrink-0 ${
             isDark ? 'bg-slate-950 border-white/10' : 'bg-gray-100 border-gray-200'
           }`}>
             {previewMinimized ? (
@@ -2348,7 +2752,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 <button
                   onClick={() => setPreviewMinimized(false)}
                   className={`p-2 rounded-lg ${isDark ? 'hover:bg-white/5' : 'hover:bg-gray-200'}`}
-                  title="Expand Preview"
+                      title={t('dashboard.resumeBuilder.expandPreview')}
                 >
                   <ChevronLeft className="size-5" />
                 </button>
@@ -2357,7 +2761,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className={`text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Live Preview
+                    {t('dashboard.resumeBuilder.livePreview')}
                   </h3>
                   <div className="flex items-center gap-2">
                     <button
@@ -2376,7 +2780,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                     <button
                       onClick={() => setPreviewMinimized(true)}
                       className={`p-2 rounded-lg ${isDark ? 'hover:bg-white/5' : 'hover:bg-gray-200'}`}
-                      title="Minimize Preview"
+                      title={t('dashboard.resumeBuilder.minimizePreview')}
                     >
                       <ChevronRight className="size-4" />
                     </button>

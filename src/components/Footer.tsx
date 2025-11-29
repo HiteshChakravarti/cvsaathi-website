@@ -1,6 +1,9 @@
 import { motion } from "motion/react";
 import { Twitter, Linkedin, Mail, MapPin, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { subscribeToNewsletter } from "../services/newsletterService";
 import logoImage from "../../Assets/Logo.png";
 
 // Updated footer links structure
@@ -60,6 +63,23 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const { t } = useTranslation();
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) {
+      return;
+    }
+    setIsSubmitting(true);
+    const success = await subscribeToNewsletter(email);
+    if (success) {
+      setEmail(""); // Clear input on success
+    }
+    setIsSubmitting(false);
+  };
+
   return (
     <footer className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
       {/* Decorative top border */}
@@ -87,13 +107,13 @@ export function Footer() {
             </div>
 
             <p className="text-gray-400 mb-6 max-w-sm text-sm">
-              AI-Powered Career Growth Platform. Empowering professionals with intelligent career tools.
+              {t('landing.footer.description')}
             </p>
 
             {/* Location */}
             <div className="flex items-center gap-2 text-gray-400 mb-6 text-sm">
               <MapPin className="w-4 h-4 text-teal-500" />
-              <span>Made in India 🇮🇳</span>
+              <span>{t('landing.footer.madeInIndia')}</span>
             </div>
 
             {/* Social links */}
@@ -188,25 +208,31 @@ export function Footer() {
         >
           <div className="max-w-2xl">
             <h4 className="text-white mb-3 text-lg font-semibold">
-              Stay updated with career tips
+              {t('landing.footer.stayUpdated')}
             </h4>
             <p className="text-gray-400 mb-6 text-sm">
-              Get weekly resume tips, job search strategies, and career advice delivered to your inbox.
+              {t('landing.footer.newsletterDesc')}
             </p>
-            <div className="flex gap-3">
+            <form onSubmit={handleNewsletterSubmit} className="flex gap-3">
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t('landing.footer.enterEmail')}
+                disabled={isSubmitting}
+                required
+                className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl hover:shadow-lg hover:shadow-teal-500/30 transition-all font-medium"
+                type="submit"
+                disabled={isSubmitting || !email.trim()}
+                whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                className="px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl hover:shadow-lg hover:shadow-teal-500/30 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Subscribe
+                {isSubmitting ? t('loading') : t('landing.footer.subscribe')}
               </motion.button>
-            </div>
+            </form>
           </div>
         </motion.div>
 
@@ -219,7 +245,7 @@ export function Footer() {
           className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
         >
           <p className="text-gray-400 text-sm">
-            © 2024 CVSaathi. All rights reserved. Made with ❤️ for Tier-2 India.
+            {t('landing.footer.copyright')}
           </p>
           <div className="flex gap-6 text-sm">
             <Link to="/support/privacy-policy" className="text-gray-400 hover:text-teal-500 transition-colors">

@@ -9,10 +9,11 @@ import {
   Lightbulb, TrendingUp, Star, Award, ThumbsUp, AlertCircle, Loader2, Trash2
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { useInterviewSessions, InterviewAnswer } from '../../hooks/useInterviewSessions';
+import { useInterviewSessions, InterviewAnswer, InterviewSession } from '../../hooks/useInterviewSessions';
 import { useAICareerService } from '../../services/aiCareerService';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabaseClient';
+import { useTranslation } from 'react-i18next';
 
 // Question categories and types
 type QuestionCategory = 'introduction' | 'technical' | 'behavioral' | 'situational' | 'closing';
@@ -219,12 +220,12 @@ const QUESTION_BANK: Question[] = [
   }
 ];
 
-// Experience levels
-const EXPERIENCE_LEVELS = [
-  { value: 'fresher', label: 'Fresher (0-2 years)', badge: 'Beginner', color: 'green' },
-  { value: 'junior', label: 'Junior (2-4 years)', badge: 'Intermediate', color: 'blue' },
-  { value: 'mid', label: 'Mid-level (4-7 years)', badge: 'Advanced', color: 'purple' },
-  { value: 'senior', label: 'Senior (7+ years)', badge: 'Expert', color: 'red' }
+// Experience levels - will be translated in component
+const getExperienceLevels = (t: any) => [
+  { value: 'fresher', label: t('dashboard.interviewPrep.experienceLevels.fresher.label'), badge: t('dashboard.interviewPrep.experienceLevels.fresher.badge'), color: 'green' },
+  { value: 'junior', label: t('dashboard.interviewPrep.experienceLevels.junior.label'), badge: t('dashboard.interviewPrep.experienceLevels.junior.badge'), color: 'blue' },
+  { value: 'mid', label: t('dashboard.interviewPrep.experienceLevels.mid.label'), badge: t('dashboard.interviewPrep.experienceLevels.mid.badge'), color: 'purple' },
+  { value: 'senior', label: t('dashboard.interviewPrep.experienceLevels.senior.label'), badge: t('dashboard.interviewPrep.experienceLevels.senior.badge'), color: 'red' }
 ];
 
 // Roles
@@ -267,9 +268,24 @@ const CATEGORY_COLORS: Record<QuestionCategory, string> = {
 };
 
 export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { sessions, createSession, updateSession, deleteSession, loading: sessionsLoading, refetch: refetchSessions } = useInterviewSessions();
   const { sendInterviewTurn } = useAICareerService();
+  
+  // Debug: Log sessions when they change
+  useEffect(() => {
+    console.log('Interview sessions updated:', {
+      count: sessions.length,
+      sessions: sessions.map(s => ({
+        id: s.id,
+        role: s.role,
+        status: s.status,
+        confidence_score: s.confidence_score,
+        created_at: s.created_at
+      }))
+    });
+  }, [sessions]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [sessionStartTime, setSessionStartTime] = useState<Date | null>(null);
   const [generatingFeedback, setGeneratingFeedback] = useState(false);
@@ -298,6 +314,33 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
 
   // Setup state
   const [stage, setStage] = useState<Stage>('setup');
+  
+  // Debug: Log sessions when they change
+  useEffect(() => {
+    console.log('Interview sessions updated:', {
+      count: sessions.length,
+      sessions: sessions.map(s => ({
+        id: s.id,
+        role: s.role,
+        status: s.status,
+        confidence_score: s.confidence_score,
+        created_at: s.created_at
+      }))
+    });
+  }, [sessions]);
+  
+  // Refetch sessions when history tab is opened (only once per tab switch)
+  const historyTabRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (stage === 'history' && user?.id && historyTabRef.current !== 'history') {
+      console.log('History tab opened, refetching sessions...');
+      historyTabRef.current = 'history';
+      refetchSessions();
+    } else if (stage !== 'history') {
+      historyTabRef.current = null;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage, user?.id]);
   const [experienceLevel, setExperienceLevel] = useState<ExperienceLevel>('fresher');
   const [selectedRole, setSelectedRole] = useState<string>('');
   const [selectedIndustry, setSelectedIndustry] = useState<string>('');
@@ -329,7 +372,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
       // Try modern Clipboard API first
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(text);
-        toast.success('Sample answer copied!');
+        toast.success(t('dashboard.interviewPrep.sampleAnswerCopied'));
       } else {
         // Fallback to older method
         const textArea = document.createElement('textarea');
@@ -342,15 +385,15 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
         textArea.select();
         try {
           document.execCommand('copy');
-          toast.success('Sample answer copied!');
+          toast.success(t('dashboard.interviewPrep.sampleAnswerCopied'));
         } catch (err) {
-          toast.error('Failed to copy. Please copy manually.');
+          toast.error(t('dashboard.interviewPrep.copyFailed'));
         }
         textArea.remove();
       }
     } catch (err) {
       // Final fallback - show the text in a prompt
-      toast.error('Please copy the text manually');
+      toast.error(t('dashboard.interviewPrep.copyFailed'));
     }
   };
 
@@ -373,7 +416,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
     }
 
     if (!isPremium && questionsUsedToday >= dailyLimit) {
-      toast.error('Daily limit reached! Upgrade to Premium for unlimited questions.');
+      toast.error(t('dashboard.interviewPrep.dailyLimitReached'));
       return;
     }
 
@@ -383,14 +426,20 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
       let sessionId = currentSessionId;
       if (!sessionId) {
         try {
-          const session = await createSession(selectedRole, selectedIndustry);
+          const session = await createSession(
+            selectedRole, 
+            selectedIndustry,
+            mapExperienceLevel(experienceLevel) // Pass experience_level to avoid NOT NULL constraint violation
+          );
           sessionId = session.id;
           setCurrentSessionId(session.id);
           setSessionStartTime(new Date());
           console.log('Interview session created:', session.id);
         } catch (error: any) {
-          console.warn('Session creation failed, but proceeding with interview:', error);
+          console.error('Session creation failed:', error);
+          toast.error(`Failed to create session: ${error.message || 'Unknown error'}`);
           setSessionStartTime(new Date());
+          // Still proceed with interview, but user knows session wasn't saved
         }
       }
 
@@ -554,7 +603,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
     }
 
     if (!interviewMeta || !aiSessionState || !currentAITurn) {
-      toast.error('Interview session not initialized');
+        toast.error(t('dashboard.interviewPrep.interviewSessionNotInitialized'));
       return;
     }
 
@@ -678,7 +727,11 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
       let sessionId = currentSessionId;
       if (!sessionId) {
         try {
-          const newSession = await createSession(selectedRole || '', selectedIndustry || '');
+          const newSession = await createSession(
+            selectedRole || '',
+            selectedIndustry || '',
+            mapExperienceLevel(experienceLevel)
+          );
           sessionId = newSession.id;
           setCurrentSessionId(sessionId);
           console.log('Session created on completion:', sessionId);
@@ -693,19 +746,38 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
         const finalDuration = durationMinutes > 0 
           ? durationMinutes 
           : Math.max(1, Math.round(answeredCount * 2)); // Estimate 2 min per question
+
+        const totalQuestions = aiSessionState?.total_questions || interviewAnswers.length;
+        const questionsCompleted = interviewAnswers.length;
+        const questionsAttempted = questionsCompleted;
+        const completionPercentage = totalQuestions > 0 ? Math.round((questionsCompleted / totalQuestions) * 100) : 0;
+        const totalTimeSpent = interviewAnswers.reduce((sum, a) => sum + (a.timeSpent || 0), 0);
+        const avgResponseTimeSeconds = questionsCompleted > 0 ? Math.round(totalTimeSpent / questionsCompleted) : 0;
+        const confidenceScore = totalScore > 0 ? Math.round(totalScore * 10) : undefined;
         
         await updateSession(sessionId, {
-          questions: interviewAnswers.length > 0 ? interviewAnswers : undefined, // Only save if we have answers
+          session_data: {
+            answers: interviewAnswers,
+            scores: finalTurn.payload?.scores || {},
+            meta: interviewMeta,
+          },
           audio_urls: Object.keys(audioUrls).length > 0 ? audioUrls : undefined,
-          total_score: totalScore > 0 ? Math.round(totalScore * 10) : undefined, // Convert to 0-100 scale
-          average_score: avgScore > 0 ? Math.round(avgScore * 10) : undefined,
-          duration_minutes: finalDuration,
+          questions_attempted: questionsAttempted,
+          questions_completed: questionsCompleted,
+          total_questions: totalQuestions,
+          session_duration_minutes: finalDuration,
+          status: 'completed',
+          completion_percentage: completionPercentage,
+          avg_response_time_seconds: avgResponseTimeSeconds,
+          confidence_score: confidenceScore,
+          ai_feedback: finalTurn.payload?.summary || '',
           completed_at: new Date().toISOString(),
         });
         
         // Refresh sessions list to show in history
         await refetchSessions();
         
+        console.log('Session saved and refetched. Total sessions:', sessions.length);
         toast.success('Interview session saved!');
       }
     } catch (error) {
@@ -738,6 +810,77 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Resume an incomplete session
+  const resumeSession = async (session: InterviewSession) => {
+    try {
+      if (session.status !== 'in_progress') {
+        // If completed, just show details
+        setSelectedHistorySession(session.id);
+        return;
+      }
+
+      // Load session data
+      const sessionData = session.session_data || {};
+      const answers = sessionData.answers || [];
+      const meta = sessionData.meta || {};
+
+      // Restore interview state
+      setCurrentSessionId(session.id);
+      setSelectedRole(session.role || '');
+      setSelectedIndustry(session.industry || '');
+      
+      // Restore experience level (reverse map from stored value)
+      const storedLevel = session.experience_level || '0-2 years';
+      let restoredLevel: ExperienceLevel = 'fresher';
+      if (storedLevel === '2-4 years') restoredLevel = 'junior';
+      else if (storedLevel === '4-7 years') restoredLevel = 'mid';
+      else if (storedLevel === '7+ years') restoredLevel = 'senior';
+      setExperienceLevel(restoredLevel);
+
+      // Restore interview metadata
+      if (meta.target_role || meta.experience_level) {
+        setInterviewMeta({
+          target_role: meta.target_role || session.role || '',
+          experience_level: meta.experience_level || storedLevel,
+          difficulty: meta.difficulty || 'standard',
+          questions_target: meta.questions_target || 8,
+        });
+      }
+
+      // Restore user answers
+      if (answers.length > 0) {
+        const restoredAnswers: UserAnswer[] = answers.map((a: any) => ({
+          questionId: a.questionId,
+          answer: a.answer || '',
+          audioUrl: a.audioUrl,
+          timeSpent: a.timeSpent || 0,
+          feedback: a.feedback,
+        }));
+        setUserAnswers(restoredAnswers);
+      }
+
+      // Restore session start time
+      if (session.started_at) {
+        setSessionStartTime(new Date(session.started_at));
+      } else {
+        setSessionStartTime(new Date(session.created_at));
+      }
+
+      // If we have answers, we need to get the next question from AI
+      // For now, switch to interview stage and let user continue
+      setStage('interview');
+      setSelectedHistorySession(null);
+      
+      // If there are answers, we should get the next question
+      // This would require calling the AI service with the current state
+      // For now, we'll show a message that they can continue
+      toast.success('Session resumed! Continue from where you left off.');
+    } catch (error: any) {
+      console.error('Error resuming session:', error);
+      toast.error('Failed to resume session. Please try again.');
+    }
+  };
+
   return (
     <div className={`min-h-screen p-6 ${isDark ? 'bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900' : 'bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50'}`}>
       <div className="max-w-6xl mx-auto">
@@ -752,16 +895,16 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
             }`}
           >
             <ArrowLeft className="size-5" />
-            <span className="font-medium">Back to Dashboard</span>
+            <span className="font-medium">{t('dashboard.interviewPrep.backToDashboard')}</span>
           </Button>
           
           <div className="flex items-center justify-between">
             <div>
               <h1 className={`text-4xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                🎤 AI Interview Prep
+                🎤 {t('dashboard.interviewPrep.title')}
               </h1>
               <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
-                Practice with AI-powered mock interviews
+                {t('dashboard.interviewPrep.subtitle')}
               </p>
             </div>
             
@@ -772,10 +915,10 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               </div>
               <div>
                 <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {isPremium ? 'Premium' : 'Free Plan'}
+                  {isPremium ? t('dashboard.interviewPrep.premium') : t('dashboard.interviewPrep.freePlan')}
                 </p>
                 <p className={isDark ? 'text-white' : 'text-gray-900'}>
-                  {isPremium ? 'Unlimited' : `${questionsUsedToday}/${dailyLimit} today`}
+                  {isPremium ? t('dashboard.interviewPrep.unlimited') : `${questionsUsedToday}/${dailyLimit} ${t('dashboard.interviewPrep.today')}`}
                 </p>
               </div>
             </div>
@@ -799,7 +942,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   : 'border-transparent text-gray-600 hover:text-gray-900'
             }`}
           >
-            New Interview
+            {t('dashboard.interviewPrep.newInterview')}
           </button>
           <button
             onClick={() => setStage('history')}
@@ -813,7 +956,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   : 'border-transparent text-gray-600 hover:text-gray-900'
             }`}
           >
-            History ({sessions.length})
+            {t('dashboard.interviewPrep.history')} ({sessions.length})
           </button>
         </div>
 
@@ -827,13 +970,13 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   <Target className="size-6 text-white" />
                 </div>
                 <div>
-                  <h2 className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Experience Level</h2>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Select your experience level</p>
+                  <h2 className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.interviewPrep.experienceLevel')}</h2>
+                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.interviewPrep.selectExperienceLevel')}</p>
                 </div>
               </div>
               
               <div className="grid grid-cols-2 gap-4">
-                {EXPERIENCE_LEVELS.map((level) => (
+                {getExperienceLevels(t).map((level) => (
                   <button
                     key={level.value}
                     onClick={() => setExperienceLevel(level.value as ExperienceLevel)}
@@ -864,8 +1007,8 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   <Briefcase className="size-6 text-white" />
                 </div>
                 <div>
-                  <h2 className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Target Role</h2>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>What position are you interviewing for? (e.g., Software Engineer, Product Manager, Data Scientist)</p>
+                  <h2 className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.interviewPrep.targetRole')}</h2>
+                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.interviewPrep.targetRoleDescription')}</p>
                 </div>
               </div>
               
@@ -873,7 +1016,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                 type="text"
                 value={selectedRole}
                 onChange={(e) => setSelectedRole(e.target.value)}
-                placeholder="Enter your target role (e.g., Software Engineer, Product Manager)"
+                placeholder={t('dashboard.interviewPrep.targetRolePlaceholder')}
                 className={`w-full px-4 py-3 rounded-xl border-2 ${
                   isDark ? 'bg-white/5 border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border-gray-200 placeholder-gray-400'
                 } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -881,7 +1024,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               
               {/* Suggested roles (optional helper) */}
               <div className="mt-3">
-                <p className={`text-xs mb-2 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Popular roles:</p>
+                <p className={`text-xs mb-2 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{t('dashboard.interviewPrep.popularRoles')}</p>
                 <div className="flex flex-wrap gap-2">
                   {ROLES.slice(0, 6).map((role) => (
                     <button
@@ -907,8 +1050,8 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   <Building2 className="size-6 text-white" />
                 </div>
                 <div>
-                  <h2 className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Industry</h2>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Which industry is the company in? (e.g., Technology, Healthcare, Finance)</p>
+                  <h2 className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.interviewPrep.industry')}</h2>
+                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.interviewPrep.selectIndustry')}</p>
                 </div>
               </div>
               
@@ -916,7 +1059,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                 type="text"
                 value={selectedIndustry}
                 onChange={(e) => setSelectedIndustry(e.target.value)}
-                placeholder="Enter the industry (e.g., Technology, Healthcare, Finance)"
+                placeholder={t('dashboard.interviewPrep.industryPlaceholder')}
                 className={`w-full px-4 py-3 rounded-xl border-2 ${
                   isDark ? 'bg-white/5 border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border-gray-200 placeholder-gray-400'
                 } focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -924,7 +1067,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               
               {/* Suggested industries (optional helper) */}
               <div className="mt-3">
-                <p className={`text-xs mb-2 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Popular industries:</p>
+                <p className={`text-xs mb-2 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{t('dashboard.interviewPrep.popularIndustries')}</p>
                 <div className="flex flex-wrap gap-2">
                   {INDUSTRIES.slice(0, 6).map((industry) => (
                     <button
@@ -952,12 +1095,12 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               {loadingQuestion ? (
                 <>
                   <Loader2 className="size-5 mr-2 animate-spin" />
-                  Starting AI Interview...
+                  {t('dashboard.interviewPrep.starting')}
                 </>
               ) : (
                 <>
                   <Play className="size-5 mr-2" />
-                  Start AI-Powered Interview
+                  {t('dashboard.interviewPrep.startPractice')}
                 </>
               )}
             </Button>
@@ -968,8 +1111,9 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   <AlertCircle className="size-5 text-yellow-500 mt-1" />
                   <div>
                     <p className={isDark ? 'text-yellow-400' : 'text-yellow-700'}>
-                      Free users: {dailyLimit - questionsUsedToday} questions remaining today. 
-                      <button className="ml-2 underline font-medium">Upgrade to Premium</button> for unlimited practice!
+                      {t('dashboard.interviewPrep.upgradeMessage', { remaining: dailyLimit - questionsUsedToday })}
+                      {' '}
+                      <button className="ml-2 underline font-medium">{t('dashboard.interviewPrep.upgradeLink')}</button>
                     </p>
                   </div>
                 </div>
@@ -985,16 +1129,16 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
             {loadingQuestion ? (
               <div className={`p-6 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-white'} text-center`}>
                 <Loader2 className="size-8 animate-spin text-purple-500 mx-auto mb-2" />
-                <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>AI is preparing the next question...</p>
+                <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>{t('dashboard.interviewPrep.preparingQuestion')}</p>
               </div>
             ) : (
               <div className={`p-6 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
                 <div className="flex items-center justify-between mb-3">
                   <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>
-                    Question {aiSessionState?.question_index + 1 || 1} of {aiSessionState?.total_questions || 8}
+                    {t('dashboard.interviewPrep.questionOf', { current: aiSessionState?.question_index + 1 || 1, total: aiSessionState?.total_questions || 8 })}
                   </span>
                   <span className={isDark ? 'text-white' : 'text-gray-900'}>
-                    {Math.round(progress)}% Complete
+                    {t('dashboard.interviewPrep.complete', { percent: Math.round(progress) })}
                   </span>
                 </div>
                 <div className={`h-3 rounded-full ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}>
@@ -1031,7 +1175,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   <div className="flex items-start gap-2">
                     <Lightbulb className="size-5 text-purple-500 mt-0.5" />
                     <p className={`${isDark ? 'text-purple-300' : 'text-purple-700'}`}>
-                      <strong>Hint:</strong> {currentQuestion.helper_hint}
+                      <strong>{t('dashboard.interviewPrep.hint')}</strong> {currentQuestion.helper_hint}
                     </p>
                   </div>
                 </div>
@@ -1040,12 +1184,12 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               {/* Answer Input */}
               <div className="mb-6">
                 <label className={`block text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Your Answer
+                  {t('dashboard.interviewPrep.yourAnswer')}
                 </label>
                 <textarea
                   value={currentAnswer}
                   onChange={(e) => setCurrentAnswer(e.target.value)}
-                  placeholder="Type your answer here or record audio below..."
+                  placeholder={t('dashboard.interviewPrep.answerPlaceholder')}
                   rows={8}
                   className={`w-full px-4 py-3 rounded-xl border-2 ${
                     isDark ? 'bg-white/5 border-white/10 text-white placeholder-gray-500' : 'bg-gray-50 border-gray-200 placeholder-gray-400'
@@ -1056,7 +1200,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               {/* Recording Controls */}
               <div className={`p-6 rounded-xl mb-6 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
                 <div className="flex items-center justify-between mb-4">
-                  <span className={isDark ? 'text-white' : 'text-gray-900'}>Voice Recording</span>
+                  <span className={isDark ? 'text-white' : 'text-gray-900'}>{t('dashboard.interviewPrep.voiceRecording')}</span>
                   {recordingTime > 0 && (
                     <span className={`flex items-center gap-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                       <Clock className="size-4" />
@@ -1072,7 +1216,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                       className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white border-0"
                     >
                       <Mic className="size-4 mr-2" />
-                      Start Recording
+                      {t('dashboard.interviewPrep.startRecording')}
                     </Button>
                   ) : (
                     <Button
@@ -1080,7 +1224,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                       className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white border-0"
                     >
                       <MicOff className="size-4 mr-2" />
-                      Stop Recording
+                      {t('dashboard.interviewPrep.stopRecording')}
                     </Button>
                   )}
 
@@ -1092,7 +1236,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                           className={isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-gray-200 hover:bg-gray-300'}
                         >
                           <Play className="size-4 mr-2" />
-                          Play
+                          {t('dashboard.interviewPrep.play')}
                         </Button>
                       ) : (
                         <Button
@@ -1100,12 +1244,12 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                           className={isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-gray-200 hover:bg-gray-300'}
                         >
                           <Pause className="size-4 mr-2" />
-                          Pause
+                          {t('dashboard.interviewPrep.pause')}
                         </Button>
                       )}
                       <span className="text-sm text-green-500 flex items-center gap-2">
                         <CheckCircle className="size-4" />
-                        Recording saved
+                        {t('dashboard.interviewPrep.recordingSaved')}
                       </span>
                     </>
                   )}
@@ -1113,7 +1257,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   {isRecording && (
                     <span className="flex items-center gap-2 text-red-500 animate-pulse">
                       <Volume2 className="size-4" />
-                      Recording...
+                      {t('dashboard.interviewPrep.recording')}
                     </span>
                   )}
                 </div>
@@ -1129,12 +1273,12 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   {generatingFeedback ? (
                     <>
                       <Loader2 className="size-4 mr-2 animate-spin" />
-                      Submitting Answer...
+                      {t('dashboard.interviewPrep.submittingAnswer')}
                     </>
                   ) : (
                     <>
                       <Sparkles className="size-4 mr-2" />
-                      Submit Answer
+                      {t('dashboard.interviewPrep.submitAnswer')}
                     </>
                   )}
                 </Button>
@@ -1196,7 +1340,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
             {/* Navigation - simplified for AI-driven flow */}
             <div className="flex items-center justify-center">
               <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>
-                {answeredCount} question{answeredCount !== 1 ? 's' : ''} answered
+                {t('dashboard.interviewPrep.questionsAnswered', { count: answeredCount, plural: answeredCount !== 1 ? 's' : '' })}
               </span>
             </div>
           </div>
@@ -1209,17 +1353,17 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
             <div className={`p-12 rounded-2xl text-center ${isDark ? 'bg-gradient-to-br from-purple-500/20 to-pink-500/20' : 'bg-gradient-to-br from-purple-50 to-pink-50'}`}>
               <div className="text-8xl mb-4">🎉</div>
               <h2 className={`text-4xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Interview Complete!
+                {t('dashboard.interviewPrep.interviewComplete')}
               </h2>
               <p className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                You answered {answeredCount} questions
+                {t('dashboard.interviewPrep.youAnswered', { count: answeredCount })}
               </p>
             </div>
 
             {/* Overall Score */}
             <div className={`p-8 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
               <h3 className={`text-2xl mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Your Performance
+                {t('dashboard.interviewPrep.yourPerformance')}
               </h3>
 
               <div className="grid grid-cols-3 gap-6 mb-8">
@@ -1228,7 +1372,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   <p className={`text-4xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {averageScore}
                   </p>
-                  <p className="text-purple-500">Average Score</p>
+                  <p className="text-purple-500">{t('dashboard.interviewPrep.averageScore')}</p>
                 </div>
 
                 <div className={`p-6 rounded-xl text-center ${isDark ? 'bg-gradient-to-br from-green-500/20 to-emerald-500/20' : 'bg-gradient-to-br from-green-50 to-emerald-50'}`}>
@@ -1236,7 +1380,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   <p className={`text-4xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {answeredCount}/{aiSessionState?.total_questions || answeredCount}
                   </p>
-                  <p className="text-green-500">Completed</p>
+                  <p className="text-green-500">{t('dashboard.interviewPrep.completed')}</p>
                 </div>
 
                 <div className={`p-6 rounded-xl text-center ${isDark ? 'bg-gradient-to-br from-blue-500/20 to-cyan-500/20' : 'bg-gradient-to-br from-blue-50 to-cyan-50'}`}>
@@ -1250,7 +1394,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                       return estimatedMinutes;
                     })()}
                   </p>
-                  <p className="text-blue-500">Minutes</p>
+                  <p className="text-blue-500">{t('dashboard.interviewPrep.minutes')}</p>
                 </div>
               </div>
 
@@ -1258,7 +1402,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               {currentAITurn?.payload?.kind === 'feedback' && (
                 <>
                   <h4 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Interview Summary
+                    {t('dashboard.interviewPrep.interviewSummary')}
                   </h4>
                   
                   <div className={`p-6 rounded-xl mb-6 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
@@ -1270,7 +1414,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <h5 className={`font-semibold mb-2 ${isDark ? 'text-green-400' : 'text-green-600'}`}>
-                          Strengths
+                          {t('dashboard.interviewPrep.strengths')}
                         </h5>
                         <ul className="space-y-1">
                           {currentAITurn.payload.strengths?.map((s: string, i: number) => (
@@ -1282,7 +1426,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                       </div>
                       <div>
                         <h5 className={`font-semibold mb-2 ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
-                          Areas for Improvement
+                          {t('dashboard.interviewPrep.improvements')}
                         </h5>
                         <ul className="space-y-1">
                           {currentAITurn.payload.improvements?.map((imp: string, i: number) => (
@@ -1298,7 +1442,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                     {currentAITurn.payload.skill_gaps && currentAITurn.payload.skill_gaps.length > 0 && (
                       <div className="mt-4">
                         <h5 className={`font-semibold mb-2 ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`}>
-                          Skill Gaps Identified
+                          {t('dashboard.interviewPrep.skillGapsIdentified')}
                         </h5>
                         <ul className="space-y-1">
                           {currentAITurn.payload.skill_gaps.map((gap: string, i: number) => (
@@ -1314,7 +1458,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                     {currentAITurn.payload.next_steps && currentAITurn.payload.next_steps.length > 0 && (
                       <div className="mt-4">
                         <h5 className={`font-semibold mb-2 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
-                          Recommended Next Steps
+                          {t('dashboard.interviewPrep.recommendedNextSteps')}
                         </h5>
                         <ul className="space-y-1">
                           {currentAITurn.payload.next_steps.map((step: string, i: number) => (
@@ -1331,13 +1475,13 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   {currentAITurn.payload.scores && (
                     <div>
                       <h4 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        Detailed Scores
+                        {t('dashboard.interviewPrep.detailedScores')}
                       </h4>
                       <div className="space-y-3">
                         {Object.entries(currentAITurn.payload.scores).map(([key, value]: [string, any]) => {
                           const explanation = currentAITurn.payload.score_explanations?.[key];
                           const scoreValue = Math.round(value * 10);
-                          const scoreLabel = scoreValue >= 80 ? 'Strong' : scoreValue >= 60 ? 'Good' : 'Needs Improvement';
+                          const scoreLabel = scoreValue >= 80 ? t('dashboard.interviewPrep.strong') : scoreValue >= 60 ? t('dashboard.interviewPrep.good') : t('dashboard.interviewPrep.needsImprovement');
                           const scoreColor = scoreValue >= 80 ? 'text-green-500' : scoreValue >= 60 ? 'text-yellow-500' : 'text-orange-500';
                           
                           return (
@@ -1395,19 +1539,19 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   setCurrentAITurn(null);
                   setInterviewMeta(null);
                   setInterviewComplete(false);
-                  toast.success('Starting new practice session!');
+                  toast.success(t('dashboard.interviewPrep.startingNewSession'));
                 }}
                 className={isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-white hover:bg-gray-50'}
               >
                 <Play className="size-4 mr-2" />
-                Practice Again
+                {t('dashboard.interviewPrep.practiceAgain')}
               </Button>
 
               <Button
                 onClick={onBack}
                 className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
               >
-                Back to Dashboard
+                {t('dashboard.interviewPrep.backToDashboard')}
                 <ChevronRight className="size-4 ml-2" />
               </Button>
             </div>
@@ -1422,7 +1566,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <input
                   type="text"
-                  placeholder="Search sessions..."
+                  placeholder={t('dashboard.interviewPrep.searchSessions')}
                   value={historyFilters.search}
                   onChange={(e) => setHistoryFilters({ ...historyFilters, search: e.target.value })}
                   className={`px-4 py-2 rounded-xl border ${
@@ -1436,7 +1580,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                     isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-gray-50 border-gray-200'
                   }`}
                 >
-                  <option value="">All Roles</option>
+                  <option value="">{t('dashboard.interviewPrep.allRoles')}</option>
                   {ROLES.map(role => (
                     <option key={role} value={role}>{role}</option>
                   ))}
@@ -1448,7 +1592,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                     isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-gray-50 border-gray-200'
                   }`}
                 >
-                  <option value="">All Industries</option>
+                  <option value="">{t('dashboard.interviewPrep.allIndustries')}</option>
                   {INDUSTRIES.map(industry => (
                     <option key={industry} value={industry}>{industry}</option>
                   ))}
@@ -1457,7 +1601,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <input
                   type="number"
-                  placeholder="Min Score"
+                  placeholder={t('dashboard.interviewPrep.minScore')}
                   min="0"
                   max="100"
                   value={historyFilters.minScore}
@@ -1490,10 +1634,13 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               <SessionDetailView
                 session={sessions.find(s => s.id === selectedHistorySession)!}
                 onBack={() => setSelectedHistorySession(null)}
+                onResume={async (session) => {
+                  await resumeSession(session);
+                }}
                 onDelete={async () => {
                   await deleteSession(selectedHistorySession);
                   setSelectedHistorySession(null);
-                  toast.success('Session deleted');
+                  toast.success(t('dashboard.interviewPrep.sessionDeleted'));
                 }}
                 isDark={isDark}
               />
@@ -1502,6 +1649,9 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                 sessions={sessions}
                 filters={historyFilters}
                 onSelectSession={setSelectedHistorySession}
+                onResume={async (session) => {
+                  await resumeSession(session);
+                }}
                 onDelete={deleteSession}
                 loading={sessionsLoading}
                 isDark={isDark}
@@ -1519,6 +1669,7 @@ function SessionListView({
   sessions, 
   filters, 
   onSelectSession, 
+  onResume,
   onDelete, 
   loading,
   isDark 
@@ -1526,32 +1677,47 @@ function SessionListView({
   sessions: any[];
   filters: any;
   onSelectSession: (id: string) => void;
+  onResume: (session: any) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
   loading: boolean;
   isDark: boolean;
 }) {
   // Filter sessions
   const filteredSessions = sessions.filter(session => {
-    if (filters.search && !session.target_roles?.toLowerCase().includes(filters.search.toLowerCase())) {
+    const role = session.role || 'General Interview';
+    const score = session.confidence_score || 0;
+    const createdAt = session.completed_at || session.started_at || session.created_at;
+
+    if (filters.search && !role.toLowerCase().includes(filters.search.toLowerCase()) && 
+        !(session.industry || '').toLowerCase().includes(filters.search.toLowerCase())) {
       return false;
     }
-    if (filters.role && session.target_roles !== filters.role) {
+    if (filters.role && role !== filters.role) {
       return false;
     }
     if (filters.industry && session.industry !== filters.industry) {
       return false;
     }
-    if (filters.minScore && (session.average_score || 0) < filters.minScore) {
+    if (filters.minScore && score < filters.minScore) {
       return false;
     }
-    if (filters.dateFrom && new Date(session.created_at) < new Date(filters.dateFrom)) {
+    if (filters.dateFrom && createdAt && new Date(createdAt) < new Date(filters.dateFrom)) {
       return false;
     }
-    if (filters.dateTo && new Date(session.created_at) > new Date(filters.dateTo)) {
+    if (filters.dateTo && createdAt && new Date(createdAt) > new Date(filters.dateTo)) {
       return false;
     }
     return true;
   });
+  
+  // Debug: Log filtered sessions
+  useEffect(() => {
+    console.log('Filtered sessions:', {
+      total: sessions.length,
+      filtered: filteredSessions.length,
+      filters
+    });
+  }, [sessions, filteredSessions, filters]);
 
   if (loading) {
     return (
@@ -1573,23 +1739,45 @@ function SessionListView({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {filteredSessions.map(session => (
+      {filteredSessions.map(session => {
+        const role = session.role || 'General Interview';
+        const score = session.confidence_score || 0;
+        const duration = session.session_duration_minutes || 0;
+        const totalQuestions = session.total_questions || (session.session_data?.answers?.length || 0);
+        const dateValue = session.completed_at || session.started_at || session.created_at;
+        const dateLabel = dateValue ? new Date(dateValue).toLocaleDateString() : '';
+
+        const isInProgress = session.status === 'in_progress';
+        const isCompleted = session.status === 'completed';
+
+        return (
         <div
           key={session.id}
-          onClick={() => onSelectSession(session.id)}
-          className={`p-6 rounded-2xl border cursor-pointer transition-all hover:scale-[1.02] ${
+          className={`p-6 rounded-2xl border transition-all hover:scale-[1.02] ${
             isDark ? 'bg-white/5 border-white/10 hover:border-white/20' : 'bg-white border-gray-200 hover:border-gray-300'
           }`}
         >
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex-1">
-              <h3 className={`text-lg font-semibold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {session.target_roles || 'General Interview'}
-              </h3>
-              <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                {session.industry || 'General Industry'}
-              </p>
-            </div>
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {role}
+                  </h3>
+                  {isInProgress && (
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-yellow-500/20 text-yellow-500">
+                      In Progress
+                    </span>
+                  )}
+                  {isCompleted && (
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-green-500/20 text-green-500">
+                      Completed
+                    </span>
+                  )}
+                </div>
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  {session.industry || 'General Industry'}
+                </p>
+              </div>
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -1603,37 +1791,71 @@ function SessionListView({
             </button>
           </div>
           
+          {/* Action Buttons */}
+          <div className="flex gap-2 mb-4">
+            {isInProgress && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onResume(session);
+                }}
+                className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
+                  isDark 
+                    ? 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30' 
+                    : 'bg-purple-500 text-white hover:bg-purple-600'
+                }`}
+              >
+                Resume
+              </button>
+            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelectSession(session.id);
+              }}
+              className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
+                isDark 
+                  ? 'bg-white/10 text-white hover:bg-white/20' 
+                  : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+              }`}
+            >
+              {isCompleted ? 'View Results' : 'View Details'}
+            </button>
+          </div>
+          
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Score</span>
-              <span className={`text-lg font-semibold ${
-                (session.average_score || 0) >= 80 ? 'text-green-500' :
-                (session.average_score || 0) >= 60 ? 'text-yellow-500' : 'text-red-500'
-              }`}>
-                {session.average_score || 0}%
+              <span
+                className={`text-lg font-semibold ${
+                  score >= 80 ? 'text-green-500' : score >= 60 ? 'text-yellow-500' : 'text-red-500'
+                }`}
+              >
+                {score}%
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Duration</span>
               <span className={isDark ? 'text-white' : 'text-gray-900'}>
-                {session.duration_minutes || 0} min
+                {duration} min
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Questions</span>
               <span className={isDark ? 'text-white' : 'text-gray-900'}>
-                {session.questions?.length || 0}
+                {totalQuestions}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Date</span>
               <span className={isDark ? 'text-white' : 'text-gray-900'}>
-                {new Date(session.created_at).toLocaleDateString()}
+                {dateLabel}
               </span>
             </div>
           </div>
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -1642,11 +1864,13 @@ function SessionListView({
 function SessionDetailView({
   session,
   onBack,
+  onResume,
   onDelete,
   isDark
 }: {
   session: any;
   onBack: () => void;
+  onResume: (session: any) => Promise<void>;
   onDelete: () => Promise<void>;
   isDark: boolean;
 }) {
@@ -1681,10 +1905,10 @@ function SessionDetailView({
       <div className={`p-6 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-white'} flex items-center justify-between`}>
         <div>
           <h2 className={`text-2xl font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            {session.target_roles || 'General Interview'}
+            {session.role || 'General Interview'}
           </h2>
           <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
-            {session.industry || 'General Industry'} • {new Date(session.created_at).toLocaleDateString()}
+            {session.industry || 'General Industry'} • {new Date(session.started_at || session.created_at).toLocaleDateString()}
           </p>
         </div>
         <div className="flex gap-3">
@@ -1695,6 +1919,17 @@ function SessionDetailView({
             <ArrowLeft className="size-4 mr-2" />
             Back
           </Button>
+          {session.status === 'in_progress' && (
+            <Button
+              onClick={async () => {
+                await onResume(session);
+              }}
+              className={isDark ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-400' : 'bg-purple-500 hover:bg-purple-600 text-white'}
+            >
+              <Play className="size-4 mr-2" />
+              Resume Session
+            </Button>
+          )}
           <Button
             onClick={async () => {
               if (confirm('Are you sure you want to delete this session?')) {
@@ -1713,97 +1948,157 @@ function SessionDetailView({
       <div className="grid grid-cols-3 gap-4">
         <div className={`p-6 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
           <p className={`text-3xl font-bold mb-1 ${
-            (session.average_score || 0) >= 80 ? 'text-green-500' :
-            (session.average_score || 0) >= 60 ? 'text-yellow-500' : 'text-red-500'
+            (session.confidence_score || 0) >= 80 ? 'text-green-500' :
+            (session.confidence_score || 0) >= 60 ? 'text-yellow-500' : 'text-red-500'
           }`}>
-            {session.average_score || 0}%
+            {session.confidence_score || 0}%
           </p>
-          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Average Score</p>
+          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Score</p>
         </div>
         <div className={`p-6 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
           <p className={`text-3xl font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            {session.questions?.length || 0}
+            {session.total_questions || (session.session_data?.answers?.length || 0)}
           </p>
           <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Questions</p>
         </div>
         <div className={`p-6 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
           <p className={`text-3xl font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            {session.duration_minutes || 0}
+            {session.session_duration_minutes || 0}
           </p>
           <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Minutes</p>
         </div>
       </div>
 
+      {/* AI Feedback Summary (for completed sessions) */}
+      {session.status === 'completed' && session.ai_feedback && (
+        <div className={`p-6 rounded-2xl ${isDark ? 'bg-gradient-to-br from-purple-500/20 to-pink-500/20' : 'bg-gradient-to-br from-purple-50 to-pink-50'} border ${isDark ? 'border-purple-500/30' : 'border-purple-200'}`}>
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className={`size-5 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
+            <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              AI Feedback Summary
+            </h3>
+          </div>
+          <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} whitespace-pre-line`}>
+            {session.ai_feedback}
+          </p>
+        </div>
+      )}
+
       {/* Questions & Answers */}
       <div className="space-y-4">
-        {session.questions?.map((answer: any, index: number) => {
-          const audioUrl = session.audio_urls?.[answer.questionId?.toString()];
-          return (
-            <div key={index} className={`p-6 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    {answer.question || `Question ${index + 1}`}
-                  </h3>
-                  <p className={`mb-3 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    {answer.answer}
-                  </p>
-                </div>
-                {audioUrl && (
-                  <button
-                    onClick={() => {
-                      if (playingAudioId === answer.questionId?.toString()) {
-                        stopAudio(answer.questionId);
-                      } else {
-                        playAudio(answer.questionId, audioUrl);
-                      }
-                    }}
-                    className="p-3 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 transition-colors"
-                  >
-                    {playingAudioId === answer.questionId?.toString() ? (
-                      <Pause className="size-5 text-purple-400" />
-                    ) : (
-                      <Play className="size-5 text-purple-400" />
+        {session.status === 'in_progress' && (!session.session_data?.answers || session.session_data.answers.length === 0) ? (
+          <div className={`p-12 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
+            <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+              This session is in progress but no questions have been answered yet. Click "Resume Session" to continue.
+            </p>
+          </div>
+        ) : (session.session_data?.answers || session.questions || []).length === 0 ? (
+          <div className={`p-12 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
+            <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+              No questions and answers recorded for this session.
+            </p>
+          </div>
+        ) : (
+          (session.session_data?.answers || session.questions || []).map((answer: any, index: number) => {
+            const questionId = answer.questionId?.toString() || `q_${index}`;
+            const audioUrl = session.audio_urls?.[questionId] || answer.audioUrl;
+            return (
+              <div key={index} className={`p-6 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                        Question {index + 1}
+                      </span>
+                      {answer.score !== undefined && (
+                        <span className={`px-2 py-0.5 rounded-full text-xs ${
+                          answer.score >= 80 ? 'bg-green-500/20 text-green-500' :
+                          answer.score >= 60 ? 'bg-yellow-500/20 text-yellow-500' :
+                          'bg-red-500/20 text-red-500'
+                        }`}>
+                          Score: {answer.score}/100
+                        </span>
+                      )}
+                    </div>
+                    <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      {answer.question || `Question ${index + 1}`}
+                    </h3>
+                    <p className={`mb-3 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                      {answer.answer || 'No answer provided'}
+                    </p>
+                    {answer.timeSpent && (
+                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                        Time spent: {Math.floor(answer.timeSpent / 60)}m {answer.timeSpent % 60}s
+                      </p>
                     )}
-                  </button>
+                  </div>
+                  {audioUrl && (
+                    <button
+                      onClick={() => {
+                        if (playingAudioId === questionId) {
+                          stopAudio(parseInt(questionId) || index);
+                        } else {
+                          playAudio(parseInt(questionId) || index, audioUrl);
+                        }
+                      }}
+                      className="p-3 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 transition-colors"
+                    >
+                      {playingAudioId === questionId ? (
+                        <Pause className="size-5 text-purple-400" />
+                      ) : (
+                        <Play className="size-5 text-purple-400" />
+                      )}
+                    </button>
+                  )}
+                </div>
+                
+                {answer.feedback && (
+                  <div className={`mt-4 p-4 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        Detailed Feedback
+                      </span>
+                    </div>
+                    {answer.feedback.strengths && answer.feedback.strengths.length > 0 && (
+                      <div className="mb-3">
+                        <p className={`text-sm font-semibold mb-1 ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                          ✅ Strengths:
+                        </p>
+                        <ul className="list-disc list-inside space-y-1">
+                          {answer.feedback.strengths.map((strength: string, i: number) => (
+                            <li key={i} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{strength}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {answer.feedback.improvements && answer.feedback.improvements.length > 0 && (
+                      <div className="mb-3">
+                        <p className={`text-sm font-semibold mb-1 ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`}>
+                          💡 Areas for Improvement:
+                        </p>
+                        <ul className="list-disc list-inside space-y-1">
+                          {answer.feedback.improvements.map((improvement: string, i: number) => (
+                            <li key={i} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{improvement}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {answer.feedback.detailedFeedback && (
+                      <div className="mt-3">
+                        <p className={`text-sm font-semibold mb-1 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+                          📝 Detailed Analysis:
+                        </p>
+                        <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'} whitespace-pre-line`}>
+                          {answer.feedback.detailedFeedback}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
-              
-              {answer.feedback && (
-                <div className={`mt-4 p-4 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Score: {answer.score || 0}/100</span>
-                  </div>
-                  {answer.feedback.strengths && answer.feedback.strengths.length > 0 && (
-                    <div className="mb-3">
-                      <p className={`text-sm font-semibold mb-1 ${isDark ? 'text-green-400' : 'text-green-600'}`}>Strengths:</p>
-                      <ul className="list-disc list-inside space-y-1">
-                        {answer.feedback.strengths.map((strength: string, i: number) => (
-                          <li key={i} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{strength}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {answer.feedback.improvements && answer.feedback.improvements.length > 0 && (
-                    <div>
-                      <p className={`text-sm font-semibold mb-1 ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`}>Improvements:</p>
-                      <ul className="list-disc list-inside space-y-1">
-                        {answer.feedback.improvements.map((improvement: string, i: number) => (
-                          <li key={i} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{improvement}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {answer.feedback.detailedFeedback && (
-                    <div className="mt-3">
-                      <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{answer.feedback.detailedFeedback}</p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </div>
   );

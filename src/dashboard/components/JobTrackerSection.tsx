@@ -1,6 +1,7 @@
 import { Plus, Briefcase, Eye, Calendar, Gift, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useApplications } from "../../hooks/useApplications";
+import { useTranslation } from "react-i18next";
 
 interface JobTrackerSectionProps {
   isDark: boolean;
@@ -8,6 +9,7 @@ interface JobTrackerSectionProps {
 }
 
 export function JobTrackerSection({ isDark, onViewAll }: JobTrackerSectionProps) {
+  const { t } = useTranslation();
   const { applications, loading } = useApplications();
 
   // Convert database applications to component format
@@ -21,10 +23,10 @@ export function JobTrackerSection({ isDark, onViewAll }: JobTrackerSectionProps)
   }));
 
   const columns = [
-    { id: 'applied', title: 'Applied', icon: Briefcase, color: 'from-teal-500 to-cyan-500', count: jobs.filter(j => j.status === 'applied').length },
-    { id: 'reviewing', title: 'Reviewing', icon: Eye, color: 'from-purple-500 to-pink-500', count: applications.filter(a => a.status === 'screening' || jobs.find(j => j.id === a.id)?.status === 'reviewing').length },
-    { id: 'interview', title: 'Interview', icon: Calendar, color: 'from-blue-500 to-indigo-500', count: jobs.filter(j => j.status === 'interview').length },
-    { id: 'offer', title: 'Offer', icon: Gift, color: 'from-emerald-500 to-teal-500', count: jobs.filter(j => j.status === 'offer').length },
+    { id: 'applied', title: t('dashboard.jobTracker.columns.applied'), icon: Briefcase, color: 'from-teal-500 to-cyan-500', count: jobs.filter(j => j.status === 'applied').length },
+    { id: 'reviewing', title: t('dashboard.jobTracker.columns.reviewing'), icon: Eye, color: 'from-purple-500 to-pink-500', count: applications.filter(a => a.status === 'screening' || jobs.find(j => j.id === a.id)?.status === 'reviewing').length },
+    { id: 'interview', title: t('dashboard.jobTracker.columns.interview'), icon: Calendar, color: 'from-blue-500 to-indigo-500', count: jobs.filter(j => j.status === 'interview').length },
+    { id: 'offer', title: t('dashboard.jobTracker.columns.offer'), icon: Gift, color: 'from-emerald-500 to-teal-500', count: jobs.filter(j => j.status === 'offer').length },
   ];
 
   if (loading) {
@@ -33,7 +35,7 @@ export function JobTrackerSection({ isDark, onViewAll }: JobTrackerSectionProps)
         <div className="flex items-center justify-center py-12">
           <Loader2 className="size-6 animate-spin text-teal-500" />
           <span className={`ml-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Loading applications...
+            {t('dashboard.jobTracker.loading')}
           </span>
         </div>
       </div>
@@ -44,14 +46,14 @@ export function JobTrackerSection({ isDark, onViewAll }: JobTrackerSectionProps)
     <div className="pt-8 animate-in slide-in-from-bottom duration-500" style={{ animationDelay: '500ms' }}>
       <div className="flex items-center justify-between mb-6">
         <h2 className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
-          Application Tracker
+          {t('dashboard.jobTracker.title')}
         </h2>
         <Button
           onClick={onViewAll}
           variant="ghost"
           className={`gap-2 ${isDark ? 'text-teal-400 hover:text-teal-300' : 'text-teal-600 hover:text-teal-700'}`}
         >
-          View All
+          {t('dashboard.jobTracker.viewAll')}
           <ArrowRight className="size-4" />
         </Button>
       </div>
@@ -124,7 +126,7 @@ export function JobTrackerSection({ isDark, onViewAll }: JobTrackerSectionProps)
                 
                 {columnJobs.length === 0 && (
                   <div className={`p-6 text-center ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                    <p className="text-xs">No applications</p>
+                    <p className="text-xs">{t('dashboard.jobTracker.noApplications')}</p>
                   </div>
                 )}
               </div>
@@ -139,7 +141,7 @@ export function JobTrackerSection({ isDark, onViewAll }: JobTrackerSectionProps)
                   }`}
                 >
                   <Plus className="size-4 inline mr-1" />
-                  Add Job
+                  {t('dashboard.jobTracker.addJob')}
                 </button>
               </div>
             </div>

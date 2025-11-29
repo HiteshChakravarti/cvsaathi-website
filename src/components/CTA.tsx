@@ -1,8 +1,11 @@
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
 
 export function CTA() {
+  const { t } = useTranslation();
   return (
     <section className="py-32 px-6 relative overflow-hidden">
       <div className="max-w-5xl mx-auto">
@@ -44,7 +47,7 @@ export function CTA() {
               className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full"
             >
               <Sparkles className="w-4 h-4 text-white" />
-              <span className="text-white">Start Your Success Story Today</span>
+              <span className="text-white">{t('landing.cta.badge')}</span>
             </motion.div>
 
             <motion.h2
@@ -54,7 +57,7 @@ export function CTA() {
               viewport={{ once: true }}
               className="mb-6 text-white"
             >
-              Ready to Build Your Dream Resume?
+              {t('landing.cta.title')}
             </motion.h2>
 
             <motion.p
@@ -64,8 +67,7 @@ export function CTA() {
               viewport={{ once: true }}
               className="mb-8 text-white/90 max-w-2xl mx-auto"
             >
-              Join 50,000+ job seekers who transformed their careers with our
-              AI-powered resume builder. Get started in minutes, land interviews in days.
+              {t('landing.cta.description')}
             </motion.p>
 
             <motion.div
@@ -82,18 +84,20 @@ export function CTA() {
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Button
-                  size="lg"
-                  className="bg-white text-[#0C0E18] hover:bg-white/90 gap-2 relative overflow-hidden group"
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                    animate={{ x: [-200, 200] }}
-                    transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 2 }}
-                  />
-                  <span className="relative z-10">Create Your Resume Free</span>
-                  <ArrowRight className="w-4 h-4 relative z-10" />
-                </Button>
+                <Link to="/auth/signup">
+                  <Button
+                    size="lg"
+                    className="bg-white text-[#0C0E18] hover:bg-white/90 gap-2 relative overflow-hidden group"
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      animate={{ x: [-200, 200] }}
+                      transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 2 }}
+                    />
+                    <span className="relative z-10">{t('landing.cta.createResume')}</span>
+                    <ArrowRight className="w-4 h-4 relative z-10" />
+                  </Button>
+                </Link>
               </motion.div>
 
               <motion.div
@@ -103,13 +107,15 @@ export function CTA() {
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white/50 text-white hover:bg-white/10"
-                >
-                  Talk to Sales
-                </Button>
+                <Link to="/company/contact">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white/50 text-white hover:bg-white/10"
+                  >
+                    {t('landing.cta.talkToSales')}
+                  </Button>
+                </Link>
               </motion.div>
             </motion.div>
 
@@ -120,7 +126,7 @@ export function CTA() {
               viewport={{ once: true }}
               className="mt-6 text-white/70"
             >
-              No credit card required • 7-day money-back guarantee
+              {t('landing.cta.noCreditCard')}
             </motion.p>
           </div>
 

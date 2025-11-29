@@ -7,6 +7,7 @@ import { useUserStats } from "../hooks/useUserStats";
 import { useSubscription } from "../hooks/useSubscription";
 import { useRecentActivities } from "../hooks/useRecentActivities";
 import { supabase } from "../lib/supabaseClient";
+import { useTranslation } from "react-i18next";
 import "./dashboard.css";
 import {
   Bell,
@@ -42,6 +43,8 @@ import { PricingPage } from "./components/PricingPage";
 import { JobTrackerPage } from "./components/JobTrackerPage";
 import { CalendarPage } from "./components/CalendarPage";
 import { TemplatesGalleryPage } from "./components/TemplatesGalleryPage";
+import { FeedbackPage } from "./components/FeedbackPage";
+import { FeedbackFloatingButton } from "./components/FeedbackFloatingButton";
 import { EdgeFunctionTest } from "../components/EdgeFunctionTest";
 import { AIServicesTest } from "../components/AIServicesTest";
 import { DashboardShell } from "./DashboardShell";
@@ -68,6 +71,7 @@ const sectionToPath: Record<string, string> = {
   "job-tracker": "/app/job-tracker",
   calendar: "/app/calendar",
   "templates": "/app/templates",
+  feedback: "/app/feedback",
 };
 
 const pathToSection: Record<string, string> = Object.entries(sectionToPath).reduce(
@@ -93,15 +97,16 @@ const resolveSection = (section: string) => {
 };
 
 export function DashboardRoutes() {
+  const { t } = useTranslation();
   const [isDark, setIsDark] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
-  const [userProfile, setUserProfile] = useState<{ first_name?: string; last_name?: string; full_name?: string } | null>(null);
+  const [userProfile, setUserProfile] = useState<{ first_name?: string; last_name?: string } | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
   const { user } = useAuth();
   const { stats, loading: statsLoading } = useUserStats(user?.id);
   const { currentPlan, loading: subscriptionLoading } = useSubscription();
-  const { activities: recentActivities, loading: activitiesLoading } = useRecentActivities(4);
+  const { activities: recentActivities, loading: activitiesLoading, error: activitiesError } = useRecentActivities(4);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -127,7 +132,7 @@ export function DashboardRoutes() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('first_name, last_name, full_name')
+          .select('first_name, last_name')
           .eq('user_id', user.id)
           .single();
 
@@ -162,7 +167,7 @@ export function DashboardRoutes() {
     const resolved = resolveSection(section);
 
     if (resolved === "help") {
-      toast.info("Help & support is coming soon.");
+      toast.info(t('dashboard.help.comingSoon'));
       return;
     }
 
@@ -173,7 +178,8 @@ export function DashboardRoutes() {
     }
 
     if (shouldToast) {
-      toast.success(`Opening ${formatSection(resolved)}`, { duration: 2000 });
+      const sectionName = t(`dashboard.sidebar.menu.${resolved}`) || t(`dashboard.sidebar.bottom.${resolved}`) || formatSection(resolved);
+      toast.success(t('dashboard.navigation.opening', { section: sectionName }), { duration: 2000 });
     }
 
     navigate(target);
@@ -185,8 +191,39 @@ export function DashboardRoutes() {
 
   const handleCommandNavigate = (section: string) => navigateToSection(section, true);
 
+  // Handle activity click navigation
+  const handleActivityClick = (activity: { type: string; id: string }) => {
+    switch (activity.type) {
+      case 'resume':
+        navigateToSection('resume-builder', true);
+        // Could also navigate to specific resume if needed
+        break;
+      case 'ai_session':
+        navigateToSection('ai-coach', true);
+        break;
+      case 'interview':
+        navigateToSection('interview-prep', true);
+        break;
+      case 'ats_check':
+        navigateToSection('ats-checker', true);
+        break;
+      case 'skill_gap':
+        navigateToSection('skill-gap', true);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Handle "See all" button click
+  const handleSeeAllActivities = () => {
+    // Navigate to a full activity page or show more activities
+    // For now, we'll navigate to performance metrics which could show full activity
+    navigateToSection('performance-metrics', true);
+  };
+
   const handleMetricClick = (metric: string) => {
-    toast.info(`Viewing ${metric} details`, { duration: 2000 });
+    toast.info(t('dashboard.analytics.viewingDetails', { metric }), { duration: 2000 });
   };
 
   const toggleTheme = () => setIsDark((prev) => !prev);
@@ -318,9 +355,18 @@ export function DashboardRoutes() {
       <>
         {toaster}
         <DashboardShell
-          title="Help & Support"
-          description="We are finishing up the help center experience. In the meantime, please reach out to support@cvsaathi.com for assistance."
+          title={t('dashboard.help.title')}
+          description={t('dashboard.help.description')}
         />
+      </>
+    );
+  }
+
+  if (activeSection === "feedback") {
+    return (
+      <>
+        {toaster}
+        <FeedbackPage isDark={isDark} onBack={navigateHome} />
       </>
     );
   }
@@ -332,6 +378,7 @@ export function DashboardRoutes() {
       }`}
     >
       {toaster}
+      <FeedbackFloatingButton isDark={isDark} />
 
       <CommandPalette
         isOpen={commandPaletteOpen}
@@ -353,7 +400,7 @@ export function DashboardRoutes() {
           >
             <div className="px-8 py-6">
               <div className="flex items-center justify-between">
-                <h1 className={`text-3xl ${isDark ? "text-white" : "text-gray-900"}`}>My Dashboard</h1>
+                <h1 className={`text-3xl ${isDark ? "text-white" : "text-gray-900"}`}>{t('dashboard.main.title')}</h1>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setCommandPaletteOpen(true)}
@@ -364,13 +411,13 @@ export function DashboardRoutes() {
                     }`}
                   >
                     <Command className="size-4" />
-                    <span className="text-sm">Quick Search</span>
+                    <span className="text-sm">{t('dashboard.main.quickSearch')}</span>
                     <kbd
                       className={`text-xs px-2 py-0.5 rounded ${
                         isDark ? "bg-white/10" : "bg-gray-100"
                       }`}
                     >
-                      ⌘K
+                      {t('dashboard.main.keyboardShortcut')}
                     </kbd>
                   </button>
                   <button
@@ -411,9 +458,9 @@ export function DashboardRoutes() {
                 <div className="animate-in slide-in-from-bottom duration-500 overflow-visible">
                   <FeatureCardLarge
                     icon={<Bot className="size-8" />}
-                    title="AI Career Coach"
-                    description="Get personalized career guidance powered by advanced AI. Receive expert advice on job search strategies, career transitions, and professional development tailored to your unique goals."
-                    author="AI Team"
+                    title={t('dashboard.features.aiCoach.title')}
+                    description={t('dashboard.features.aiCoach.description')}
+                    author={t('dashboard.features.aiCoach.author')}
                     color="teal"
                     isDark={isDark}
                     onClick={() => handleFeatureClick("ai-coach")}
@@ -427,9 +474,9 @@ export function DashboardRoutes() {
                 >
                   <FeatureCardLarge
                     icon={<FileText className="size-8" />}
-                    title="Resume Builder"
-                    description="Create stunning, ATS-optimized resumes with smart templates and AI-powered content suggestions tailored for your industry."
-                    author="CV Team"
+                    title={t('dashboard.features.resumeBuilder.title')}
+                    description={t('dashboard.features.resumeBuilder.description')}
+                    author={t('dashboard.features.resumeBuilder.author')}
                     color="purple"
                     isDark={isDark}
                     onClick={() => handleFeatureClick("resume-builder")}
@@ -445,9 +492,9 @@ export function DashboardRoutes() {
                 >
                   <FeatureCardLarge
                     icon={<FileCheck className="size-8" />}
-                    title="ATS Checker"
-                    description="Analyze your resume against Applicant Tracking Systems and get instant feedback with optimization suggestions."
-                    author="Tech Team"
+                    title={t('dashboard.features.atsChecker.title')}
+                    description={t('dashboard.features.atsChecker.description')}
+                    author={t('dashboard.features.atsChecker.author')}
                     color="pink"
                     isDark={isDark}
                     onClick={() => handleFeatureClick("ats-checker")}
@@ -461,9 +508,9 @@ export function DashboardRoutes() {
                 >
                   <FeatureCardLarge
                     icon={<Briefcase className="size-8" />}
-                    title="AI Interview Prep"
-                    description="Practice with AI-powered mock interviews tailored to your target role and receive real-time feedback on your performance."
-                    author="Interview Pro"
+                    title={t('dashboard.features.interviewPrep.title')}
+                    description={t('dashboard.features.interviewPrep.description')}
+                    author={t('dashboard.features.interviewPrep.author')}
                     color="blue"
                     isDark={isDark}
                     onClick={() => handleFeatureClick("interview-prep")}
@@ -477,9 +524,9 @@ export function DashboardRoutes() {
                 >
                   <FeatureCardLarge
                     icon={<BarChart3 className="size-8" />}
-                    title="Skill Gap Analysis"
-                    description="Identify missing skills for your dream role and get personalized learning paths to bridge the gap and advance your career."
-                    author="Skills Team"
+                    title={t('dashboard.features.skillGap.title')}
+                    description={t('dashboard.features.skillGap.description')}
+                    author={t('dashboard.features.skillGap.author')}
                     color="emerald"
                     isDark={isDark}
                     onClick={() => handleFeatureClick("skill-gap")}
@@ -497,7 +544,7 @@ export function DashboardRoutes() {
               style={{ animationDelay: "600ms" }}
             >
               <h2 className={`text-2xl mb-6 ${isDark ? "text-white" : "text-gray-900"}`}>
-                Analytics Overview
+                {t('dashboard.analytics.overview')}
               </h2>
               <div
                 className={`rounded-2xl border p-6 ${
@@ -510,7 +557,7 @@ export function DashboardRoutes() {
                       {statsLoading ? "..." : stats.resumesCreated}
                     </div>
                     <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                      Resumes Created
+                      {t('dashboard.analytics.resumesCreated')}
                     </div>
                   </div>
                   <div>
@@ -518,7 +565,7 @@ export function DashboardRoutes() {
                       {statsLoading ? "..." : stats.aiSessionsCompleted}
                     </div>
                     <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                      AI Sessions
+                      {t('dashboard.analytics.aiSessions')}
                     </div>
                   </div>
                   <div>
@@ -526,7 +573,7 @@ export function DashboardRoutes() {
                       {statsLoading ? "..." : stats.interviewsCompleted}
                     </div>
                     <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                      Interviews Prepped
+                      {t('dashboard.analytics.interviewsPrepped')}
                     </div>
                   </div>
                   <div>
@@ -534,7 +581,7 @@ export function DashboardRoutes() {
                       {statsLoading ? "..." : stats.applicationsSubmitted}
                     </div>
                     <div className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                      Applications Submitted
+                      {t('dashboard.analytics.applicationsSubmitted')}
                     </div>
                   </div>
                 </div>
@@ -560,14 +607,17 @@ export function DashboardRoutes() {
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 cursor-pointer" />
               <div className="text-left">
                 <p className={isDark ? "text-white" : "text-gray-900"}>
-                  {profileLoading ? "Loading..." : 
+                  {profileLoading ? t('loading') : 
                    userProfile?.full_name || 
                    (userProfile?.first_name && userProfile?.last_name 
                      ? `${userProfile.first_name} ${userProfile.last_name}` 
-                     : user?.email?.split('@')[0] || "User")}
+                     : user?.email?.split('@')[0] || t('dashboard.profile.user'))}
                 </p>
                 <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                  {subscriptionLoading ? "Loading..." : currentPlan.displayName} Plan
+                  {subscriptionLoading 
+                    ? t('loading') 
+                    : `${t('dashboard.profile.currentPlan')}: ${currentPlan.displayName}`
+                  }
                 </p>
               </div>
             </button>
@@ -575,20 +625,20 @@ export function DashboardRoutes() {
 
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className={isDark ? "text-white" : "text-gray-900"}>Performance</h3>
+              <h3 className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.performance.title')}</h3>
               <button
                 onClick={() => handleFeatureClick("performance-metrics")}
                 className="text-sm text-teal-500 hover:text-teal-600"
               >
-                View all
+                {t('dashboard.performance.viewAll')}
               </button>
             </div>
             <div className="space-y-4">
               <CircularProgressCard
                 value={statsLoading ? 0 : stats.resumesCreated}
                 maxValue={5}
-                label="Resumes Created"
-                subtext={statsLoading ? "Loading..." : `${stats.resumesCreated} total`}
+                label={t('dashboard.performance.resumesCreated')}
+                subtext={statsLoading ? t('loading') : t('dashboard.performance.total', { count: stats.resumesCreated })}
                 gradient="from-teal-500 to-cyan-400"
                 isDark={isDark}
                 onClick={() => handleMetricClick("resumes")}
@@ -596,8 +646,8 @@ export function DashboardRoutes() {
               <CircularProgressCard
                 value={statsLoading ? 0 : stats.aiSessionsCompleted}
                 maxValue={10}
-                label="AI Sessions"
-                subtext={statsLoading ? "Loading..." : `${Math.floor(stats.totalTimeSpent / 60)}h ${stats.totalTimeSpent % 60}m total`}
+                label={t('dashboard.performance.aiSessions')}
+                subtext={statsLoading ? t('loading') : t('dashboard.performance.timeSpent', { hours: Math.floor(stats.totalTimeSpent / 60), minutes: stats.totalTimeSpent % 60 })}
                 gradient="from-purple-500 to-pink-400"
                 isDark={isDark}
                 onClick={() => handleMetricClick("ai-sessions")}
@@ -605,8 +655,8 @@ export function DashboardRoutes() {
               <CircularProgressCard
                 value={statsLoading ? 0 : stats.interviewsCompleted}
                 maxValue={5}
-                label="Interview Prep"
-                subtext={statsLoading ? "Loading..." : `${stats.interviewsCompleted} completed`}
+                label={t('dashboard.performance.interviewPrep')}
+                subtext={statsLoading ? t('loading') : t('dashboard.performance.completed', { count: stats.interviewsCompleted })}
                 gradient="from-blue-500 to-indigo-500"
                 isDark={isDark}
                 onClick={() => handleMetricClick("interviews")}
@@ -614,8 +664,8 @@ export function DashboardRoutes() {
               <CircularProgressCard
                 value={statsLoading ? 0 : stats.profileCompleteness}
                 maxValue={100}
-                label="Profile Complete"
-                subtext={statsLoading ? "Loading..." : `${stats.profileCompleteness}% complete`}
+                label={t('dashboard.performance.profileComplete')}
+                subtext={statsLoading ? t('loading') : t('dashboard.performance.percentComplete', { percent: stats.profileCompleteness })}
                 gradient="from-emerald-500 to-teal-500"
                 isDark={isDark}
                 onClick={() => handleMetricClick("profile")}
@@ -625,28 +675,61 @@ export function DashboardRoutes() {
 
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className={isDark ? "text-white" : "text-gray-900"}>Recent Activity</h3>
-              <button className="text-sm text-teal-500 hover:text-teal-600">See all</button>
+              <h3 className={isDark ? "text-white" : "text-gray-900"}>{t('dashboard.recentActivity.title')}</h3>
+              <button 
+                onClick={handleSeeAllActivities}
+                className="text-sm text-teal-500 hover:text-teal-600 transition-colors"
+              >
+                {t('dashboard.recentActivity.seeAll')}
+              </button>
             </div>
             <div className="space-y-3">
               {activitiesLoading ? (
                 <div className="flex items-center justify-center py-4">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-teal-500"></div>
                 </div>
+              ) : activitiesError ? (
+                <div className={`text-sm text-center py-4 ${isDark ? 'text-red-400' : 'text-red-600'}`}>
+                  <p>{t('dashboard.recentActivity.error')}</p>
+                  <p className="text-xs mt-1 opacity-75">{activitiesError}</p>
+                </div>
               ) : recentActivities.length > 0 ? (
-                recentActivities.map((activity) => (
-                  <ActivityWidget
-                    key={activity.id}
-                    name={activity.name}
-                    id={activity.formattedTime}
-                    avatar={activity.avatar}
-                    isDark={isDark}
-                    isOnline={activity.type === 'resume' || activity.type === 'ai_session' || activity.type === 'ats_check' || activity.type === 'skill_gap'}
-                  />
-                ))
+                recentActivities.map((activity) => {
+                  // Get translated activity name
+                  let activityName = activity.name;
+                  if (activity.type === 'resume') {
+                    activityName = activity.metadata?.resumeName 
+                      ? t('dashboard.recentActivity.resumeUpdated', { name: activity.metadata.resumeName })
+                      : t('dashboard.recentActivity.resumeUpdatedGeneric');
+                  } else if (activity.type === 'ai_session') {
+                    activityName = t('dashboard.recentActivity.aiSession');
+                  } else if (activity.type === 'interview') {
+                    activityName = t('dashboard.recentActivity.interviewPrep');
+                  } else if (activity.type === 'ats_check') {
+                    activityName = activity.metadata?.fileName
+                      ? t('dashboard.recentActivity.atsCheck', { fileName: activity.metadata.fileName })
+                      : t('dashboard.recentActivity.atsCheckGeneric');
+                  } else if (activity.type === 'skill_gap') {
+                    activityName = activity.metadata?.targetRole
+                      ? t('dashboard.recentActivity.skillGapAnalysis', { role: activity.metadata.targetRole })
+                      : t('dashboard.recentActivity.skillGapAnalysisGeneric');
+                  }
+
+                  return (
+                    <ActivityWidget
+                      key={activity.id}
+                      name={activityName}
+                      formattedTime={activity.formattedTime}
+                      avatar={activity.avatar}
+                      isDark={isDark}
+                      isOnline={activity.type === 'resume' || activity.type === 'ai_session' || activity.type === 'ats_check' || activity.type === 'skill_gap'}
+                      onClick={() => handleActivityClick(activity)}
+                    />
+                  );
+                })
               ) : (
                 <p className={`text-sm text-center py-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  No recent activity
+                  {t('dashboard.recentActivity.noActivity')}
                 </p>
               )}
             </div>

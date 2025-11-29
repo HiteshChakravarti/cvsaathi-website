@@ -1,18 +1,23 @@
 import { motion } from "motion/react";
 import { Lightbulb, Users, TrendingUp, Award, DollarSign, Zap, Shield, Target } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-const benefits = [
-  { icon: Lightbulb, label: "Faster Innovation" },
-  { icon: Users, label: "Virtual Assistance" },
-  { icon: TrendingUp, label: "Scalable Solutions" },
-  { icon: Award, label: "Personalized Experiences" },
-  { icon: DollarSign, label: "Cost Effective" },
-  { icon: Zap, label: "Lightning Fast" },
-  { icon: Shield, label: "Secure & Private" },
-  { icon: Target, label: "Precision Matching" },
-];
+function getBenefits(t: any) {
+  return [
+    { icon: Lightbulb, label: t('landing.infiniteScroll.fasterInnovation') },
+    { icon: Users, label: t('landing.infiniteScroll.virtualAssistance') },
+    { icon: TrendingUp, label: t('landing.infiniteScroll.scalableSolutions') },
+    { icon: Award, label: t('landing.infiniteScroll.personalizedExperiences') },
+    { icon: DollarSign, label: t('landing.infiniteScroll.costEffective') },
+    { icon: Zap, label: t('landing.infiniteScroll.lightningFast') },
+    { icon: Shield, label: t('landing.infiniteScroll.securePrivate') },
+    { icon: Target, label: t('landing.infiniteScroll.precisionMatching') },
+  ];
+}
 
 export function InfiniteScrollBenefits() {
+  const { t } = useTranslation();
+  const benefits = getBenefits(t);
   // Duplicate benefits for seamless loop
   const duplicatedBenefits = [...benefits, ...benefits];
 

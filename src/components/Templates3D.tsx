@@ -1,47 +1,72 @@
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { FileText, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "./ui/button";
 
-const templates = [
-  {
-    icon: FileText,
-    title: "Tech Professional",
-    description: "Modern templates for developers, engineers, and tech professionals.",
-    tags: ["Developer", "Engineer", "Designer"],
-    color: "teal",
-  },
-  {
-    icon: Sparkles,
-    title: "Marketing",
-    description: "Eye-catching templates for marketers and creative professionals.",
-    tags: ["Marketing", "Social Media", "Creative"],
-    color: "cyan",
-  },
-  {
-    icon: FileText,
-    title: "Business Operations",
-    description: "Professional templates for business operations and management.",
-    tags: ["Manager", "Consultant", "Operations"],
-    color: "teal",
-  },
-  {
-    icon: FileText,
-    title: "Fresh Graduate",
-    description: "Specially designed for students and recent graduates.",
-    tags: ["Graduate", "Intern", "Entry-level"],
-    color: "emerald",
-  },
-  {
-    icon: FileText,
-    title: "Executive",
-    description: "Premium templates for senior executives and leadership roles.",
-    tags: ["Director", "VP", "Executive"],
-    color: "cyan",
-  },
-];
+function getTemplates(t: any) {
+  return [
+    {
+      icon: FileText,
+      title: t('landing.templates.templateTypes.techProfessional.title'),
+      description: t('landing.templates.templateTypes.techProfessional.description'),
+      tags: [
+        t('landing.templates.templateTypes.techProfessional.tags.developer'),
+        t('landing.templates.templateTypes.techProfessional.tags.engineer'),
+        t('landing.templates.templateTypes.techProfessional.tags.designer')
+      ],
+      color: "teal",
+    },
+    {
+      icon: Sparkles,
+      title: t('landing.templates.templateTypes.marketing.title'),
+      description: t('landing.templates.templateTypes.marketing.description'),
+      tags: [
+        t('landing.templates.templateTypes.marketing.tags.marketing'),
+        t('landing.templates.templateTypes.marketing.tags.socialMedia'),
+        t('landing.templates.templateTypes.marketing.tags.creative')
+      ],
+      color: "cyan",
+    },
+    {
+      icon: FileText,
+      title: t('landing.templates.templateTypes.businessOperations.title'),
+      description: t('landing.templates.templateTypes.businessOperations.description'),
+      tags: [
+        t('landing.templates.templateTypes.businessOperations.tags.manager'),
+        t('landing.templates.templateTypes.businessOperations.tags.consultant'),
+        t('landing.templates.templateTypes.businessOperations.tags.operations')
+      ],
+      color: "teal",
+    },
+    {
+      icon: FileText,
+      title: t('landing.templates.templateTypes.freshGraduate.title'),
+      description: t('landing.templates.templateTypes.freshGraduate.description'),
+      tags: [
+        t('landing.templates.templateTypes.freshGraduate.tags.graduate'),
+        t('landing.templates.templateTypes.freshGraduate.tags.intern'),
+        t('landing.templates.templateTypes.freshGraduate.tags.entryLevel')
+      ],
+      color: "emerald",
+    },
+    {
+      icon: FileText,
+      title: t('landing.templates.templateTypes.executive.title'),
+      description: t('landing.templates.templateTypes.executive.description'),
+      tags: [
+        t('landing.templates.templateTypes.executive.tags.director'),
+        t('landing.templates.templateTypes.executive.tags.vp'),
+        t('landing.templates.templateTypes.executive.tags.executive')
+      ],
+      color: "cyan",
+    },
+  ];
+}
 
 export function Templates3D() {
+  const { t } = useTranslation();
+  const templates = getTemplates(t);
   const [rotation, setRotation] = useState(0);
   const [isRotating, setIsRotating] = useState(false);
 
@@ -83,7 +108,7 @@ export function Templates3D() {
             className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
           >
             <FileText className="w-4 h-4 text-teal-600" />
-            <span className="text-teal-700 uppercase tracking-wider">Templates</span>
+            <span className="text-teal-700 uppercase tracking-wider">{t('landing.templates.badge')}</span>
           </motion.div>
           <h2 
             className="mb-6"
@@ -97,10 +122,10 @@ export function Templates3D() {
               backgroundClip: 'text',
             }}
           >
-            Designer-crafted templates
+            {t('landing.templates.title')}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Pick from modern, classic, and visual templates built to pass ATS filters and impress recruiters
+            {t('landing.templates.description')}
           </p>
         </motion.div>
 
@@ -201,7 +226,7 @@ export function Templates3D() {
                           whileTap={{ scale: 0.98 }}
                           className="mt-6 w-full py-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl hover:shadow-lg hover:shadow-teal-500/30 transition-all"
                         >
-                          Preview Template
+                          {t('landing.templates.previewTemplate')}
                         </motion.button>
                       </div>
                     </div>
@@ -224,7 +249,7 @@ export function Templates3D() {
             
             <div className="px-6 py-3 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-full shadow-lg">
               <span className="text-gray-700">
-                Drag to rotate • {templates.length} templates
+                {t('landing.templates.dragToRotate')} • {templates.length} {t('landing.templates.templatesCount')}
               </span>
             </div>
 
@@ -251,7 +276,7 @@ export function Templates3D() {
             size="lg"
             className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-8 shadow-lg shadow-teal-500/30"
           >
-            View All Templates
+            {t('landing.templates.viewAllTemplates')}
           </Button>
         </motion.div>
       </div>

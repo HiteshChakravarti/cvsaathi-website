@@ -1,29 +1,32 @@
 import { motion } from "motion/react";
 import { BarChart3, TrendingUp, Users, Award } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-const benefits = [
-  {
-    icon: BarChart3,
-    title: "AI That Understands You",
-    description: "CV Saathi isn't just smart — it's personalized. Our multilingual AI tailors every resume, career suggestion, and interview tip to your city, your industry, and your goals.",
-    illustration: "chart",
-  },
-  {
-    icon: TrendingUp,
-    title: "Real-Time Career Insights",
-    description: "Track your growth instantly with live analytics and job-market signals — see which skills are trending and how your profile compares.",
-    illustration: "growth",
-    centerPiece: true,
-  },
-  {
-    icon: Users,
-    title: "AI-Driven Growth",
-    description: "Every click helps you move forward. Our intelligent system learns from your progress to recommend better opportunities, faster.",
-    illustration: "sync",
-  },
-];
+function getBenefits(t: any) {
+  return [
+    {
+      icon: BarChart3,
+      title: t('landing.whyChooseUs.benefits.aiUnderstands.title'),
+      description: t('landing.whyChooseUs.benefits.aiUnderstands.description'),
+      illustration: "chart",
+    },
+    {
+      icon: TrendingUp,
+      title: t('landing.whyChooseUs.benefits.realTimeInsights.title'),
+      description: t('landing.whyChooseUs.benefits.realTimeInsights.description'),
+      illustration: "growth",
+      centerPiece: true,
+    },
+    {
+      icon: Users,
+      title: t('landing.whyChooseUs.benefits.aiDrivenGrowth.title'),
+      description: t('landing.whyChooseUs.benefits.aiDrivenGrowth.description'),
+      illustration: "sync",
+    },
+  ];
+}
 
-function BenefitCard({ benefit, index }: { benefit: typeof benefits[0]; index: number }) {
+function BenefitCard({ benefit, index }: { benefit: ReturnType<typeof getBenefits>[0]; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -178,6 +181,9 @@ function BenefitCard({ benefit, index }: { benefit: typeof benefits[0]; index: n
 }
 
 export function WhyChooseUs() {
+  const { t } = useTranslation();
+  const benefits = getBenefits(t);
+
   return (
     <section id="why-choose-us" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
       {/* Subtle background decoration */}
@@ -202,7 +208,7 @@ export function WhyChooseUs() {
             className="inline-flex items-center gap-2 px-5 py-2 mb-6 bg-teal-50 border border-teal-200 rounded-full shadow-sm"
           >
             <Award className="w-4 h-4 text-teal-600" />
-            <span className="text-teal-700 uppercase tracking-wider">Why Us</span>
+            <span className="text-teal-700 uppercase tracking-wider">{t('landing.whyChooseUs.badge')}</span>
           </motion.div>
 
           <h2 
@@ -217,10 +223,10 @@ export function WhyChooseUs() {
               backgroundClip: 'text',
             }}
           >
-            Why Choose Us
+            {t('landing.whyChooseUs.title')}
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Empowering every career dream with intelligent, human-first AI.
+            {t('landing.whyChooseUs.description')}
           </p>
         </motion.div>
 

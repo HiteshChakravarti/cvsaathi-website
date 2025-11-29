@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { ArrowLeft, Camera, Edit2, Mail, MapPin, Globe, Linkedin, Github, Twitter, Check, X, Copy, Download, Play, Award, TrendingUp, FileText, Mic, Brain, Star, Lock, Share2, ExternalLink, Plus, Trash2, Eye, Loader2, Upload } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { toast } from "sonner";
@@ -9,6 +9,8 @@ import { useUserStats } from "../../hooks/useUserStats";
 import { useAuth } from "../../contexts/AuthContext";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { supabase } from "../../lib/supabaseClient";
 
 interface ProfilePageProps {
   isDark: boolean;
@@ -16,6 +18,7 @@ interface ProfilePageProps {
 }
 
 export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const [isEditing, setIsEditing] = useState<string | null>(null);
@@ -95,7 +98,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      toast.error("Image size must be less than 5MB");
+      toast.error(t('dashboard.profile.imageSizeError', { size: 5 }));
       return;
     }
 
@@ -105,7 +108,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
       if (user?.id) {
         localStorage.setItem(`profile_pic_${user.id}`, base64String);
         setProfilePic(base64String);
-        toast.success("Profile picture updated!");
+        toast.success(t('dashboard.profile.profilePicUpdated'));
       }
     };
     reader.readAsDataURL(file);
@@ -117,7 +120,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
     if (!file) return;
 
     if (file.size > 10 * 1024 * 1024) {
-      toast.error("Image size must be less than 10MB");
+      toast.error(t('dashboard.profile.imageSizeError', { size: 10 }));
       return;
     }
 
@@ -127,7 +130,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
       if (user?.id) {
         localStorage.setItem(`profile_bg_${user.id}`, base64String);
         setBackgroundImage(base64String);
-        toast.success("Background image updated!");
+        toast.success(t('dashboard.profile.backgroundImageUpdated'));
       }
     };
     reader.readAsDataURL(file);
@@ -137,7 +140,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
     if (user?.id) {
       localStorage.removeItem(`profile_pic_${user.id}`);
       setProfilePic(null);
-      toast.success("Profile picture removed!");
+      toast.success(t('dashboard.profile.profilePicRemoved'));
     }
   };
 
@@ -145,7 +148,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
     if (user?.id) {
       localStorage.removeItem(`profile_bg_${user.id}`);
       setBackgroundImage(null);
-      toast.success("Background image removed!");
+      toast.success(t('dashboard.profile.backgroundImageRemoved'));
     }
   };
 
@@ -193,19 +196,19 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
     }
   }, [user?.id]);
 
-  const [achievements] = useState([
-    { id: 1, name: "First Resume", description: "Created your first resume", unlocked: true, icon: FileText },
-    { id: 2, name: "AI Explorer", description: "Completed 5 AI coaching sessions", unlocked: true, icon: Brain },
-    { id: 3, name: "Interview Master", description: "Scored 90%+ in interview prep", unlocked: true, icon: Mic },
-    { id: 4, name: "Skill Champion", description: "Completed skill gap analysis", unlocked: true, icon: TrendingUp },
-    { id: 5, name: "Profile Pro", description: "100% profile completion", unlocked: false, icon: Star },
-    { id: 6, name: "ATS Expert", description: "Pass 10 ATS checks", unlocked: false, icon: Award },
-  ]);
+  const achievements = [
+    { id: 1, name: t('dashboard.profile.achievementsList.firstResume.name'), description: t('dashboard.profile.achievementsList.firstResume.description'), unlocked: true, icon: FileText },
+    { id: 2, name: t('dashboard.profile.achievementsList.aiExplorer.name'), description: t('dashboard.profile.achievementsList.aiExplorer.description'), unlocked: true, icon: Brain },
+    { id: 3, name: t('dashboard.profile.achievementsList.interviewMaster.name'), description: t('dashboard.profile.achievementsList.interviewMaster.description'), unlocked: true, icon: Mic },
+    { id: 4, name: t('dashboard.profile.achievementsList.skillChampion.name'), description: t('dashboard.profile.achievementsList.skillChampion.description'), unlocked: true, icon: TrendingUp },
+    { id: 5, name: t('dashboard.profile.achievementsList.profilePro.name'), description: t('dashboard.profile.achievementsList.profilePro.description'), unlocked: false, icon: Star },
+    { id: 6, name: t('dashboard.profile.achievementsList.atsExpert.name'), description: t('dashboard.profile.achievementsList.atsExpert.description'), unlocked: false, icon: Award },
+  ];
 
   // Format resumes for display
   const formattedResumes = resumes?.slice(0, 2).map((resume) => ({
     id: resume.id,
-    name: resume.name || "Untitled Resume",
+    name: resume.name || t('dashboard.profile.untitledResume'),
     date: resume.updated_at ? new Date(resume.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : "N/A",
     atsScore: 0, // ATS score not stored in resume data
     downloads: 0, // Downloads not tracked
@@ -213,22 +216,96 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
 
   // Format interview sessions for display
   const formattedInterviews = interviewSessions?.slice(0, 3).map((session) => {
-    const score = session.total_score || session.average_score || 0;
+    const score = session.confidence_score || 0;
+    const durationMinutes = session.session_duration_minutes || 0;
+    const dateValue = session.completed_at || session.started_at || session.created_at;
     return {
       id: session.id,
-      role: session.target_roles || "Interview Practice",
-      company: session.industry || "General",
-      date: session.created_at ? new Date(session.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : "N/A",
+      role: session.role || t('dashboard.profile.interviewPractice'),
+      company: session.industry || t('dashboard.profile.general'),
+      date: dateValue ? new Date(dateValue).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : "N/A",
       score: Math.round(score),
-      duration: session.duration_minutes ? `${Math.floor(session.duration_minutes / 60)}:${String(session.duration_minutes % 60).padStart(2, '0')}` : "0:00",
+      duration: `${Math.floor(durationMinutes / 60)}:${String(durationMinutes % 60).padStart(2, '0')}`,
     };
   }) || [];
 
-  const [skillTests] = useState([
-    { id: 1, skill: "UI/UX Design", score: 92, percentile: 95, date: "Dec 7, 2024" },
-    { id: 2, skill: "Figma Mastery", score: 96, percentile: 98, date: "Dec 1, 2024" },
-    { id: 3, skill: "Product Strategy", score: 85, percentile: 88, date: "Nov 25, 2024" },
-  ]);
+  // Skill gap analysis results
+  const [skillGapResults, setSkillGapResults] = useState<Array<{
+    id: string;
+    skill: string;
+    score: number;
+    percentile: number;
+    date: string;
+  }>>([]);
+  const [loadingSkillGaps, setLoadingSkillGaps] = useState(true);
+
+  // Fetch skill gap analysis results
+  useEffect(() => {
+    const fetchSkillGapResults = async () => {
+      if (!user?.id) {
+        setLoadingSkillGaps(false);
+        return;
+      }
+
+      try {
+        setLoadingSkillGaps(true);
+        const { data, error } = await supabase
+          .from('skill_gap_analyses')
+          .select('id, target_role, analysis_date, created_at, analysis_data')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(3);
+
+        if (error) {
+          console.error('Error fetching skill gap results:', error);
+          setSkillGapResults([]);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          const formattedResults = data.map((analysis) => {
+            let overallScore = 75; // Default
+            let matchPercentage = 75;
+
+            // Parse analysis_data to get score
+            if (analysis.analysis_data) {
+              try {
+                const parsed = typeof analysis.analysis_data === 'string' 
+                  ? JSON.parse(analysis.analysis_data) 
+                  : analysis.analysis_data;
+                overallScore = parsed.overallScore || parsed.matchPercentage || 75;
+                matchPercentage = parsed.matchPercentage || overallScore;
+              } catch (e) {
+                console.error('Error parsing analysis data:', e);
+              }
+            }
+
+            const date = analysis.analysis_date || analysis.created_at;
+            const percentile = Math.round(matchPercentage);
+
+            return {
+              id: analysis.id,
+              skill: analysis.target_role || 'Skill Analysis',
+              score: Math.round(overallScore),
+              percentile: percentile,
+              date: date ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A',
+            };
+          });
+
+          setSkillGapResults(formattedResults);
+        } else {
+          setSkillGapResults([]);
+        }
+      } catch (error) {
+        console.error('Error fetching skill gap results:', error);
+        setSkillGapResults([]);
+      } finally {
+        setLoadingSkillGaps(false);
+      }
+    };
+
+    fetchSkillGapResults();
+  }, [user?.id]);
 
   const publicProfileUrl = `cvsaathi.com/${profileData.name.toLowerCase().replace(' ', '-')}`;
 
@@ -274,10 +351,10 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
 
       // Save to database
       await updateProfile(updateData);
-      toast.success("Profile updated successfully!");
+      toast.success(t('dashboard.profile.updateSuccess'));
     } catch (error) {
       console.error('Error saving profile:', error);
-      toast.error("Failed to update profile. Please try again.");
+      toast.error(t('dashboard.profile.updateFailed'));
       // Revert local state on error
       setIsEditing(field);
     }
@@ -298,10 +375,10 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
     try {
       const skillsJson = JSON.stringify(skills);
       await updateProfile({ skills: skillsJson });
-      toast.success("Skills updated successfully!");
+      toast.success(t('dashboard.profile.skillsUpdated'));
     } catch (error) {
       console.error('Error saving skills:', error);
-      toast.error("Failed to save skills. Please try again.");
+      toast.error(t('dashboard.profile.skillsUpdateFailed'));
     }
   };
 
@@ -336,7 +413,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
   const saveEducation = () => {
     if (user?.id) {
       localStorage.setItem(`profile_education_${user.id}`, JSON.stringify(education));
-      toast.success("Education updated successfully!");
+      toast.success(t('dashboard.profile.educationUpdated'));
     }
   };
 
@@ -382,25 +459,54 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
   };
 
   const shareProfile = () => {
-    toast.info("Share options coming soon!");
+    toast.info(t('dashboard.profile.shareOptionsComingSoon'));
   };
 
   const connectLinkedIn = () => {
-    toast.info("LinkedIn integration coming soon!");
+    toast.info(t('dashboard.profile.linkedInIntegrationComingSoon'));
   };
 
-  const profileCompletion = 85;
+  // Calculate profile completion dynamically
+  const profileCompletion = useMemo(() => {
+    let completion = 0;
+    
+    // Profile photo: 10%
+    if (profilePic) completion += 10;
+    
+    // Bio: 15%
+    if (profileData.bio && profileData.bio.trim().length > 0) completion += 15;
+    
+    // Name: 10%
+    if (profileData.name && profileData.name.trim().length > 0) completion += 10;
+    
+    // Skills: 20% (max 20%, based on having skills)
+    if (skills.length > 0) {
+      completion += Math.min(20, skills.length * 5); // 5% per skill, max 20%
+    }
+    
+    // Education: 15% (max 15%, based on having education)
+    if (education.length > 0) {
+      completion += Math.min(15, education.length * 7.5); // 7.5% per entry, max 15%
+    }
+    
+    // Resume: 15% (max 15%, based on having resumes)
+    if (resumes && resumes.length > 0) {
+      completion += Math.min(15, resumes.length * 15); // 15% per resume, max 15%
+    }
+    
+    // LinkedIn: 10%
+    if (profileData.linkedin && profileData.linkedin.trim().length > 0) completion += 10;
+    
+    // Location: 5%
+    if (profileData.location && profileData.location.trim().length > 0) completion += 5;
+    
+    return Math.min(100, Math.round(completion));
+  }, [profilePic, profileData.bio, profileData.name, profileData.linkedin, profileData.location, skills.length, education.length, resumes]);
 
   const statusColors = {
     'actively-looking': 'from-green-500 to-emerald-500',
     'open': 'from-yellow-500 to-orange-500',
     'not-looking': 'from-red-500 to-pink-500',
-  };
-
-  const statusLabels = {
-    'actively-looking': '🟢 Actively Looking',
-    'open': '🟡 Open to Offers',
-    'not-looking': '🔴 Not Looking',
   };
 
   // Show loading state
@@ -413,7 +519,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
       }`}>
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-teal-500" />
-          <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>Loading profile...</p>
+          <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>{t('loading')}</p>
         </div>
       </div>
     );
@@ -439,10 +545,10 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               className={`${isDark ? 'hover:bg-white/5' : 'hover:bg-gray-100'}`}
             >
               <ArrowLeft className="size-5 mr-2" />
-              Back to Dashboard
+              {t('dashboard.profile.backToDashboard')}
             </Button>
             <h1 className={`text-3xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              My Profile
+              {t('dashboard.profile.title')}
             </h1>
           </div>
           <div className="flex items-center gap-3">
@@ -454,11 +560,11 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   await signOut();
                   navigate('/');
                 } catch (e) {
-                  toast.error("Failed to logout. Please try again.");
+                  toast.error(t('dashboard.profile.logoutFailed'));
                 }
               }}
             >
-              Logout
+              {t('dashboard.profile.logout')}
             </Button>
             <Button
               onClick={shareProfile}
@@ -466,7 +572,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               className={`${isDark ? 'border-white/10 hover:bg-white/5' : 'border-gray-200 hover:bg-gray-50'}`}
             >
               <Share2 className="size-4 mr-2" />
-              Share Profile
+              {t('dashboard.profile.shareProfile')}
             </Button>
             <Button
               onClick={() => {
@@ -476,7 +582,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white"
             >
               <Edit2 className="size-4 mr-2" />
-              Edit Profile
+              {t('dashboard.profile.editProfile')}
             </Button>
           </div>
         </div>
@@ -573,7 +679,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                       <input
                         type="text"
                         defaultValue={profileData.name}
-                        placeholder="Your Name"
+                        placeholder={t('dashboard.profile.yourName')}
                         className={`text-3xl px-3 py-1 rounded-lg border ${
                           isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200 text-gray-900'
                         }`}
@@ -609,7 +715,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                       className={`text-3xl group cursor-pointer inline-flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}
                       onClick={() => handleEdit('name')}
                     >
-                      {profileData.name || 'Your Name'}
+                      {profileData.name || t('dashboard.profile.yourName')}
                       <Edit2 className="size-4 opacity-0 group-hover:opacity-50 transition-opacity" />
                     </h2>
                   )}
@@ -619,7 +725,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                       <input
                         type="text"
                         defaultValue={profileData.headline}
-                        placeholder="Your job title or headline"
+                        placeholder={t('dashboard.profile.addHeadline')}
                         className={`text-lg px-3 py-1 rounded-lg border ${
                           isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200 text-gray-900'
                         }`}
@@ -655,7 +761,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                       className={`text-lg group cursor-pointer inline-flex items-center gap-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
                       onClick={() => handleEdit('headline')}
                     >
-                      {profileData.headline || 'Add your job title or headline'}
+                      {profileData.headline || t('dashboard.profile.addHeadline')}
                       <Edit2 className="size-3 opacity-0 group-hover:opacity-50 transition-opacity" />
                     </p>
                   )}
@@ -664,7 +770,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                 {/* Status Badge */}
                 <div className="mb-4">
                   <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-gradient-to-r ${statusColors[profileData.status as keyof typeof statusColors]} text-white`}>
-                    {statusLabels[profileData.status as keyof typeof statusLabels]}
+                    {t(`dashboard.profile.statusLabels.${profileData.status}`)}
                   </span>
                 </div>
 
@@ -691,7 +797,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                       onClick={() => handleEdit('location')}
                     >
                       <MapPin className="size-4" />
-                      <span>{profileData.location || 'Add location'}</span>
+                      <span>{profileData.location || t('dashboard.profile.addLocation')}</span>
                       <Edit2 className="size-3 opacity-0 group-hover:opacity-50 transition-opacity" />
                     </div>
                   )}
@@ -721,7 +827,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                       onClick={() => handleEdit('website')}
                     >
                       <Globe className="size-4" />
-                      <span>{profileData.website || 'Add website'}</span>
+                      <span>{profileData.website || t('dashboard.profile.addWebsite')}</span>
                       <Edit2 className="size-3 opacity-0 group-hover:opacity-50 transition-opacity" />
                     </div>
                   )}
@@ -803,7 +909,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                     <div className="flex items-center gap-2">
                       <Globe className="size-5 text-teal-500" />
                       <div>
-                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Your public profile</p>
+                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.yourPublicProfile')}</p>
                         <p className={`${isDark ? 'text-white' : 'text-gray-900'}`}>{publicProfileUrl}</p>
                       </div>
                     </div>
@@ -825,7 +931,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>About Me</h3>
+                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.aboutMe')}</h3>
                 <Button size="sm" variant="ghost" onClick={() => handleEdit('bio')}>
                   <Edit2 className="size-4" />
                 </Button>
@@ -834,7 +940,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                 <div className="space-y-2">
                   <textarea
                     defaultValue={profileData.bio}
-                    placeholder="Tell us about yourself, your experience, and career goals..."
+                    placeholder={t('dashboard.profile.bioPlaceholder')}
                     rows={4}
                     className={`w-full px-3 py-2 rounded-lg border resize-none ${
                       isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200 text-gray-900'
@@ -852,7 +958,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                       if (textarea) handleSave('bio', textarea.value);
                     }}>
                       <Check className="size-4 mr-2" />
-                      Save
+                      {t('dashboard.profile.save')}
                     </Button>
                     <Button size="sm" variant="ghost" onClick={handleCancel}>
                       <X className="size-4 mr-2" />
@@ -865,7 +971,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   className={`${isDark ? 'text-gray-400' : 'text-gray-600'} leading-relaxed cursor-pointer group`}
                   onClick={() => handleEdit('bio')}
                 >
-                  {profileData.bio || 'Click to add your bio...'}
+                  {profileData.bio || t('dashboard.profile.clickToAddBio')}
                 </p>
               )}
             </div>
@@ -880,15 +986,15 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                     <Linkedin className="size-6 text-white" />
                   </div>
                   <div>
-                    <h3 className={`${isDark ? 'text-white' : 'text-gray-900'}`}>Connect Your LinkedIn</h3>
+                    <h3 className={`${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.connectLinkedIn')}</h3>
                     <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                      Import your profile data and keep it synced
+                      {t('dashboard.profile.linkedInDescription')}
                     </p>
                   </div>
                 </div>
                 <Button onClick={connectLinkedIn} className="bg-blue-600 hover:bg-blue-700 text-white">
                   <Linkedin className="size-4 mr-2" />
-                  Connect LinkedIn
+                  {t('dashboard.profile.connectLinkedInButton')}
                 </Button>
               </div>
             </div>
@@ -897,22 +1003,22 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
             <div className={`rounded-2xl border p-6 ${
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
-              <h3 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Career Information</h3>
+              <h3 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.careerInformation')}</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Current Role</label>
+                  <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.currentRole')}</label>
                   <p className={`mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{profileData.currentRole}</p>
                 </div>
                 <div>
-                  <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Target Role</label>
+                  <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.targetRole')}</label>
                   <p className={`mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{profileData.targetRole}</p>
                 </div>
                 <div>
-                  <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Experience Level</label>
+                  <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.experienceLevel')}</label>
                   <p className={`mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{profileData.experience}</p>
                 </div>
                 <div>
-                  <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Work Preference</label>
+                  <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.workPreference')}</label>
                   <p className={`mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{profileData.workPreference}</p>
                 </div>
               </div>
@@ -923,7 +1029,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Skills & Expertise</h3>
+                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.skillsAndExpertise')}</h3>
                 <Button 
                   size="sm" 
                   variant="ghost"
@@ -933,7 +1039,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   }}
                 >
                   <Plus className="size-4 mr-2" />
-                  Add Skill
+                  {t('dashboard.profile.addSkill')}
                 </Button>
               </div>
 
@@ -945,7 +1051,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   <div className="space-y-3">
                     <input
                       type="text"
-                      placeholder="Skill name"
+                      placeholder={t('dashboard.profile.skillName')}
                       value={newSkill.name}
                       onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
                       className={`w-full px-3 py-2 rounded-lg border ${
@@ -955,7 +1061,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                     />
                     <div className="flex items-center gap-3">
                       <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Proficiency: {newSkill.level}%
+                        {t('dashboard.profile.proficiency', { level: newSkill.level })}
                       </label>
                       <input
                         type="range"
@@ -1004,7 +1110,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                         />
                         <div className="flex items-center gap-3">
                           <label className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                            Level: {skill.level}%
+                            {t('dashboard.profile.level', { level: skill.level })}
                           </label>
                           <input
                             type="range"
@@ -1068,7 +1174,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   </div>
                 )) : (
                   <div className={`text-center py-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    <p>No skills added yet. Click "Add Skill" to get started!</p>
+                    <p>{t('dashboard.profile.noSkillsYet')}</p>
                   </div>
                 )}
               </div>
@@ -1079,7 +1185,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Education & Certifications</h3>
+                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.educationAndCertifications')}</h3>
                 <Button 
                   size="sm" 
                   variant="ghost"
@@ -1089,7 +1195,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   }}
                 >
                   <Plus className="size-4 mr-2" />
-                  Add Education
+                  {t('dashboard.profile.addEducation')}
                 </Button>
               </div>
 
@@ -1101,7 +1207,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   <div className="space-y-3">
                     <input
                       type="text"
-                      placeholder="Degree/Certificate name"
+                      placeholder={t('dashboard.profile.degreePlaceholder')}
                       value={newEducation.degree}
                       onChange={(e) => setNewEducation({ ...newEducation, degree: e.target.value })}
                       className={`w-full px-3 py-2 rounded-lg border ${
@@ -1111,7 +1217,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                     />
                     <input
                       type="text"
-                      placeholder="Institution name"
+                      placeholder={t('dashboard.profile.institutionPlaceholder')}
                       value={newEducation.institution}
                       onChange={(e) => setNewEducation({ ...newEducation, institution: e.target.value })}
                       className={`w-full px-3 py-2 rounded-lg border ${
@@ -1120,7 +1226,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                     />
                     <input
                       type="text"
-                      placeholder="Year (e.g., 2015 - 2019 or 2020)"
+                      placeholder={t('dashboard.profile.yearPlaceholder')}
                       value={newEducation.year}
                       onChange={(e) => setNewEducation({ ...newEducation, year: e.target.value })}
                       className={`w-full px-3 py-2 rounded-lg border ${
@@ -1228,7 +1334,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   </div>
                 )) : (
                   <div className={`text-center py-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    <p>No education entries yet. Click "Add Education" to get started!</p>
+                    <p>{t('dashboard.profile.noEducationYet')}</p>
                   </div>
                 )}
               </div>
@@ -1239,10 +1345,14 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Resume Gallery</h3>
-                <Button size="sm" className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white">
+                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.resumeGallery')}</h3>
+                <Button 
+                  size="sm" 
+                  className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white"
+                  onClick={() => navigate('/app/resume-builder')}
+                >
                   <Plus className="size-4 mr-2" />
-                  Create Resume
+                  {t('dashboard.profile.createResume')}
                 </Button>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -1264,10 +1374,10 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                         <span className={`px-2 py-1 rounded-full ${
                           resume.atsScore >= 90 ? 'bg-green-500/20 text-green-500' : 'bg-yellow-500/20 text-yellow-500'
                         }`}>
-                          ATS: {resume.atsScore}%
+                          {t('dashboard.profile.atsScore', { score: resume.atsScore })}
                         </span>
                         <span className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          {resume.downloads} downloads
+                          {t('dashboard.profile.downloads', { count: resume.downloads })}
                         </span>
                       </div>
                       <div className="flex gap-1">
@@ -1285,7 +1395,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                     {resumesLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin mx-auto" />
                     ) : (
-                      <p>No resumes yet. Create your first resume!</p>
+                      <p>{t('dashboard.profile.noResumesYet')}</p>
                     )}
                   </div>
                 )}
@@ -1297,10 +1407,14 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Interview Recordings</h3>
-                <Button size="sm" className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
+                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.interviewRecordings')}</h3>
+                <Button 
+                  size="sm" 
+                  className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
+                  onClick={() => navigate('/app/interview-prep')}
+                >
                   <Mic className="size-4 mr-2" />
-                  New Interview
+                  {t('dashboard.profile.newInterview')}
                 </Button>
               </div>
               <div className="space-y-3">
@@ -1326,7 +1440,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                           <div className={`px-2 py-1 rounded-full text-xs ${
                             interview.score >= 90 ? 'bg-green-500/20 text-green-500' : 'bg-blue-500/20 text-blue-500'
                           }`}>
-                            Score: {interview.score}%
+                            {t('dashboard.profile.score', { score: interview.score })}
                           </div>
                         </div>
                         <Button size="sm" variant="ghost">
@@ -1340,7 +1454,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                     {interviewsLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin mx-auto" />
                     ) : (
-                      <p>No interview sessions yet. Start practicing!</p>
+                      <p>{t('dashboard.profile.noInterviewsYet')}</p>
                     )}
                   </div>
                 )}
@@ -1352,38 +1466,54 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Skill Test Results</h3>
-                <Button size="sm" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                <h3 className={`text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.skillTestResults')}</h3>
+                <Button 
+                  size="sm" 
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                  onClick={() => navigate('/app/skill-gap')}
+                >
                   <TrendingUp className="size-4 mr-2" />
-                  Take Test
+                  {t('dashboard.profile.takeTest')}
                 </Button>
               </div>
               <div className="space-y-3">
-                {skillTests.map((test) => (
-                  <div key={test.id} className={`p-4 rounded-xl border ${
-                    isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'
-                  }`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className={`${isDark ? 'text-white' : 'text-gray-900'}`}>{test.skill}</h4>
-                          <span className={`text-xs px-2 py-0.5 rounded-full ${
-                            test.percentile >= 95 ? 'bg-purple-500/20 text-purple-500' : 'bg-blue-500/20 text-blue-500'
-                          }`}>
-                            Top {100 - test.percentile}%
-                          </span>
+                {loadingSkillGaps ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="w-6 h-6 animate-spin text-purple-500" />
+                  </div>
+                ) : skillGapResults.length > 0 ? (
+                  skillGapResults.map((test) => (
+                    <div key={test.id} className={`p-4 rounded-xl border ${
+                      isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'
+                    }`}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className={`${isDark ? 'text-white' : 'text-gray-900'}`}>{test.skill}</h4>
+                            <span className={`text-xs px-2 py-0.5 rounded-full ${
+                              test.percentile >= 95 ? 'bg-purple-500/20 text-purple-500' : 
+                              test.percentile >= 85 ? 'bg-blue-500/20 text-blue-500' :
+                              'bg-yellow-500/20 text-yellow-500'
+                            }`}>
+                              {t('dashboard.profile.topPercent', { percent: 100 - test.percentile })}
+                            </span>
+                          </div>
+                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{test.date}</p>
                         </div>
-                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{test.date}</p>
-                      </div>
-                      <div className="text-right">
-                        <div className={`text-2xl bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent`}>
-                          {test.score}
+                        <div className="text-right">
+                          <div className={`text-2xl bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent`}>
+                            {test.score}
+                          </div>
+                          <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{t('dashboard.profile.scoreLabel')}</div>
                         </div>
-                        <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Score</div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className={`text-center py-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                    <p>{t('dashboard.profile.noSkillTestsYet')}</p>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
@@ -1394,7 +1524,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
             <div className={`rounded-2xl border p-6 sticky top-24 ${
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
-              <h3 className={`text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Profile Strength</h3>
+              <h3 className={`text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.profileStrength')}</h3>
               
               {/* Circular Progress with Estel */}
               <div className="relative flex items-center justify-center mb-6">
@@ -1430,7 +1560,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <div className={`text-4xl ${isDark ? 'text-white' : 'text-gray-900'}`}>{profileCompletion}%</div>
-                    <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Complete</div>
+                    <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.complete')}</div>
                   </div>
                 </div>
               </div>
@@ -1450,28 +1580,46 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
               {/* Checklist */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <Check className="size-4 text-green-500" />
-                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Profile photo added</span>
+                  {profilePic ? (
+                    <Check className="size-4 text-green-500" />
+                  ) : (
+                    <div className={`size-4 rounded border ${isDark ? 'border-white/20' : 'border-gray-300'}`}></div>
+                  )}
+                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.profilePhotoAdded')}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="size-4 text-green-500" />
-                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Bio completed</span>
+                  {profileData.bio && profileData.bio.trim().length > 0 ? (
+                    <Check className="size-4 text-green-500" />
+                  ) : (
+                    <div className={`size-4 rounded border ${isDark ? 'border-white/20' : 'border-gray-300'}`}></div>
+                  )}
+                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.bioCompleted')}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="size-4 text-green-500" />
-                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Skills added (6)</span>
+                  {skills.length > 0 ? (
+                    <Check className="size-4 text-green-500" />
+                  ) : (
+                    <div className={`size-4 rounded border ${isDark ? 'border-white/20' : 'border-gray-300'}`}></div>
+                  )}
+                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {t('dashboard.profile.skillsAdded', { count: skills.length })}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className={`size-4 rounded border ${isDark ? 'border-white/20' : 'border-gray-300'}`}></div>
-                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Add 3 more projects</span>
+                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.addMoreProjects')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className={`size-4 rounded border ${isDark ? 'border-white/20' : 'border-gray-300'}`}></div>
-                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Upload certificate</span>
+                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.uploadCertificate')}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className={`size-4 rounded border ${isDark ? 'border-white/20' : 'border-gray-300'}`}></div>
-                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Connect LinkedIn</span>
+                  {profileData.linkedin && profileData.linkedin.trim().length > 0 ? (
+                    <Check className="size-4 text-green-500" />
+                  ) : (
+                    <div className={`size-4 rounded border ${isDark ? 'border-white/20' : 'border-gray-300'}`}></div>
+                  )}
+                  <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.connectLinkedInChecklist')}</span>
                 </div>
               </div>
             </div>
@@ -1480,11 +1628,11 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
             <div className={`rounded-2xl border p-6 ${
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
-              <h3 className={`text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Quick Stats</h3>
+              <h3 className={`text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.quickStats')}</h3>
               <div className="space-y-4">
                 <div className={`p-3 rounded-lg ${isDark ? 'bg-teal-500/10' : 'bg-teal-50'}`}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Resumes</span>
+                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.resumes')}</span>
                     <FileText className="size-4 text-teal-500" />
                   </div>
                   <div className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -1493,7 +1641,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                 </div>
                 <div className={`p-3 rounded-lg ${isDark ? 'bg-purple-500/10' : 'bg-purple-50'}`}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>AI Sessions</span>
+                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.aiSessions')}</span>
                     <Brain className="size-4 text-purple-500" />
                   </div>
                   <div className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -1502,7 +1650,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                 </div>
                 <div className={`p-3 rounded-lg ${isDark ? 'bg-blue-500/10' : 'bg-blue-50'}`}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Interviews</span>
+                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.interviews')}</span>
                     <Mic className="size-4 text-blue-500" />
                   </div>
                   <div className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -1511,7 +1659,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                 </div>
                 <div className={`p-3 rounded-lg ${isDark ? 'bg-green-500/10' : 'bg-green-50'}`}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Profile Complete</span>
+                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('dashboard.profile.profileComplete')}</span>
                     <TrendingUp className="size-4 text-green-500" />
                   </div>
                   <div className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -1525,7 +1673,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
             <div className={`rounded-2xl border p-6 ${
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
-              <h3 className={`text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Achievements</h3>
+              <h3 className={`text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.achievements')}</h3>
               
               {/* Estel celebrating */}
               <div className="flex justify-center mb-4">
@@ -1573,13 +1721,13 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
             <div className={`rounded-2xl border p-6 ${
               isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-200'
             }`}>
-              <h3 className={`text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Recent Activity</h3>
+              <h3 className={`text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('dashboard.profile.recentActivity')}</h3>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-teal-500 mt-2"></div>
                   <div className="flex-1">
                     <p className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      Updated resume
+                      {t('dashboard.profile.updatedResume')}
                     </p>
                     <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>2 hours ago</p>
                   </div>
@@ -1588,7 +1736,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   <div className="w-2 h-2 rounded-full bg-purple-500 mt-2"></div>
                   <div className="flex-1">
                     <p className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      Completed AI coaching session
+                      {t('dashboard.profile.completedAICoaching')}
                     </p>
                     <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>5 hours ago</p>
                   </div>
@@ -1597,7 +1745,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   <div className="w-2 h-2 rounded-full bg-blue-500 mt-2"></div>
                   <div className="flex-1">
                     <p className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      Practiced interview prep
+                      {t('dashboard.profile.practicedInterview')}
                     </p>
                     <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>1 day ago</p>
                   </div>
@@ -1606,7 +1754,7 @@ export function ProfilePage({ isDark, onBack }: ProfilePageProps) {
                   <div className="w-2 h-2 rounded-full bg-green-500 mt-2"></div>
                   <div className="flex-1">
                     <p className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      Earned "Interview Master" badge
+                      {t('dashboard.profile.earnedBadge', { badge: t('dashboard.profile.achievementsList.interviewMaster.name') })}
                     </p>
                     <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>2 days ago</p>
                   </div>

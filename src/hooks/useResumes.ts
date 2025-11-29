@@ -2,12 +2,22 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabaseClient';
 
+// NOTE:
+// Backend schema (shared with mobile app) uses:
+//   - name      : text        -> resume title
+//   - sections  : jsonb       -> full resume JSON (all steps)
+//   - created_at / updated_at
+// Frontend previously expected title / resume_data – we now align to backend
+// without changing the database by mapping to these fields on the client.
 export interface Resume {
   id: string;
   user_id: string;
+  name?: string;        // backend column for resume title
+  sections?: any;       // backend column for full resume data (JSONB)
+  // legacy / compatibility fields (may be undefined)
   title?: string;
   template_id?: string;
-  resume_data?: any; // JSONB column for full resume data
+  resume_data?: any;
   created_at: string;
   updated_at: string;
 }
@@ -32,7 +42,8 @@ export const useResumes = () => {
 
         const { data, error: fetchError } = await supabase
           .from('resumes')
-          .select('*')
+          // Align with backend schema: use name + sections
+          .select('id, user_id, name, sections, created_at, updated_at')
           .eq('user_id', user.id)
           .order('updated_at', { ascending: false });
 
@@ -60,13 +71,12 @@ export const useResumes = () => {
 
       const resumePayload: any = {
         user_id: user.id,
-        resume_data: resumeData,
+        // Store full resume JSON in sections (backend-compatible)
+        sections: resumeData,
+        // Use backend "name" column for title so mobile + web share same data
+        name: title || 'Untitled Resume',
         updated_at: new Date().toISOString(),
       };
-
-      if (title) {
-        resumePayload.title = title;
-      }
 
       if (resumeId) {
         // Update existing resume
@@ -87,11 +97,7 @@ export const useResumes = () => {
         // Create new resume
         const { data, error: insertError } = await supabase
           .from('resumes')
-          .insert({
-            ...resumePayload,
-            title: title || 'Untitled Resume',
-            template_id: resumeData.templateId || 'modern-pro',
-          })
+          .insert(resumePayload)
           .select()
           .single();
 
@@ -150,7 +156,7 @@ export const useResumes = () => {
         setLoading(true);
         const { data, error } = await supabase
           .from('resumes')
-          .select('*')
+          .select('id, user_id, name, sections, created_at, updated_at')
           .eq('user_id', user.id)
           .order('updated_at', { ascending: false });
         

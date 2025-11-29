@@ -1,4 +1,5 @@
-import { Home, FileText, Bot, MessageSquare, Users, Calendar, Settings, BookOpen, BarChart3, FileCheck, Briefcase, Brain, FolderOpen, Mic, TrendingUp, HelpCircle, CreditCard, Layout } from "lucide-react";
+import { Home, FileText, Bot, MessageSquare, Users, Calendar, Settings, BookOpen, BarChart3, FileCheck, Briefcase, Brain, FolderOpen, Mic, TrendingUp, HelpCircle, CreditCard, Layout, MessageCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ModernSidebarProps {
   isDark: boolean;
@@ -7,25 +8,29 @@ interface ModernSidebarProps {
 }
 
 export function ModernSidebar({ isDark, activeSection, onSectionChange }: ModernSidebarProps) {
+  const { t } = useTranslation();
+  
   const menuItems = [
-    { id: 'dashboard', icon: Home, label: 'Dashboard' },
-    { id: 'ai-coach', icon: Brain, label: 'AI Coach' },
-    { id: 'resume-builder', icon: FolderOpen, label: 'Resume Builder' },
-    { id: 'templates', icon: Layout, label: 'Templates' },
-    { id: 'ats-checker', icon: FileCheck, label: 'ATS Checker' },
-    { id: 'interview-prep', icon: Mic, label: 'Interview Prep' },
-    { id: 'skill-gap', icon: TrendingUp, label: 'Skill Gap Analysis' },
+    { id: 'dashboard', icon: Home, label: t('dashboard.sidebar.menu.dashboard') },
+    { id: 'ai-coach', icon: Brain, label: t('dashboard.sidebar.menu.aiCoach') },
+    { id: 'resume-builder', icon: FolderOpen, label: t('dashboard.sidebar.menu.resumeBuilder') },
+    { id: 'templates', icon: Layout, label: t('dashboard.sidebar.menu.templates') },
+    { id: 'ats-checker', icon: FileCheck, label: t('dashboard.sidebar.menu.atsChecker') },
+    { id: 'interview-prep', icon: Mic, label: t('dashboard.sidebar.menu.interviewPrep') },
+    { id: 'skill-gap', icon: TrendingUp, label: t('dashboard.sidebar.menu.skillGap') },
   ];
 
   const bottomItems = [
-    { id: 'pricing', icon: CreditCard, label: 'Pricing' },
-    { id: 'settings', icon: Settings, label: 'Settings' },
-    { id: 'help', icon: HelpCircle, label: 'Help & Support' },
+    { id: 'pricing', icon: CreditCard, label: t('dashboard.sidebar.bottom.pricing') },
+    { id: 'feedback', icon: MessageCircle, label: t('dashboard.sidebar.bottom.feedback') },
+    { id: 'settings', icon: Settings, label: t('dashboard.sidebar.bottom.settings') },
+    // Help icon hidden as requested
+    // { id: 'help', icon: HelpCircle, label: t('dashboard.sidebar.bottom.help') },
   ];
 
   const handleNavigation = (id: string) => {
-    // For settings and help, show coming soon for now
-    if (id === 'settings' || id === 'help') {
+    // For settings, show coming soon for now
+    if (id === 'settings') {
       // Just change section, App.tsx will show dashboard with toast
       onSectionChange(id);
     } else {

@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "./ui/button";
 // Use local hero banner image from Assets to sit behind CVSaathi text
@@ -7,6 +8,7 @@ import heroBanner from "../../Assets/HERO BANNERS.png";
 import logoImage from "../../Assets/Logo.png";
 
 export function Hero() {
+  const { t } = useTranslation();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Top-right logo */}
@@ -98,7 +100,7 @@ export function Hero() {
         >
           <Sparkles className="w-4 h-4 text-teal-400" />
           <span className="text-white tracking-wide uppercase" style={{ fontSize: '0.75rem', fontWeight: 500 }}>
-            AI-Powered Career Growth Platform
+            {t('landing.hero.badge')}
           </span>
         </motion.div>
 
@@ -118,7 +120,7 @@ export function Hero() {
               letterSpacing: '-0.02em',
             }}
           >
-            CVSaathi
+            {t('landing.hero.title')}
           </h1>
         </motion.div>
 
@@ -134,7 +136,7 @@ export function Hero() {
             lineHeight: 1.7,
           }}
         >
-          Craft your career story with AI — from a stunning, job-winning resume to personalized interview prep and real-time skill insights.
+          {t('landing.hero.description')}
         </motion.p>
 
         {/* CTA Buttons - Adapted for dark background */}
@@ -151,7 +153,7 @@ export function Hero() {
                 className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white gap-2 shadow-lg shadow-teal-500/50 px-8 rounded-xl border-0"
                 style={{ fontSize: '1rem', fontWeight: 600, padding: '1rem 2rem' }}
               >
-                Get Template
+                {t('landing.hero.getTemplate')}
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
@@ -167,7 +169,7 @@ export function Hero() {
                 document.getElementById('templates')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              See Our Services
+              {t('landing.hero.seeServices')}
             </Button>
           </motion.div>
         </motion.div>
