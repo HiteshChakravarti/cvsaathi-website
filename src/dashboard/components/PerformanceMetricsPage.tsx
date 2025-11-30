@@ -11,6 +11,7 @@ import { supabase } from "../../lib/supabaseClient";
 import { LineChart, Line, BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { useNavigate } from "react-router-dom";
 import { exportElementToPrint } from "../../services/exportService";
+import { exportPerformanceMetricsToDocx } from "../../services/docxExportService";
 import { useTranslation } from "react-i18next";
 
 interface PerformanceMetricsPageProps {
@@ -386,6 +387,44 @@ export function PerformanceMetricsPage({ isDark, onBack }: PerformanceMetricsPag
               >
                 <Download className="size-4 mr-2" />
                 Export Report
+              </Button>
+              <Button
+                onClick={async () => {
+                  try {
+                    const safeFileName = `Performance_Metrics_${timeRange}_${Date.now()}`;
+                    await exportPerformanceMetricsToDocx(
+                      {
+                        stats: {
+                          profileCompleteness: stats.profileCompleteness || 0,
+                          resumesCreated: stats.resumesCreated || 0,
+                          aiSessionsCompleted: stats.aiSessionsCompleted || 0,
+                          interviewsCompleted: stats.interviewsCompleted || 0,
+                          applicationsSubmitted: stats.applicationsSubmitted || 0,
+                          totalTimeSpent: stats.totalTimeSpent || 0,
+                        },
+                        timeRange,
+                        totalApplications,
+                        interviewSuccessPct,
+                        avgResponseDays,
+                        activityData,
+                        successRateData,
+                        goalProgress,
+                        radarData,
+                        weeklyActivity,
+                        skillDistribution,
+                        recentAchievements,
+                      },
+                      safeFileName
+                    );
+                  } catch (error: any) {
+                    console.error('DOCX export failed:', error);
+                    // Error toast is already shown by exportPerformanceMetricsToDocx
+                  }
+                }}
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+              >
+                <FileText className="size-4 mr-2" />
+                Download DOCX
               </Button>
             </div>
           </div>

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { 
   ChevronLeft, Sparkles, TrendingUp, Users, ArrowRight, Target, Briefcase, 
   BookOpen, Search, MapPin, GraduationCap, Award, CheckCircle, Clock,
-  BarChart3, Download, Plus, X, Minus, Zap, Trophy, Calendar, ExternalLink, Loader2
+  BarChart3, Download, Plus, X, Minus, Zap, Trophy, Calendar, ExternalLink, Loader2, FileText
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { toast } from "sonner";
@@ -11,6 +11,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabaseClient";
 import { exportElementToPrint, exportElementToPdf } from "../../services/exportService";
 import { exportSkillGapReportWeb } from "../../lib/cvsaathi-export/skillGapReportGenerator";
+import { exportSkillGapReportToDocx } from "../../services/docxExportService";
 import { useTranslation } from "react-i18next";
 import { 
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
@@ -1350,6 +1351,7 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                     </div>
                   </div>
 
+                  {/* PDF Export - Hidden but functionality preserved */}
                   <Button
                     onClick={async () => {
                       const ok = await exportSkillGapReportWeb(
@@ -1371,8 +1373,36 @@ Format as JSON array with these fields: title, provider, duration, level, priori
                         }
                       }
                     }}
-                    className="w-full mt-6 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0">
+                    className="hidden">
                     <Download className="size-4 mr-2" />
+                    {t('dashboard.skillGap.results.downloadReport')}
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const safeFileName = (profile.targetRole || 'Skill_Gap_Report')
+                          .replace(/\s+/g, '_')
+                          .replace(/[^a-zA-Z0-9_]/g, '');
+                        await exportSkillGapReportToDocx(
+                          {
+                            userType: profile.userType,
+                            education: profile.education,
+                            targetRole: profile.targetRole,
+                            industry: profile.industry,
+                            location: profile.location,
+                            currentSkills: profile.currentSkills || []
+                          },
+                          analysisResults as any,
+                          aiRecommendations,
+                          safeFileName
+                        );
+                      } catch (error: any) {
+                        console.error('DOCX export failed:', error);
+                        // Error toast is already shown by exportSkillGapReportToDocx
+                      }
+                    }}
+                    className="w-full mt-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0">
+                    <FileText className="size-4 mr-2" />
                     {t('dashboard.skillGap.results.downloadReport')}
                   </Button>
                 </div>

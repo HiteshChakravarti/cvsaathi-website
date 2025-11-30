@@ -23,6 +23,7 @@ interface Template {
 }
 
 // Template metadata based on filenames
+// Removed corrupted/non-downloadable templates as per user request
 const templateMetadata: Record<string, { category: 'Entry-Level' | 'Professional'; description: string }> = {
   '(Entry-Level) Resume.pdf': { 
     category: 'Entry-Level', 
@@ -32,77 +33,21 @@ const templateMetadata: Record<string, { category: 'Entry-Level' | 'Professional
     category: 'Entry-Level', 
     description: 'Clean and simple template for first-time job seekers' 
   },
-  'Fresher-ready - "Business Administration student. looking forward to my first work experience.".pdf': { 
-    category: 'Entry-Level', 
-    description: 'Business-focused template for fresh graduates' 
-  },
   'Professional (Experienced).pdf': { 
     category: 'Professional', 
     description: 'Classic professional template for experienced candidates' 
-  },
-  'Professional (Experienced)  - Web Developer. "5 years of experience" + multi-role history..pdf': { 
-    category: 'Professional', 
-    description: 'Tech-focused template highlighting multiple roles and experience' 
   },
   'Professional (Experienced)  -Graphic Designer. 2018→Now across 3 companies..pdf': { 
     category: 'Professional', 
     description: 'Creative industry template with timeline emphasis' 
   },
-  'Professional (Experienced)  - Awards & Education. Long management track.pdf': { 
-    category: 'Professional', 
-    description: 'Leadership-focused template highlighting achievements and education' 
-  },
   'Professional (Experienced) - Accounting Executive..pdf': { 
     category: 'Professional', 
     description: 'Finance and accounting professional template' 
   },
-  'Professional (Experienced) -Executive Secretary. "over 7 years of experience.".pdf': { 
-    category: 'Professional', 
-    description: 'Administrative role template for senior positions' 
-  },
   'Professional (Experienced) -Head  General Manager. Senior roles with recent tenure..pdf': { 
     category: 'Professional', 
     description: 'Executive-level template for senior management roles' 
-  },
-  'Professional (Experienced) - Design DirectorSenior Designer timeline shows multi-year track..pdf': { 
-    category: 'Professional', 
-    description: 'Design leadership template with career progression' 
-  },
-  'Professional (Experienced) - Experience-Focused. Multiple roles + long timeline..pdf': { 
-    category: 'Professional', 
-    description: 'Experience-heavy template for candidates with extensive work history' 
-  },
-  'Professional (Experienced) - Leasing Consultant with 15 years experience..pdf': { 
-    category: 'Professional', 
-    description: 'Real estate and sales professional template' 
-  },
-  'Professional (Experienced) - Multiple Marketing Manager stints + full education history..pdf': { 
-    category: 'Professional', 
-    description: 'Marketing professional template with education emphasis' 
-  },
-  'Professional (Experienced) - Office Marketing roles 2018→Now with references..pdf': { 
-    category: 'Professional', 
-    description: 'Marketing template with references section' 
-  },
-  'Professional (Experienced) - Product Design Manager roles across years + references..pdf': { 
-    category: 'Professional', 
-    description: 'Product design leadership template' 
-  },
-  'Professional (Experienced) - Profile-Led. 2024-2030 roles listed..pdf': { 
-    category: 'Professional', 
-    description: 'Profile-focused template with recent roles highlighted' 
-  },
-  'Professional (Experienced) - Senior Graphic Designer roles with prior tenure.pdf': { 
-    category: 'Professional', 
-    description: 'Senior creative professional template' 
-  },
-  'Professional (Experienced) - Skills-First. ManagerDirector roles 2028→Now.pdf': { 
-    category: 'Professional', 
-    description: 'Skills-focused template for management roles' 
-  },
-  'Professional (Experienced) - "five years of experience," multi-role history..pdf': { 
-    category: 'Professional', 
-    description: 'Multi-role template for candidates with diverse experience' 
   },
 };
 
@@ -169,20 +114,58 @@ export function TemplatesGalleryPage({ isDark, onBack }: TemplatesGalleryPagePro
     setFilteredTemplates(filtered);
   }, [templates, selectedCategory, searchQuery]);
 
-  const handleDownload = (template: Template) => {
+  const handleDownload = async (template: Template) => {
     try {
-      // Create a link element and trigger download
+      // Use fetch to verify file exists and get proper blob
+      const response = await fetch(template.filePath);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // Check if response is actually a PDF
+      const contentType = response.headers.get('content-type');
+      if (contentType && !contentType.includes('pdf') && !contentType.includes('application/octet-stream')) {
+        console.warn('Unexpected content type:', contentType);
+      }
+      
+      // Get file as blob
+      const blob = await response.blob();
+      
+      // Verify blob size (should be > 0)
+      if (blob.size === 0) {
+        throw new Error('Downloaded file is empty');
+      }
+      
+      // Create download link with blob URL
+      const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = template.filePath;
+      link.href = blobUrl;
       link.download = template.fileName;
+      link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      
+      // Cleanup
+      setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
+      }, 100);
       
       toast.success(t('dashboard.templates.downloading', { name: template.name }));
-    } catch (error) {
-      console.error('Download error:', error);
-      toast.error(t('dashboard.templates.downloadFailed'));
+    } catch (error: any) {
+      console.error('Download error:', {
+        error,
+        template: template.name,
+        filePath: template.filePath,
+        fileName: template.fileName,
+        message: error?.message
+      });
+      toast.error(
+        t('dashboard.templates.downloadFailed') + 
+        (error?.message ? `: ${error.message}` : ''),
+        { duration: 5000 }
+      );
     }
   };
 

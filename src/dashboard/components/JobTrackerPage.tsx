@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { ChevronLeft, Plus, Briefcase, Eye, Calendar, Gift, Search, Filter, MoreVertical, Building2, DollarSign, CalendarDays, Loader2, Edit, Trash2, X, ExternalLink, MapPin } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useApplications, ApplicationStatus } from "../../hooks/useApplications";
@@ -163,18 +163,26 @@ export function JobTrackerPage({ isDark, onBack }: JobTrackerPageProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate required fields
+    if (!formData.job_title.trim() || !formData.company.trim()) {
+      toast.error(t('dashboard.jobTracker.formValidationError') || 'Please fill in all required fields');
+      return;
+    }
+
     try {
       const applicationData = {
         job_title: formData.job_title.trim(),
         company: formData.company.trim(),
         status: formData.status,
-        application_date: formData.application_date,
+        application_date: formData.application_date || new Date().toISOString().split('T')[0],
         next_interview_date: formData.next_interview_date || null,
-        notes: formData.notes.trim() || null,
-        job_url: formData.job_url.trim() || null,
-        salary: formData.salary.trim() || null,
-        location: formData.location.trim() || null,
+        notes: formData.notes?.trim() || null,
+        job_url: formData.job_url?.trim() || null,
+        salary: formData.salary?.trim() || null,
+        location: formData.location?.trim() || null,
       };
+
+      console.log('Submitting application:', applicationData);
 
       if (editingApplication) {
         await updateApplication(editingApplication, applicationData);
@@ -198,7 +206,9 @@ export function JobTrackerPage({ isDark, onBack }: JobTrackerPageProps) {
         location: ''
       });
     } catch (error: any) {
-      toast.error(t('dashboard.jobTracker.saveFailed', { error: error.message }));
+      console.error('Form submission error:', error);
+      const errorMessage = error?.message || error?.toString() || 'Unknown error';
+      toast.error(t('dashboard.jobTracker.saveFailed', { error: errorMessage }) || `Failed to save: ${errorMessage}`);
     }
   };
 
@@ -602,7 +612,18 @@ export function JobTrackerPage({ isDark, onBack }: JobTrackerPageProps) {
                   <div className="p-4 border-t border-white/10">
                     <button
                       onClick={() => {
-                        setFormData(prev => ({ ...prev, status: column.id === 'reviewing' ? 'screening' : column.id as ApplicationStatus }));
+                        // Map column IDs to database status values
+                        let status: ApplicationStatus = 'applied';
+                        if (column.id === 'reviewing') {
+                          status = 'screening';
+                        } else if (column.id === 'interview') {
+                          status = 'interview';
+                        } else if (column.id === 'offer') {
+                          status = 'offer';
+                        } else {
+                          status = 'applied';
+                        }
+                        setFormData(prev => ({ ...prev, status }));
                         handleAddApplication();
                       }}
                       className={`w-full py-2 rounded-lg text-sm transition-all duration-300 ${

@@ -11,6 +11,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabaseClient";
 import { exportElementToPrint, exportElementToPdf } from "../../services/exportService";
 import { exportATSReportWeb } from "../../lib/cvsaathi-export/atsReportGenerator";
+import { exportATSReportToDocx } from "../../services/docxExportService";
 import { useTranslation } from "react-i18next";
 
 interface ATSCheckerPageProps {
@@ -643,6 +644,7 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                   <Upload className="size-4 mr-2" />
                   {t('dashboard.atsChecker.buttons.tryAnother')}
                 </Button>
+                {/* PDF Export - Hidden but functionality preserved */}
                 <Button
                   onClick={async () => {
                     if (!analysisResult) return;
@@ -656,8 +658,29 @@ Return as JSON: {"foundKeywords": [...], "missingKeywords": [...], "overallScore
                       }
                     }
                   }}
-                  className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white border-0">
+                  className="hidden">
                   <Download className="size-4 mr-2" />
+                  {t('dashboard.atsChecker.buttons.download')}
+                </Button>
+                <Button
+                  onClick={async () => {
+                    if (!analysisResult) return;
+                    try {
+                      const safeFileName = (analysisResult.fileName || 'ATS_Report')
+                        .replace(/\s+/g, '_')
+                        .replace(/[^a-zA-Z0-9_]/g, '');
+                      await exportATSReportToDocx(
+                        analysisResult as any,
+                        aiRecommendations,
+                        `${safeFileName}_Report`
+                      );
+                    } catch (error: any) {
+                      console.error('DOCX export failed:', error);
+                      // Error toast is already shown by exportATSReportToDocx
+                    }
+                  }}
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0">
+                  <FileText className="size-4 mr-2" />
                   {t('dashboard.atsChecker.buttons.download')}
                 </Button>
               </div>

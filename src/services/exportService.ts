@@ -3,7 +3,7 @@ import { toast } from "sonner";
 /**
  * Lightweight, dependency‑free export helpers for front‑end only rollout.
  * Strategy: open a temporary print window containing a cloned element, apply basic print styles,
- * then trigger window.print(). User can choose “Save as PDF” in the print dialog.
+ * then trigger window.print(). User can choose "Save as PDF" in the print dialog.
  */
 export type PrintOptions = {
   title?: string;
@@ -11,6 +11,154 @@ export type PrintOptions = {
   page?: "A4" | "Letter";
   extraStyles?: string; // optional extra CSS injected into print window
 };
+
+/**
+ * Patch color variables and computed styles on the export element so html2canvas never sees oklch().
+ * Converts oklch colors to RGB using browser's native color conversion via canvas.
+ * 
+ * This function:
+ * 1. Dynamically discovers all CSS variables from :root that contain oklch colors
+ * 2. Patches those CSS variables on the export element
+ * 3. Patches computed styles on all child elements (comprehensive coverage)
+ * 4. Handles complex properties like boxShadow, textShadow, and backgroundImage
+ */
+function patchExportColors(exportElement: HTMLElement): void {
+  if (!exportElement) return;
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
+  // Some environments may not expose CSSStyleRule (very rare, but be safe)
+  const CSSStyleRuleSafe: typeof CSSStyleRule | undefined =
+    typeof CSSStyleRule !== 'undefined' ? CSSStyleRule : undefined;
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const rootStyle = getComputedStyle(document.documentElement);
+
+  // --- Helper: convert ALL oklch(...) occurrences inside a string to rgb(...) ---
+  const convertOklchInString = (value: string): string => {
+    if (!value || !value.includes('oklch(')) return value;
+
+    // This matches every "oklch(...)" block – no nested () inside oklch arguments in practice
+    const oklchRegex = /oklch\([^)]*\)/g;
+    let result = value;
+
+    let match: RegExpExecArray | null;
+    while ((match = oklchRegex.exec(value)) !== null) {
+      const oklchValue = match[0];
+      try {
+        ctx.fillStyle = oklchValue;
+        const rgb = ctx.fillStyle; // browser-normalised rgb(...) / rgba(...)
+        if (rgb && rgb !== oklchValue && !rgb.includes('oklch')) {
+          result = result.replace(oklchValue, rgb);
+        }
+      } catch (err) {
+        // Skip just this one occurrence, don't blow up the whole export
+        console.warn('Failed to convert oklch in string:', oklchValue, err);
+      }
+    }
+
+    return result;
+  };
+
+  // --- PART 1: Patch :root custom properties onto exportElement (for CSS vars) ---
+  try {
+    const varNames = new Set<string>();
+
+    if (CSSStyleRuleSafe) {
+      const allRootRules = Array.from(document.styleSheets)
+        .flatMap((sheet) => {
+          try {
+            return Array.from(sheet.cssRules || []);
+          } catch {
+            // Cross-origin stylesheet – ignore
+            return [];
+          }
+        })
+        .filter(
+          (rule): rule is CSSStyleRule =>
+            rule instanceof CSSStyleRuleSafe && rule.selectorText === ':root',
+        );
+
+      allRootRules.forEach((rule) => {
+        const style = rule.style;
+        for (let i = 0; i < style.length; i++) {
+          const prop = style[i];
+          if (prop.startsWith('--')) {
+            varNames.add(prop);
+          }
+        }
+      });
+    }
+
+    varNames.forEach((varName) => {
+      const value = rootStyle.getPropertyValue(varName).trim();
+      if (!value || !value.includes('oklch(')) return;
+
+      const converted = convertOklchInString(value);
+      if (converted && converted !== value) {
+        exportElement.style.setProperty(varName, converted);
+      }
+    });
+  } catch (err) {
+    console.warn('Error while patching root CSS variables for export:', err);
+  }
+
+  // --- PART 2: Patch computed styles on exportElement + all children ---
+  const colorProps: Array<keyof CSSStyleDeclaration> = [
+    'color',
+    'backgroundColor',
+    'borderColor',
+    'borderTopColor',
+    'borderRightColor',
+    'borderBottomColor',
+    'borderLeftColor',
+    'outlineColor',
+    'textDecorationColor',
+    'columnRuleColor',
+    'boxShadow',        // may contain multiple oklch(...)
+    'textShadow',       // may contain multiple oklch(...)
+    'backgroundImage',  // gradients with multiple oklch(...)
+  ];
+
+  const elements: HTMLElement[] = [
+    exportElement,
+    ...Array.from(exportElement.querySelectorAll<HTMLElement>('*')),
+  ];
+
+  for (const el of elements) {
+    const computed = window.getComputedStyle(el);
+
+    for (const prop of colorProps) {
+      const value = (computed as any)[prop] as string | undefined;
+      if (!value || typeof value !== 'string') continue;
+      if (!value.includes('oklch(')) continue;
+
+      const converted = convertOklchInString(value);
+      if (converted && converted !== value) {
+        (el.style as any)[prop] = converted; // inline override for html2canvas
+      }
+    }
+  }
+
+  // --- Optional: debug – see if any oklch remains in computed styles ---
+  /*
+  let remaining = 0;
+  for (const el of elements) {
+    const cs = window.getComputedStyle(el);
+    for (let i = 0; i < cs.length; i++) {
+      const propName = cs.item(i)!;
+      const val = cs.getPropertyValue(propName);
+      if (val && val.includes('oklch(')) {
+        remaining++;
+        break;
+      }
+    }
+  }
+  console.log('Remaining elements with oklch in computed styles:', remaining);
+  */
+}
 
 async function ensureLibrariesLoaded(): Promise<void> {
   // Prefer bundled libs (Option B), fallback to CDN, then print.
@@ -70,14 +218,23 @@ async function ensureLibrariesLoaded(): Promise<void> {
  * Export a DOM element directly to a PDF file and trigger download (no print dialog).
  * Uses html2canvas + jsPDF via CDN. Assumes the element is styled as A4 (we measure pixels).
  */
-export async function exportElementToPdf(el: HTMLElement | null, fileName = "resume.pdf") {
+export async function exportElementToPdf(el: HTMLElement | null, fileName = "resume.pdf"): Promise<void> {
+  if (!el) {
+    toast.error("Nothing to export. Please make sure the preview is visible.");
+    throw new Error("No element provided to exportElementToPdf");
+  }
+
   try {
-    if (!el) {
-      toast.error("Nothing to export. Please make sure the preview is visible.");
-      return;
-    }
     // Ensure layout is flushed before capture
     await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    
+    // 🔹 NEW: Patch colors so html2canvas never sees oklch()
+    patchExportColors(el);
+    
+    // Wait a frame for color patches to apply
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+    // Load PDF libraries
     await ensureLibrariesLoaded();
     const html2canvas = (window as any).html2canvas as (node: HTMLElement, opts?: any) => Promise<HTMLCanvasElement>;
     const { jsPDF } = (window as any).jspdf;
@@ -152,16 +309,16 @@ export async function exportElementToPdf(el: HTMLElement | null, fileName = "res
     }
 
     pdf.save(fileName);
-    toast.success("PDF downloaded");
-  } catch (e) {
-    console.error(e);
-    // Fallback to print-based export to avoid blocking user
-    if (el) {
-      toast.info("Direct PDF failed; falling back to print-to-PDF...");
-      exportElementToPrint(el, { title: fileName.replace(/\.pdf$/i, "") });
-      return;
-    }
-    toast.error("Failed to generate PDF.");
+    toast.success("PDF downloaded successfully");
+  } catch (e: any) {
+    console.error("PDF export error:", e);
+    // ❌ REMOVED: No print fallback - just show error
+    const errorMessage = e?.message || "Failed to generate PDF";
+    toast.error(errorMessage, {
+      description: "Please ensure the preview is visible and try again. If the issue persists, try refreshing the page.",
+      duration: 5000,
+    });
+    throw e; // Re-throw so caller can handle if needed
   }
 }
 
@@ -254,7 +411,7 @@ export function exportElementToPrint(el: HTMLElement | null, opts: PrintOptions 
 }
 
 /**
- * Trigger a JSON download. Useful for “Download My Data” exports.
+ * Trigger a JSON download. Useful for "Download My Data" exports.
  */
 export function exportJSON(data: unknown, fileName = "export.json") {
   try {
@@ -273,5 +430,4 @@ export function exportJSON(data: unknown, fileName = "export.json") {
     toast.error("Failed to export JSON");
   }
 }
-
 

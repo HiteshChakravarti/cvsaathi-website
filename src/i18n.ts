@@ -4466,6 +4466,7 @@ resources.en.translation.dashboard = {
     copyLink: 'Copy Link',
     emailResume: 'Email Resume',
     linkCopied: 'Link copied!',
+    comingSoon: 'Coming Soon',
     docxExportComingSoon: 'DOCX export coming soon',
     emailSharingComingSoon: 'Email sharing coming soon',
     livePreview: 'Live Preview',

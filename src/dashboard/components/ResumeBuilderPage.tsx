@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { exportElementToPrint, exportElementToPdf } from "../../services/exportService";
+import { exportResumeToDocx } from "../../services/docxExportService";
 import { exportResumeWeb } from "../../lib/cvsaathi-export/pdfGenerator";
 import { toast } from "sonner";
 import { useResumes } from "../../hooks/useResumes";
@@ -622,7 +623,7 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
     
     // Split by lines and process
     const lines = text.split('\n');
-    const elements: JSX.Element[] = [];
+    const elements: any[] = [];
     let inCodeBlock = false;
     let codeBlockContent: string[] = [];
     let listItems: string[] = [];
@@ -2683,20 +2684,30 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
               <div className="grid grid-cols-2 gap-6 mb-8">
                 <button
                   onClick={() => {
-                    const fullName = resumeData.personalInfo.fullName || 'Resume';
-                    const fileName = `${fullName.replace(/\s+/g, '_')}.pdf`;
-                    const target = exportA4Ref.current || previewPrintRef.current;
-                    exportElementToPdf(target, fileName);
+                    toast.info(t('dashboard.resumeBuilder.comingSoon') || 'Coming Soon');
                   }}
-                  className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}
+                  className={`p-8 rounded-xl border-2 transition-all relative ${isDark ? 'border-white/10 bg-white/5 opacity-60 cursor-not-allowed' : 'border-gray-200 bg-white opacity-60 cursor-not-allowed'}`}
+                  disabled
                 >
-                  <Download className="size-12 mx-auto mb-4 text-purple-500" />
+                  <Download className="size-12 mx-auto mb-4 text-purple-500 opacity-50" />
                   <h4 className={isDark ? 'text-white' : 'text-gray-900'}>
                     {t('dashboard.resumeBuilder.downloadPDF')}
                   </h4>
+                  <span className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
+                    {t('dashboard.resumeBuilder.comingSoon') || 'Coming Soon'}
+                  </span>
                 </button>
                 <button
-                  onClick={() => toast.info(t('dashboard.resumeBuilder.docxExportComingSoon'))}
+                  onClick={async () => {
+                    try {
+                      const fullName = resumeData.personalInfo.fullName || 'Resume';
+                      const fileName = `${fullName.replace(/\s+/g, '_')}.docx`;
+                      await exportResumeToDocx(resumeData, fileName);
+                    } catch (error: any) {
+                      console.error("DOCX export failed:", error);
+                      // Error toast is already shown by exportResumeToDocx
+                    }
+                  }}
                   className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}
                 >
                   <FileText className="size-12 mx-auto mb-4 text-blue-500" />
@@ -2706,26 +2717,33 @@ export function ResumeBuilderPage({ isDark, onBack }: ResumeBuilderPageProps) {
                 </button>
                 <button
                   onClick={() => {
-                    navigator.clipboard.writeText(window.location.href);
-                    toast.success(t('dashboard.resumeBuilder.linkCopied'));
+                    toast.info(t('dashboard.resumeBuilder.comingSoon') || 'Coming Soon');
                   }}
-                  className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}
+                  className={`p-8 rounded-xl border-2 transition-all relative ${isDark ? 'border-white/10 bg-white/5 opacity-60 cursor-not-allowed' : 'border-gray-200 bg-white opacity-60 cursor-not-allowed'}`}
+                  disabled
                 >
-                  <Link2 className="size-12 mx-auto mb-4 text-teal-500" />
+                  <Link2 className="size-12 mx-auto mb-4 text-teal-500 opacity-50" />
                   <h4 className={isDark ? 'text-white' : 'text-gray-900'}>
                     {t('dashboard.resumeBuilder.copyLink')}
                   </h4>
+                  <span className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
+                    {t('dashboard.resumeBuilder.comingSoon') || 'Coming Soon'}
+                  </span>
                 </button>
                 <button
                   onClick={() => {
-                    toast.info(t('dashboard.resumeBuilder.emailSharingComingSoon'));
+                    toast.info(t('dashboard.resumeBuilder.comingSoon') || 'Coming Soon');
                   }}
-                  className={`p-8 rounded-xl border-2 hover:scale-105 transition-all ${isDark ? 'border-white/10 bg-white/5' : 'border-gray-200 bg-white'}`}
+                  className={`p-8 rounded-xl border-2 transition-all relative ${isDark ? 'border-white/10 bg-white/5 opacity-60 cursor-not-allowed' : 'border-gray-200 bg-white opacity-60 cursor-not-allowed'}`}
+                  disabled
                 >
-                  <Mail className="size-12 mx-auto mb-4 text-pink-500" />
+                  <Mail className="size-12 mx-auto mb-4 text-pink-500 opacity-50" />
                   <h4 className={isDark ? 'text-white' : 'text-gray-900'}>
                     {t('dashboard.resumeBuilder.emailResume')}
                   </h4>
+                  <span className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
+                    {t('dashboard.resumeBuilder.comingSoon') || 'Coming Soon'}
+                  </span>
                 </button>
               </div>
               <div className="flex justify-between">

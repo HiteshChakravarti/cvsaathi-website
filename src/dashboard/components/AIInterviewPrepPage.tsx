@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Button } from '../../components/ui/button';
 import { 
   ArrowLeft, Mic, MicOff, Play, Pause, ChevronRight, ChevronLeft,
-  Sparkles, Copy, CheckCircle, Trophy, Clock, Zap, Crown,
+  Sparkles, Copy, CheckCircle, Trophy, Clock,
   Target, Briefcase, Building2, User, Volume2, X, Check,
-  Lightbulb, TrendingUp, Star, Award, ThumbsUp, AlertCircle, Loader2, Trash2
+  Lightbulb, TrendingUp, Star, Award, ThumbsUp, Loader2, Trash2, FileText, Download
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useInterviewSessions, InterviewAnswer, InterviewSession } from '../../hooks/useInterviewSessions';
@@ -14,6 +14,7 @@ import { useAICareerService } from '../../services/aiCareerService';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabaseClient';
 import { useTranslation } from 'react-i18next';
+import { exportInterviewReportToDocx } from '../../services/docxExportService';
 
 // Question categories and types
 type QuestionCategory = 'introduction' | 'technical' | 'behavioral' | 'situational' | 'closing';
@@ -425,21 +426,54 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
       // Create interview session first
       let sessionId = currentSessionId;
       if (!sessionId) {
+        const mappedExperienceLevel = mapExperienceLevel(experienceLevel);
+        console.log('📝 Creating session with:', {
+          role: selectedRole,
+          roleType: ROLES.includes(selectedRole) ? 'hardcoded' : 'custom',
+          industry: selectedIndustry,
+          experienceLevel: experienceLevel,
+          mappedExperienceLevel: mappedExperienceLevel
+        });
+        
         try {
           const session = await createSession(
             selectedRole, 
             selectedIndustry,
-            mapExperienceLevel(experienceLevel) // Pass experience_level to avoid NOT NULL constraint violation
+            mappedExperienceLevel // Pass experience_level to avoid NOT NULL constraint violation
           );
           sessionId = session.id;
           setCurrentSessionId(session.id);
           setSessionStartTime(new Date());
-          console.log('Interview session created:', session.id);
+          console.log('✅ Interview session created successfully:', {
+            id: session.id,
+            experience_level: session.experience_level,
+            role: session.role,
+            roleType: ROLES.includes(session.role || '') ? 'hardcoded' : 'custom',
+            savedToDatabase: true
+          });
         } catch (error: any) {
-          console.error('Session creation failed:', error);
-          toast.error(`Failed to create session: ${error.message || 'Unknown error'}`);
-          setSessionStartTime(new Date());
-          // Still proceed with interview, but user knows session wasn't saved
+          console.error('❌ Session creation failed:', {
+            error,
+            message: error?.message,
+            code: error?.code,
+            details: error?.details,
+            hint: error?.hint,
+            experienceLevel: experienceLevel,
+            mappedExperienceLevel: mappedExperienceLevel,
+            role: selectedRole,
+            industry: selectedIndustry
+          });
+          
+          // Show detailed error to user
+          const errorMessage = error?.message || error?.details || 'Unknown error';
+          toast.error(`Failed to create session: ${errorMessage}`, {
+            description: `Experience level: ${mappedExperienceLevel}. Please try again or contact support.`,
+            duration: 5000
+          });
+          
+          // Don't proceed if session creation fails - user needs a session to save progress
+          setLoadingQuestion(false);
+          return;
         }
       }
 
@@ -682,6 +716,13 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
         setRecordingTime(0);
         setShowHints(false);
         setShowSampleAnswer(false);
+        
+        // Save progress after each question (non-blocking)
+        saveInterviewProgress(false).catch(err => {
+          console.warn('Failed to save progress:', err);
+          // Don't show error toast for progress saves
+        });
+        
         toast.success('Answer submitted! Next question...');
       }
     } catch (error: any) {
@@ -693,18 +734,13 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
     }
   };
 
-  // Save interview session to database
-  const saveInterviewSession = async (finalTurn: any) => {
+  // Save interview progress (after each question, not just at completion)
+  const saveInterviewProgress = async (isComplete: boolean = false) => {
+    if (!currentSessionId || !aiSessionState || !currentAITurn || !interviewMeta) {
+      return; // Can't save without session ID, state, and metadata
+    }
+
     try {
-      const durationMinutes = sessionStartTime 
-        ? Math.round((new Date().getTime() - sessionStartTime.getTime()) / 60000)
-        : 0;
-
-      // Extract scores from final feedback
-      const finalScores = finalTurn.payload?.scores || {};
-      const totalScore = finalScores.overall || 0;
-      const avgScore = finalScores.overall || 0;
-
       // Convert userAnswers to InterviewAnswer format and collect audio URLs
       const audioUrls: Record<string, string> = {};
       const interviewAnswers: InterviewAnswer[] = userAnswers.map((answer, index) => {
@@ -713,7 +749,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
           audioUrls[questionId] = answer.audioUrl;
         }
         return {
-          questionId: index + 1, // Use index as questionId
+          questionId: index + 1,
           question: aiSessionState?.transcript?.[index]?.question || `Question ${index + 1}`,
           answer: answer.answer,
           audioUrl: answer.audioUrl,
@@ -723,67 +759,66 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
         };
       });
 
-      // If session wasn't created at start, create it now
-      let sessionId = currentSessionId;
-      if (!sessionId) {
-        try {
-          const newSession = await createSession(
-            selectedRole || '',
-            selectedIndustry || '',
-            mapExperienceLevel(experienceLevel)
-          );
-          sessionId = newSession.id;
-          setCurrentSessionId(sessionId);
-          console.log('Session created on completion:', sessionId);
-        } catch (createError) {
-          console.warn('Could not create session on completion:', createError);
-        }
-      }
+      const totalQuestions = aiSessionState?.total_questions || interviewAnswers.length;
+      const questionsCompleted = interviewAnswers.length;
+      const questionsAttempted = questionsCompleted;
+      const completionPercentage = totalQuestions > 0 ? Math.round((questionsCompleted / totalQuestions) * 100) : 0;
+      const totalTimeSpent = interviewAnswers.reduce((sum, a) => sum + (a.timeSpent || 0), 0);
+      const avgResponseTimeSeconds = questionsCompleted > 0 ? Math.round(totalTimeSpent / questionsCompleted) : 0;
+      
+      // Calculate duration from actual time spent answering questions (more accurate)
+      // timeSpent is in seconds, convert to minutes
+      const durationMinutes = totalTimeSpent > 0 
+        ? Math.round(totalTimeSpent / 60) 
+        : (sessionStartTime 
+          ? Math.round((new Date().getTime() - sessionStartTime.getTime()) / 60000)
+          : Math.max(1, Math.round(questionsCompleted * 2))); // Fallback: estimate 2 min per question
+      
+      // Calculate final scores if interview is complete
+      const finalScores = isComplete && currentAITurn?.payload?.scores ? currentAITurn.payload.scores : {};
+      const totalScore = finalScores.overall || 0;
+      const confidenceScore = totalScore > 0 ? Math.round(totalScore * 10) : undefined;
 
-      // Update session with results if we have a session ID
-      if (sessionId) {
-        // Calculate estimated duration if not tracked
-        const finalDuration = durationMinutes > 0 
-          ? durationMinutes 
-          : Math.max(1, Math.round(answeredCount * 2)); // Estimate 2 min per question
+      // Save state including aiSessionState and currentAITurn for resumption
+      await updateSession(currentSessionId, {
+        session_data: {
+          answers: interviewAnswers,
+          scores: finalScores,
+          meta: interviewMeta,
+          aiSessionState: aiSessionState, // Save full session state
+          currentAITurn: currentAITurn,   // Save current turn/question
+        },
+        audio_urls: Object.keys(audioUrls).length > 0 ? audioUrls : undefined,
+        questions_attempted: questionsAttempted,
+        questions_completed: questionsCompleted,
+        total_questions: totalQuestions,
+        session_duration_minutes: durationMinutes,
+        status: isComplete ? 'completed' : 'in_progress',
+        completion_percentage: completionPercentage,
+        avg_response_time_seconds: avgResponseTimeSeconds,
+        confidence_score: confidenceScore,
+        ai_feedback: isComplete && currentAITurn?.payload?.summary ? currentAITurn.payload.summary : undefined,
+        completed_at: isComplete ? new Date().toISOString() : undefined,
+      });
 
-        const totalQuestions = aiSessionState?.total_questions || interviewAnswers.length;
-        const questionsCompleted = interviewAnswers.length;
-        const questionsAttempted = questionsCompleted;
-        const completionPercentage = totalQuestions > 0 ? Math.round((questionsCompleted / totalQuestions) * 100) : 0;
-        const totalTimeSpent = interviewAnswers.reduce((sum, a) => sum + (a.timeSpent || 0), 0);
-        const avgResponseTimeSeconds = questionsCompleted > 0 ? Math.round(totalTimeSpent / questionsCompleted) : 0;
-        const confidenceScore = totalScore > 0 ? Math.round(totalScore * 10) : undefined;
-        
-        await updateSession(sessionId, {
-          session_data: {
-            answers: interviewAnswers,
-            scores: finalTurn.payload?.scores || {},
-            meta: interviewMeta,
-          },
-          audio_urls: Object.keys(audioUrls).length > 0 ? audioUrls : undefined,
-          questions_attempted: questionsAttempted,
-          questions_completed: questionsCompleted,
-          total_questions: totalQuestions,
-          session_duration_minutes: finalDuration,
-          status: 'completed',
-          completion_percentage: completionPercentage,
-          avg_response_time_seconds: avgResponseTimeSeconds,
-          confidence_score: confidenceScore,
-          ai_feedback: finalTurn.payload?.summary || '',
-          completed_at: new Date().toISOString(),
-        });
-        
+      if (isComplete) {
         // Refresh sessions list to show in history
         await refetchSessions();
-        
         console.log('Session saved and refetched. Total sessions:', sessions.length);
-        toast.success('Interview session saved!');
       }
     } catch (error) {
-      console.error('Error saving interview session:', error);
-      toast.error('Failed to save session, but results are still available.');
+      console.error('Error saving interview progress:', error);
+      // Don't show toast for progress saves to avoid spam, only for completion
+      if (isComplete) {
+        toast.error('Failed to save session, but results are still available.');
+      }
     }
+  };
+
+  // Save interview session to database (at completion)
+  const saveInterviewSession = async (finalTurn: any) => {
+    // Use the new saveInterviewProgress function with isComplete flag
+    await saveInterviewProgress(true);
   };
 
   // Get current question from AI turn
@@ -823,6 +858,8 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
       const sessionData = session.session_data || {};
       const answers = sessionData.answers || [];
       const meta = sessionData.meta || {};
+      const savedAiSessionState = sessionData.aiSessionState;
+      const savedCurrentAITurn = sessionData.currentAITurn;
 
       // Restore interview state
       setCurrentSessionId(session.id);
@@ -838,14 +875,13 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
       setExperienceLevel(restoredLevel);
 
       // Restore interview metadata
-      if (meta.target_role || meta.experience_level) {
-        setInterviewMeta({
-          target_role: meta.target_role || session.role || '',
-          experience_level: meta.experience_level || storedLevel,
-          difficulty: meta.difficulty || 'standard',
-          questions_target: meta.questions_target || 8,
-        });
-      }
+      const restoredMeta = {
+        target_role: meta.target_role || session.role || '',
+        experience_level: meta.experience_level || storedLevel,
+        difficulty: meta.difficulty || 'standard',
+        questions_target: meta.questions_target || 8,
+      };
+      setInterviewMeta(restoredMeta);
 
       // Restore user answers
       if (answers.length > 0) {
@@ -866,18 +902,81 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
         setSessionStartTime(new Date(session.created_at));
       }
 
-      // If we have answers, we need to get the next question from AI
-      // For now, switch to interview stage and let user continue
-      setStage('interview');
-      setSelectedHistorySession(null);
-      
-      // If there are answers, we should get the next question
-      // This would require calling the AI service with the current state
-      // For now, we'll show a message that they can continue
-      toast.success('Session resumed! Continue from where you left off.');
+      // Restore AI session state and current turn if available
+      if (savedAiSessionState && savedCurrentAITurn) {
+        // Full state restoration - can continue immediately
+        setAiSessionState(savedAiSessionState);
+        setCurrentAITurn(savedCurrentAITurn);
+        setStage('interview');
+        setSelectedHistorySession(null);
+        toast.success('Session resumed! Continue from where you left off.');
+      } else if (answers.length > 0 && (meta.target_role || session.role)) {
+        // Partial restoration - need to reconstruct state
+        // This handles backward compatibility with old sessions
+        console.log('Restoring session without saved state, attempting to reconstruct...');
+        
+        // Try to reconstruct by calling AI with existing answers
+        // We'll need to build a minimal session state from answers
+        try {
+          setLoadingQuestion(true);
+          
+          // Create a minimal session state from saved answers
+          const reconstructedState = {
+            question_index: answers.length,
+            total_questions: session.total_questions || 8,
+            transcript: answers.map((a: any) => ({
+              question: a.question || `Question ${a.questionId}`,
+              answer: a.answer,
+            })),
+          };
+          
+          // Call AI to get the next question
+          const nextTurn = await sendInterviewTurn('', restoredMeta, reconstructedState, 'en');
+          
+          if (nextTurn && nextTurn.session_state && nextTurn.payload) {
+            setAiSessionState(nextTurn.session_state);
+            setCurrentAITurn(nextTurn);
+            setStage('interview');
+            setSelectedHistorySession(null);
+            toast.success('Session resumed! Continue from where you left off.');
+          } else {
+            throw new Error('Failed to get next question from AI');
+          }
+        } catch (reconstructError: any) {
+          console.error('Error reconstructing session state:', reconstructError);
+          toast.error('Could not fully restore session. Please start a new interview.');
+          setStage('setup');
+        } finally {
+          setLoadingQuestion(false);
+        }
+      } else if (session.role && session.industry && session.experience_level) {
+        // Session was created but never started - restart with saved parameters
+        // This handles cases where session was created but user never answered first question
+        console.log('Session exists but no progress yet. Restarting with saved parameters...');
+        // Clear any existing state to ensure clean restart
+        setUserAnswers([]);
+        setAiSessionState(null);
+        setCurrentAITurn(null);
+        setSelectedHistorySession(null);
+        setStage('setup');
+        // The role, industry, and experience level are already set above
+        toast.info('Session found. Please click "Start Interview" to begin.');
+      } else {
+        // No basic session info - can't resume
+        console.error('Session data incomplete:', {
+          hasRole: !!session.role,
+          hasIndustry: !!session.industry,
+          hasExperienceLevel: !!session.experience_level,
+          hasAnswers: answers.length > 0,
+          hasMeta: !!meta.target_role
+        });
+        toast.error('Session data incomplete. Please start a new interview.');
+        setStage('setup');
+      }
     } catch (error: any) {
       console.error('Error resuming session:', error);
       toast.error('Failed to resume session. Please try again.');
+      setStage('setup');
     }
   };
 
@@ -901,26 +1000,11 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
           <div className="flex items-center justify-between">
             <div>
               <h1 className={`text-4xl mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                🎤 {t('dashboard.interviewPrep.title')}
+                {t('dashboard.interviewPrep.title')}
               </h1>
               <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
                 {t('dashboard.interviewPrep.subtitle')}
               </p>
-            </div>
-            
-            {/* Usage tracker */}
-            <div className={`px-6 py-3 rounded-xl ${isDark ? 'bg-white/10' : 'bg-white'} flex items-center gap-3`}>
-              <div className={`w-10 h-10 rounded-full ${isPremium ? 'bg-gradient-to-br from-yellow-400 to-orange-500' : 'bg-gradient-to-br from-gray-400 to-gray-500'} flex items-center justify-center`}>
-                {isPremium ? <Crown className="size-5 text-white" /> : <Zap className="size-5 text-white" />}
-              </div>
-              <div>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {isPremium ? t('dashboard.interviewPrep.premium') : t('dashboard.interviewPrep.freePlan')}
-                </p>
-                <p className={isDark ? 'text-white' : 'text-gray-900'}>
-                  {isPremium ? t('dashboard.interviewPrep.unlimited') : `${questionsUsedToday}/${dailyLimit} ${t('dashboard.interviewPrep.today')}`}
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -1104,21 +1188,6 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                 </>
               )}
             </Button>
-
-            {!isPremium && (
-              <div className={`p-6 rounded-xl ${isDark ? 'bg-yellow-500/10 border-2 border-yellow-500/20' : 'bg-yellow-50 border-2 border-yellow-200'}`}>
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="size-5 text-yellow-500 mt-1" />
-                  <div>
-                    <p className={isDark ? 'text-yellow-400' : 'text-yellow-700'}>
-                      {t('dashboard.interviewPrep.upgradeMessage', { remaining: dailyLimit - questionsUsedToday })}
-                      {' '}
-                      <button className="ml-2 underline font-medium">{t('dashboard.interviewPrep.upgradeLink')}</button>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         )}
 
@@ -1527,39 +1596,103 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
             </div>
 
             {/* Actions */}
-            <div className="grid grid-cols-2 gap-4">
-              <Button
-                onClick={() => {
-                  setStage('setup');
-                  setUserAnswers([]);
-                  setCurrentAnswer('');
-                  setCurrentSessionId(null);
-                  setSessionStartTime(null);
-                  setAiSessionState(null);
-                  setCurrentAITurn(null);
-                  setInterviewMeta(null);
-                  setInterviewComplete(false);
-                  toast.success(t('dashboard.interviewPrep.startingNewSession'));
-                }}
-                className={isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-white hover:bg-gray-50'}
-              >
-                <Play className="size-4 mr-2" />
-                {t('dashboard.interviewPrep.practiceAgain')}
-              </Button>
+            <div className="space-y-4">
+              {/* Download Report Button */}
+              {currentAITurn?.payload?.kind === 'feedback' && (
+                <Button
+                  onClick={async () => {
+                    try {
+                      const totalSeconds = userAnswers.reduce((sum, a) => sum + a.timeSpent, 0);
+                      const durationMinutes = totalSeconds > 0 
+                        ? Math.round(totalSeconds / 60) 
+                        : Math.max(1, Math.round((answeredCount * 2)));
 
-              <Button
-                onClick={onBack}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
-              >
-                {t('dashboard.interviewPrep.backToDashboard')}
-                <ChevronRight className="size-4 ml-2" />
-              </Button>
+                      const safeFileName = (interviewMeta?.target_role || selectedRole || 'Interview_Report')
+                        .replace(/\s+/g, '_')
+                        .replace(/[^a-zA-Z0-9_]/g, '');
+
+                      await exportInterviewReportToDocx(
+                        {
+                          role: interviewMeta?.target_role || selectedRole || 'General Interview',
+                          industry: selectedIndustry || 'General Industry',
+                          experienceLevel: interviewMeta?.experience_level || experienceLevel || 'fresher',
+                          averageScore,
+                          answeredCount,
+                          totalQuestions: aiSessionState?.total_questions || answeredCount,
+                          durationMinutes,
+                          summary: currentAITurn.payload.summary,
+                          strengths: currentAITurn.payload.strengths,
+                          improvements: currentAITurn.payload.improvements,
+                          skillGaps: currentAITurn.payload.skill_gaps,
+                          nextSteps: currentAITurn.payload.next_steps,
+                          scores: currentAITurn.payload.scores,
+                          scoreExplanations: currentAITurn.payload.score_explanations,
+                          userAnswers: userAnswers.map((answer, index) => ({
+                            question: aiSessionState?.transcript?.[index]?.question || `Question ${index + 1}`,
+                            answer: answer.answer,
+                            feedback: answer.feedback,
+                          })),
+                        },
+                        `${safeFileName}_Performance_Report`
+                      );
+                    } catch (error: any) {
+                      console.error('DOCX export failed:', error);
+                      // Error toast is already shown by exportInterviewReportToDocx
+                    }
+                  }}
+                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
+                >
+                  <FileText className="size-4 mr-2" />
+                  {t('dashboard.interviewPrep.downloadReport') || 'Download Report'}
+                </Button>
+              )}
+
+              <div className="grid grid-cols-2 gap-4">
+                <Button
+                  onClick={() => {
+                    setStage('setup');
+                    setUserAnswers([]);
+                    setCurrentAnswer('');
+                    setCurrentSessionId(null);
+                    setSessionStartTime(null);
+                    setAiSessionState(null);
+                    setCurrentAITurn(null);
+                    setInterviewMeta(null);
+                    setInterviewComplete(false);
+                    toast.success(t('dashboard.interviewPrep.startingNewSession'));
+                  }}
+                  className={isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-white hover:bg-gray-50'}
+                >
+                  <Play className="size-4 mr-2" />
+                  {t('dashboard.interviewPrep.practiceAgain')}
+                </Button>
+
+                <Button
+                  onClick={onBack}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0"
+                >
+                  {t('dashboard.interviewPrep.backToDashboard')}
+                  <ChevronRight className="size-4 ml-2" />
+                </Button>
+              </div>
             </div>
           </div>
         )}
 
         {/* STAGE: HISTORY */}
-        {stage === 'history' && (
+        {stage === 'history' && (() => {
+          // Get unique roles from all sessions (for dynamic filter dropdown)
+          const uniqueRoles = Array.from(new Set(
+            sessions
+              .map(s => s.role)
+              .filter((role): role is string => !!role && role !== 'General Interview')
+              .sort()
+          ));
+          
+          // Combine hardcoded ROLES with unique roles from sessions
+          const allAvailableRoles = Array.from(new Set([...ROLES, ...uniqueRoles])).sort();
+
+          return (
           <div className="space-y-6">
             {/* Filters */}
             <div className={`p-6 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
@@ -1581,7 +1714,7 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
                   }`}
                 >
                   <option value="">{t('dashboard.interviewPrep.allRoles')}</option>
-                  {ROLES.map(role => (
+                  {allAvailableRoles.map(role => (
                     <option key={role} value={role}>{role}</option>
                   ))}
                 </select>
@@ -1658,7 +1791,8 @@ export function AIInterviewPrepPage({ onBack, isDark }: AIInterviewPrepPageProps
               />
             )}
           </div>
-        )}
+          );
+        })()}
       </div>
     </div>
   );
@@ -1741,9 +1875,37 @@ function SessionListView({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {filteredSessions.map(session => {
         const role = session.role || 'General Interview';
-        const score = session.confidence_score || 0;
-        const duration = session.session_duration_minutes || 0;
-        const totalQuestions = session.total_questions || (session.session_data?.answers?.length || 0);
+        
+        // Parse session_data if it's a string
+        let sessionData = session.session_data;
+        if (typeof sessionData === 'string') {
+          try {
+            sessionData = JSON.parse(sessionData);
+          } catch (e) {
+            sessionData = null;
+          }
+        }
+        
+        // Calculate stats matching results stage logic
+        const answers = sessionData?.answers || [];
+        
+        // Calculate average score from payload (matching results stage: scores.overall * 10)
+        let score = 0;
+        if (sessionData?.currentAITurn?.payload?.kind === 'feedback' && sessionData.currentAITurn.payload.scores?.overall !== undefined) {
+          score = Math.round(sessionData.currentAITurn.payload.scores.overall * 10);
+        } else if (session.confidence_score !== undefined) {
+          score = session.confidence_score;
+        }
+        
+        // Calculate duration from answers (matching results stage: sum of timeSpent)
+        const totalSeconds = answers.reduce((sum: number, a: any) => sum + (a.timeSpent || 0), 0);
+        const duration = totalSeconds > 0 
+          ? Math.round(totalSeconds / 60) 
+          : (session.session_duration_minutes || 0);
+        
+        // Calculate answered count (matching results stage: userAnswers.length)
+        const totalQuestions = answers.length || session.total_questions || 0;
+        
         const dateValue = session.completed_at || session.started_at || session.created_at;
         const dateLabel = dateValue ? new Date(dateValue).toLocaleDateString() : '';
 
@@ -1874,8 +2036,94 @@ function SessionDetailView({
   onDelete: () => Promise<void>;
   isDark: boolean;
 }) {
+  const { t } = useTranslation();
   const [playingAudioId, setPlayingAudioId] = useState<string | null>(null);
   const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
+
+  // Parse session_data if it's a string
+  const sessionData = useMemo(() => {
+    if (!session.session_data) return null;
+    if (typeof session.session_data === 'string') {
+      try {
+        return JSON.parse(session.session_data);
+      } catch (e) {
+        console.error('Error parsing session_data:', e);
+        return null;
+      }
+    }
+    return session.session_data;
+  }, [session.session_data]);
+
+  // Extract performance report data
+  const performanceReport = useMemo(() => {
+    if (session.status !== 'completed') return null;
+    
+    if (!sessionData) {
+      // If no session_data but session is completed, create minimal report
+      if (session.confidence_score !== undefined || session.ai_feedback) {
+        return {
+          summary: session.ai_feedback || 'Interview completed successfully.',
+          scores: {},
+          score_explanations: {},
+          strengths: [],
+          improvements: [],
+          skill_gaps: [],
+          next_steps: []
+        };
+      }
+      return null;
+    }
+    
+    // Try to get from currentAITurn.payload
+    const payload = sessionData.currentAITurn?.payload;
+    if (payload && payload.kind === 'feedback') {
+      return payload;
+    }
+    
+    // Fallback: try to reconstruct from scores and ai_feedback
+    if (session.confidence_score !== undefined || session.ai_feedback) {
+      return {
+        summary: session.ai_feedback || 'Interview completed successfully.',
+        scores: sessionData.scores || {},
+        score_explanations: {},
+        strengths: [],
+        improvements: [],
+        skill_gaps: [],
+        next_steps: []
+      };
+    }
+    
+    return null;
+  }, [sessionData, session.status, session.confidence_score, session.ai_feedback]);
+
+  // Calculate values matching results stage logic
+  const calculatedStats = useMemo(() => {
+    const answers = sessionData?.answers || [];
+    
+    // Calculate average score from payload (matching results stage: scores.overall * 10)
+    let averageScore = 0;
+    if (performanceReport?.scores?.overall !== undefined) {
+      averageScore = Math.round(performanceReport.scores.overall * 10);
+    } else if (session.confidence_score !== undefined) {
+      averageScore = session.confidence_score;
+    }
+    
+    // Calculate duration from answers (matching results stage: sum of timeSpent)
+    const totalSeconds = answers.reduce((sum: number, a: any) => sum + (a.timeSpent || 0), 0);
+    const durationMinutes = totalSeconds > 0 
+      ? Math.round(totalSeconds / 60) 
+      : (session.session_duration_minutes || 0);
+    
+    // Calculate answered count (matching results stage: userAnswers.length)
+    const answeredCount = answers.length;
+    
+    return {
+      averageScore,
+      durationMinutes,
+      answeredCount,
+      totalQuestions: session.total_questions || answers.length
+    };
+  }, [sessionData, performanceReport, session.confidence_score, session.session_duration_minutes, session.total_questions]);
 
   const playAudio = (questionId: number, audioUrl: string) => {
     const id = questionId.toString();
@@ -1948,22 +2196,22 @@ function SessionDetailView({
       <div className="grid grid-cols-3 gap-4">
         <div className={`p-6 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
           <p className={`text-3xl font-bold mb-1 ${
-            (session.confidence_score || 0) >= 80 ? 'text-green-500' :
-            (session.confidence_score || 0) >= 60 ? 'text-yellow-500' : 'text-red-500'
+            calculatedStats.averageScore >= 80 ? 'text-green-500' :
+            calculatedStats.averageScore >= 60 ? 'text-yellow-500' : 'text-red-500'
           }`}>
-            {session.confidence_score || 0}%
+            {calculatedStats.averageScore}%
           </p>
           <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Score</p>
         </div>
         <div className={`p-6 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
           <p className={`text-3xl font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            {session.total_questions || (session.session_data?.answers?.length || 0)}
+            {calculatedStats.answeredCount}
           </p>
           <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Questions</p>
         </div>
         <div className={`p-6 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
           <p className={`text-3xl font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            {session.session_duration_minutes || 0}
+            {calculatedStats.durationMinutes}
           </p>
           <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Minutes</p>
         </div>
@@ -1984,24 +2232,232 @@ function SessionDetailView({
         </div>
       )}
 
+      {/* Interview Performance Report (for completed sessions) */}
+      {session.status === 'completed' && (() => {
+        const payload = performanceReport || {
+          summary: session.ai_feedback || 'Interview completed successfully. Review your answers below to see detailed feedback.',
+          scores: sessionData?.scores || {},
+          score_explanations: {},
+          strengths: [],
+          improvements: [],
+          skill_gaps: [],
+          next_steps: []
+        };
+        
+        return (
+          <div className={`p-8 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className={`text-2xl ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                Interview Performance Report
+              </h3>
+              <Button
+                onClick={async () => {
+                  try {
+                    const parsedSessionData = sessionData || {};
+                    const answers = parsedSessionData.answers || [];
+                    const meta = parsedSessionData.meta || {};
+                    
+                    // Use calculated stats to match results stage
+                    const safeFileName = (session.role || 'Interview_Report')
+                      .replace(/\s+/g, '_')
+                      .replace(/[^a-zA-Z0-9_]/g, '');
+
+                    await exportInterviewReportToDocx(
+                      {
+                        role: session.role || 'General Interview',
+                        industry: session.industry || 'General Industry',
+                        experienceLevel: meta.experience_level || session.experience_level || 'fresher',
+                        averageScore: calculatedStats.averageScore,
+                        answeredCount: calculatedStats.answeredCount,
+                        totalQuestions: calculatedStats.totalQuestions,
+                        durationMinutes: calculatedStats.durationMinutes,
+                        summary: payload.summary,
+                        strengths: payload.strengths,
+                        improvements: payload.improvements,
+                        skillGaps: payload.skill_gaps,
+                        nextSteps: payload.next_steps,
+                        scores: payload.scores,
+                        scoreExplanations: payload.score_explanations,
+                        userAnswers: answers.map((answer: any, index: number) => ({
+                          question: answer.question || parsedSessionData.aiSessionState?.transcript?.[index]?.question || `Question ${index + 1}`,
+                          answer: answer.answer,
+                          feedback: answer.feedback,
+                        })),
+                      },
+                      `${safeFileName}_Performance_Report`
+                    );
+                  } catch (error: any) {
+                    console.error('DOCX export failed:', error);
+                    // Error toast is already shown by exportInterviewReportToDocx
+                  }
+                }}
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
+              >
+                <FileText className="size-4 mr-2" />
+                Download Report
+              </Button>
+            </div>
+
+            {/* Interview Summary */}
+            <h4 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              Interview Summary
+            </h4>
+            
+            <div className={`p-6 rounded-xl mb-6 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+              {payload.summary ? (
+                <p className={`mb-4 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  {payload.summary}
+                </p>
+              ) : (
+                <p className={`mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Interview completed successfully. Review your answers below for detailed feedback on each question.
+                </p>
+              )}
+                  
+                  {/* Strengths & Improvements */}
+                  {(payload.strengths?.length > 0 || payload.improvements?.length > 0) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {payload.strengths && payload.strengths.length > 0 && (
+                        <div>
+                          <h5 className={`font-semibold mb-2 ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                            Strengths
+                          </h5>
+                          <ul className="space-y-1">
+                            {payload.strengths.map((s: string, i: number) => (
+                              <li key={i} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                                ✓ {s}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {payload.improvements && payload.improvements.length > 0 && (
+                        <div>
+                          <h5 className={`font-semibold mb-2 ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
+                            Areas for Improvement
+                          </h5>
+                          <ul className="space-y-1">
+                            {payload.improvements.map((imp: string, i: number) => (
+                              <li key={i} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                                • {imp}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Skill Gaps */}
+                  {payload.skill_gaps && payload.skill_gaps.length > 0 && (
+                    <div className="mt-4">
+                      <h5 className={`font-semibold mb-2 ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`}>
+                        Skill Gaps Identified
+                      </h5>
+                      <ul className="space-y-1">
+                        {payload.skill_gaps.map((gap: string, i: number) => (
+                          <li key={i} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                            ⚠ {gap}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Next Steps */}
+                  {payload.next_steps && payload.next_steps.length > 0 && (
+                    <div className="mt-4">
+                      <h5 className={`font-semibold mb-2 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+                        Recommended Next Steps
+                      </h5>
+                      <ul className="space-y-1">
+                        {payload.next_steps.map((step: string, i: number) => (
+                          <li key={i} className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                            → {step}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+            {/* Detailed Scores */}
+            {payload.scores && Object.keys(payload.scores).length > 0 && (
+              <div>
+                <h4 className={`text-xl mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  Detailed Scores
+                </h4>
+                <div className="space-y-3">
+                  {Object.entries(payload.scores).map(([key, value]: [string, any]) => {
+                    const explanation = payload.score_explanations?.[key];
+                    const scoreValue = Math.round(value * 10);
+                    const scoreLabel = scoreValue >= 80 ? 'Strong' : scoreValue >= 60 ? 'Good' : 'Needs Improvement';
+                    const scoreColor = scoreValue >= 80 ? 'text-green-500' : scoreValue >= 60 ? 'text-yellow-500' : 'text-orange-500';
+                    
+                    return (
+                      <div key={key} className={`p-4 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                        <div className="flex items-center justify-between mb-2">
+                          <div>
+                            <span className={isDark ? 'text-white' : 'text-gray-900'}>
+                              {key.charAt(0).toUpperCase() + key.slice(1)}
+                            </span>
+                            {explanation && (
+                              <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                                {explanation}
+                              </p>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <span className={`text-lg font-semibold ${scoreColor}`}>
+                              {scoreValue}/100
+                            </span>
+                            <p className={`text-xs ${scoreColor}`}>
+                              {scoreLabel}
+                            </p>
+                          </div>
+                        </div>
+                        <div className={`h-2 rounded-full ${isDark ? 'bg-white/10' : 'bg-gray-200'}`}>
+                          <div
+                            className={`h-full rounded-full ${
+                              scoreValue >= 80 ? 'bg-gradient-to-r from-green-500 to-emerald-500' :
+                              scoreValue >= 60 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                              'bg-gradient-to-r from-orange-500 to-red-500'
+                            }`}
+                            style={{ width: `${scoreValue}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
       {/* Questions & Answers */}
       <div className="space-y-4">
-        {session.status === 'in_progress' && (!session.session_data?.answers || session.session_data.answers.length === 0) ? (
+        {session.status === 'in_progress' && (!sessionData?.answers || sessionData.answers.length === 0) ? (
           <div className={`p-12 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
             <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
               This session is in progress but no questions have been answered yet. Click "Resume Session" to continue.
             </p>
           </div>
-        ) : (session.session_data?.answers || session.questions || []).length === 0 ? (
+        ) : (sessionData?.answers || session.questions || []).length === 0 ? (
           <div className={`p-12 rounded-2xl text-center ${isDark ? 'bg-white/5' : 'bg-white'}`}>
             <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
               No questions and answers recorded for this session.
             </p>
           </div>
         ) : (
-          (session.session_data?.answers || session.questions || []).map((answer: any, index: number) => {
+          (sessionData?.answers || session.questions || []).map((answer: any, index: number) => {
             const questionId = answer.questionId?.toString() || `q_${index}`;
             const audioUrl = session.audio_urls?.[questionId] || answer.audioUrl;
+            // Use transcript question if available (matching results stage)
+            const questionText = sessionData?.aiSessionState?.transcript?.[index]?.question 
+              || answer.question 
+              || `Question ${index + 1}`;
             return (
               <div key={index} className={`p-6 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-white'}`}>
                 <div className="flex items-start justify-between mb-4">
@@ -2021,7 +2477,7 @@ function SessionDetailView({
                       )}
                     </div>
                     <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      {answer.question || `Question ${index + 1}`}
+                      {questionText}
                     </h3>
                     <p className={`mb-3 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                       {answer.answer || 'No answer provided'}

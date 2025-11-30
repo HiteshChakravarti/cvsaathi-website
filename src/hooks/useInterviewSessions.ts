@@ -113,6 +113,14 @@ export const useInterviewSessions = () => {
         session_data: {},
       };
 
+      console.log('📝 Attempting to create interview session:', {
+        user_id: user!.id,
+        role: sessionData.role,
+        industry: sessionData.industry,
+        experience_level: sessionData.experience_level,
+        status: sessionData.status
+      });
+
       const { data, error: insertError } = await supabase
         .from('interview_sessions')
         .insert(sessionData)
@@ -120,9 +128,27 @@ export const useInterviewSessions = () => {
         .single();
 
       if (insertError) {
-        console.error('Supabase insert error:', insertError);
-        throw new Error(`Failed to create session: ${insertError.message}`);
+        console.error('❌ Supabase insert error details:', {
+          code: insertError.code,
+          message: insertError.message,
+          details: insertError.details,
+          hint: insertError.hint,
+          sessionData: sessionData
+        });
+        
+        // Include more details in error message
+        const errorDetails = insertError.details 
+          ? ` Details: ${insertError.details}` 
+          : insertError.hint 
+            ? ` Hint: ${insertError.hint}` 
+            : '';
+        throw new Error(`Failed to create session: ${insertError.message}${errorDetails}`);
       }
+
+      console.log('✅ Session created successfully:', {
+        id: data?.id,
+        experience_level: data?.experience_level
+      });
 
       const typed = data as InterviewSession;
       setSessions(prev => [typed, ...prev]);
