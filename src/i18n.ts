@@ -3921,9 +3921,10 @@ resources.en.translation.profile = {
 // Landing Page translations for English
 resources.en.translation.landing = {
   hero: {
-    badge: 'AI-Powered Career Growth Platform',
+    badge: 'AI Powered career Companion for all job seekers',
     title: 'CVSaathi',
-    description: 'Craft your career story with AI — from a stunning, job-winning resume to personalized interview prep and real-time skill insights.',
+    subtitle: 'CVSaathi is an AI-powered career companion for modern job seekers',
+    description: 'Create ATS-friendly resumes, tailor them to any role, and practice interviews for opportunities across India and around the world — all in simple, clear language.',
     getTemplate: 'Get Template',
     seeServices: 'See Our Services'
   },
@@ -5835,9 +5836,10 @@ resources.hi.translation.profile = {
 // Landing Page translations for Hindi
 resources.hi.translation.landing = {
     hero: {
-      badge: 'AI-संचालित करियर विकास प्लेटफॉर्म',
+      badge: 'सभी नौकरी चाहने वालों के लिए AI संचालित करियर साथी',
       title: 'CVSaathi',
-      description: 'AI के साथ अपनी करियर कहानी बनाएं — एक शानदार, नौकरी जीतने वाले रिज्यूमे से लेकर व्यक्तिगत इंटरव्यू तैयारी और वास्तविक समय कौशल अंतर्दृष्टि तक।',
+      subtitle: 'CVSaathi आधुनिक नौकरी चाहने वालों के लिए एक AI-संचालित करियर साथी है',
+      description: 'ATS-अनुकूल रिज्यूमे बनाएं, उन्हें किसी भी भूमिका के अनुसार तैयार करें, और भारत और दुनिया भर में अवसरों के लिए इंटरव्यू का अभ्यास करें — सभी सरल, स्पष्ट भाषा में।',
       getTemplate: 'टेम्पलेट प्राप्त करें',
       seeServices: 'हमारी सेवाएं देखें'
     },
@@ -7378,9 +7380,10 @@ resources.hi.translation.dashboard = {
 // Landing Page translations for Marathi
 resources.mr.translation.landing = {
   hero: {
-      badge: 'AI-चालित करिअर विकास प्लॅटफॉर्म',
+      badge: 'सर्व नोकरी शोधणाऱ्यांसाठी AI चालित करिअर साथी',
       title: 'CVSaathi',
-      description: 'AI सह तुमची करिअर कथा तयार करा — एक आकर्षक, नोकरी जिंकणारे रिझ्यूमे पासून वैयक्तिक मुलाखत तयारी आणि वास्तविक-वेळ कौशल्य अंतर्दृष्टी पर्यंत।',
+      subtitle: 'CVSaathi आधुनिक नोकरी शोधणाऱ्यांसाठी एक AI-चालित करिअर साथी आहे',
+      description: 'ATS-अनुकूल रिझ्यूमे तयार करा, त्यांना कोणत्याही भूमिकेसाठी सानुकूलित करा, आणि भारत आणि जगभरातील संधींसाठी मुलाखतीचा सराव करा — सर्व सोप्या, स्पष्ट भाषेत।',
       getTemplate: 'टेम्पलेट मिळवा',
       seeServices: 'आमच्या सेवा पहा'
     },

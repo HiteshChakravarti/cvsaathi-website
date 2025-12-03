@@ -109,7 +109,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mb-8"
+          className="mb-6"
         >
           <h1 
             className="text-white drop-shadow-2xl"
@@ -123,6 +123,21 @@ export function Hero() {
             {t('landing.hero.title')}
           </h1>
         </motion.div>
+
+        {/* Subtitle - Value proposition */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.45 }}
+          className="text-gray-200 mb-8 max-w-3xl mx-auto drop-shadow-lg"
+          style={{
+            fontSize: '1.5rem',
+            fontWeight: 500,
+            lineHeight: 1.4,
+          }}
+        >
+          {t('landing.hero.subtitle')}
+        </motion.p>
 
         {/* Description - ORB AI style subtitle */}
         <motion.p
